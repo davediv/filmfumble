@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { Button } from '$lib/components/ui/button';
 	import StartScreen from '$lib/components/StartScreen.svelte';
 	import GameRound from '$lib/components/GameRound.svelte';
 	import FeedbackOverlay from '$lib/components/FeedbackOverlay.svelte';
 	import LoadingSkeleton from '$lib/components/LoadingSkeleton.svelte';
 	import type { RoundData, ErrorType } from '$lib/types/index';
 	import ErrorState from '$lib/components/ErrorState.svelte';
+	import ScoreSummary from '$lib/components/ScoreSummary.svelte';
 
 	interface ApiResponse {
 		description: string;
@@ -125,25 +125,5 @@
 		onNext={handleNext}
 	/>
 {:else if phase === 'ended'}
-	<div class="flex min-h-screen flex-col items-center justify-center gap-5 px-4 sm:gap-6 sm:px-6">
-		<div class="flex flex-col items-center gap-4 text-center">
-			<h2 class="text-2xl font-bold sm:text-3xl md:text-4xl">Game Over!</h2>
-			<p class="text-muted-foreground text-sm sm:text-base">You scored</p>
-			<p class="text-5xl font-bold sm:text-6xl md:text-7xl">
-				{score}<span class="text-muted-foreground text-2xl sm:text-3xl">/{roundNumber}</span>
-			</p>
-			<p class="text-muted-foreground px-4 text-xs sm:text-sm">
-				{#if score === roundNumber}
-					Perfect score! The AI has nothing on you.
-				{:else if score > roundNumber / 2}
-					Not bad! Some terrible descriptions fool the best.
-				{:else}
-					The AI's terrible descriptions got the better of you.
-				{/if}
-			</p>
-		</div>
-		<div class="flex flex-col gap-3">
-			<Button size="lg" onclick={handlePlayAgain}>Play Again</Button>
-		</div>
-	</div>
+	<ScoreSummary {score} {roundNumber} onPlayAgain={handlePlayAgain} />
 {/if}
