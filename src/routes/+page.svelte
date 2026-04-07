@@ -14,19 +14,21 @@
 	let roundNumber = $state(0);
 	let usedMovieIds = $state<string[]>([]);
 	let selectedIndex = $state<number | null>(null);
-	let correctIndex = $state<number | null>(null);
-	let currentDescription = $state('');
-	let currentOptions = $state<string[]>([]);
+	let roundData = $state<RoundData>({ description: '', options: [], correctIndex: null });
 	let errorType = $state<ErrorType | null>(null);
 	let preloadedRound = $state<ApiResponse | null>(null);
 
+	function fetchRoundApi(): Promise<Response> {
+		return fetch('/api/round', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ usedMovieIds })
+		});
+	}
+
 	async function preloadRound() {
 		try {
-			const res = await fetch('/api/round', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ usedMovieIds })
-			});
+			const res = await fetchRoundApi();
 			if (res.ok) {
 				preloadedRound = (await res.json()) as ApiResponse;
 			}
@@ -35,19 +37,29 @@
 		}
 	}
 
+	function resetState() {
+		score = 0;
+		roundNumber = 0;
+		usedMovieIds = [];
+		selectedIndex = null;
+		roundData = { description: '', options: [], correctIndex: null };
+		errorType = null;
+		preloadedRound = null;
+	}
+
 	async function startGame() {
+		resetState();
 		phase = 'loading';
 		roundNumber = 1;
-		score = 0;
-		usedMovieIds = [];
-		preloadedRound = null;
 		await fetchRound();
 	}
 
 	function applyRoundData(data: ApiResponse) {
-		currentDescription = data.description;
-		currentOptions = data.options;
-		correctIndex = data.correctIndex;
+		roundData = {
+			description: data.description,
+			options: data.options,
+			correctIndex: data.correctIndex
+		};
 		usedMovieIds = [...usedMovieIds, data.movieId];
 		phase = 'playing';
 		selectedIndex = null;
@@ -56,11 +68,7 @@
 	async function fetchRound() {
 		errorType = null;
 		try {
-			const res = await fetch('/api/round', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ usedMovieIds })
-			});
+			const res = await fetchRoundApi();
 
 			if (!res.ok) {
 				if (res.status === 503) {
@@ -82,7 +90,7 @@
 	function handleAnswer(index: number) {
 		if (phase !== 'playing') return;
 		selectedIndex = index;
-		if (index === correctIndex) {
+		if (index === roundData.correctIndex) {
 			score += 1;
 		}
 		phase = 'feedback';
@@ -103,19 +111,9 @@
 	}
 
 	function handlePlayAgain() {
+		resetState();
 		phase = 'start';
-		errorType = null;
-		score = 0;
-		roundNumber = 0;
-		usedMovieIds = [];
-		preloadedRound = null;
 	}
-
-	const roundData = $derived<RoundData>({
-		description: currentDescription,
-		options: currentOptions,
-		correctIndex
-	});
 </script>
 
 <svelte:head>
@@ -135,14 +133,23 @@
 		{score}
 		{roundNumber}
 		{selectedIndex}
-		{correctIndex}
+		correctIndex={roundData.correctIndex}
 		onAnswer={handleAnswer}
 	/>
 {:else if phase === 'feedback'}
-	<GameRound {roundData} {score} {roundNumber} {selectedIndex} {correctIndex} onAnswer={() => {}} />
+	<GameRound
+		{roundData}
+		{score}
+		{roundNumber}
+		{selectedIndex}
+		correctIndex={roundData.correctIndex}
+		onAnswer={() => {}}
+	/>
 	<FeedbackOverlay
-		correct={selectedIndex === correctIndex}
-		correctTitle={correctIndex !== null ? (currentOptions[correctIndex] ?? '') : ''}
+		correct={selectedIndex === roundData.correctIndex}
+		correctTitle={roundData.correctIndex !== null
+			? (roundData.options[roundData.correctIndex] ?? '')
+			: ''}
 		onNext={handleNext}
 	/>
 {:else if phase === 'ended'}

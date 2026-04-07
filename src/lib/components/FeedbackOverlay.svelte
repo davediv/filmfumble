@@ -11,6 +11,8 @@
 	let { correct, correctTitle, onNext }: Props = $props();
 
 	const resultLabel = $derived(correct ? 'It was:' : 'The correct answer was:');
+
+	const CONFETTI_COLORS = ['#22c55e', '#eab308', '#3b82f6', '#ec4899', '#f97316'];
 </script>
 
 {#if correct}
@@ -19,13 +21,9 @@
 			<div
 				class="confetti-piece"
 				style="--delay: {Math.random() * 0.5}s; --x: {Math.random() *
-					100}vw; --rotation: {Math.random() * 360}deg; --color: {[
-					'#22c55e',
-					'#eab308',
-					'#3b82f6',
-					'#ec4899',
-					'#f97316'
-				][Math.floor(Math.random() * 5)]};"
+					100}vw; --rotation: {Math.random() * 360}deg; --color: {CONFETTI_COLORS[
+					Math.floor(Math.random() * CONFETTI_COLORS.length)
+				]};"
 			></div>
 		{/each}
 	</div>

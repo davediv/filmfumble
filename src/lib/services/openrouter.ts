@@ -1,8 +1,3 @@
-/**
- * OpenRouter API client for AI-generated movie descriptions.
- * Uses Web-standard fetch (no Node.js APIs) — compatible with Cloudflare Workers.
- */
-
 interface OpenRouterResponse {
 	choices: Array<{
 		message: {
@@ -16,15 +11,6 @@ export interface GenerationResult {
 	fromFallback: false;
 }
 
-export interface FallbackResult {
-	description: string;
-	fromFallback: true;
-}
-
-/**
- * Generate a terrible movie description via OpenRouter.
- * Times out after 8 seconds to stay within p95 SLA.
- */
 export async function generateDescription(
 	movieTitle: string,
 	year: number,

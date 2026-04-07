@@ -1,8 +1,4 @@
-/**
- * Fallback descriptions bank — used when OpenRouter API fails.
- * Each description is intentionally terrible, PG-13, ≤180 chars,
- * and contains no title/character/actor names.
- */
+// PG-13, ≤180 chars, no title/character/actor names
 export const fallbacks: Record<string, string> = {
 	// Action
 	'Die Hard':

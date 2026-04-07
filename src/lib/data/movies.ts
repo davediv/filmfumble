@@ -242,12 +242,6 @@ export const movies: Movie[] = [
 		imdbRating: 8.2
 	},
 	{ title: 'Airplane!', year: 1980, genres: ['Comedy'], imdbRating: 7.7 },
-	{
-		title: 'The Grand Budapest Hotel',
-		year: 2014,
-		genres: ['Adventure', 'Comedy', 'Crime'],
-		imdbRating: 8.1
-	},
 	{ title: 'Dr. Strangelove', year: 1964, genres: ['Comedy', 'War'], imdbRating: 8.4 },
 	{ title: 'Blazing Saddles', year: 1974, genres: ['Comedy', 'Western'], imdbRating: 7.5 },
 	{
@@ -319,7 +313,6 @@ export const movies: Movie[] = [
 		genres: ['Biography', 'Drama', 'History'],
 		imdbRating: 8.1
 	},
-	{ title: 'Spotlight', year: 2015, genres: ['Crime', 'Drama', 'History'], imdbRating: 8.1 },
 	{ title: 'The Revenant', year: 2015, genres: ['Action', 'Adventure', 'Drama'], imdbRating: 8.0 },
 	{ title: 'The Martian', year: 2015, genres: ['Adventure', 'Drama', 'Sci-Fi'], imdbRating: 8.0 },
 	{ title: 'Gravity', year: 2013, genres: ['Drama', 'Sci-Fi', 'Thriller'], imdbRating: 7.7 },
@@ -339,8 +332,6 @@ export const movies: Movie[] = [
 
 	// Horror
 	{ title: 'The Exorcist', year: 1973, genres: ['Horror'], imdbRating: 8.0 },
-	{ title: 'A Quiet Place', year: 2018, genres: ['Horror', 'Drama', 'Sci-Fi'], imdbRating: 7.5 },
-	{ title: 'Get Out', year: 2017, genres: ['Horror', 'Mystery', 'Thriller'], imdbRating: 7.7 },
 	{ title: 'Hereditary', year: 2018, genres: ['Horror', 'Drama', 'Mystery'], imdbRating: 7.3 },
 	{ title: 'The Witch', year: 2015, genres: ['Horror', 'Mystery'], imdbRating: 6.9 },
 	{ title: 'It Follows', year: 2014, genres: ['Horror', 'Mystery', 'Thriller'], imdbRating: 6.8 },
@@ -362,7 +353,6 @@ export const movies: Movie[] = [
 		genres: ['Drama', 'Horror', 'Romance'],
 		imdbRating: 7.9
 	},
-	{ title: 'Shaun of the Dead', year: 2004, genres: ['Comedy', 'Horror'], imdbRating: 7.9 },
 	{ title: 'Tucker and Dale vs. Evil', year: 2010, genres: ['Comedy', 'Horror'], imdbRating: 7.0 },
 	{
 		title: 'Cabin in the Woods',
@@ -386,14 +376,6 @@ export const movies: Movie[] = [
 
 	// Romance
 	{ title: 'Titanic', year: 1997, genres: ['Drama', 'Romance'], imdbRating: 7.9 },
-	{
-		title: 'The Princess Bride',
-		year: 1987,
-		genres: ['Adventure', 'Comedy', 'Fantasy'],
-		imdbRating: 8.0
-	},
-	{ title: 'La La Land', year: 2016, genres: ['Comedy', 'Drama', 'Music'], imdbRating: 8.0 },
-	{ title: 'Call Me by Your Name', year: 2017, genres: ['Drama', 'Romance'], imdbRating: 7.8 },
 	{
 		title: 'The Shape of Water',
 		year: 2017,
@@ -467,7 +449,6 @@ export const movies: Movie[] = [
 		genres: ['Action', 'Adventure', 'Comedy'],
 		imdbRating: 7.8
 	},
-	{ title: 'The Matrix', year: 1999, genres: ['Action', 'Sci-Fi'], imdbRating: 8.7 },
 	{ title: 'Minority Report', year: 2002, genres: ['Action', 'Crime', 'Mystery'], imdbRating: 7.6 },
 	{ title: 'Looper', year: 2012, genres: ['Action', 'Crime', 'Sci-Fi'], imdbRating: 7.4 },
 	{ title: 'Moon', year: 2009, genres: ['Drama', 'Mystery', 'Sci-Fi'], imdbRating: 7.8 },
@@ -482,7 +463,6 @@ export const movies: Movie[] = [
 	{ title: 'Coherence', year: 2013, genres: ['Drama', 'Sci-Fi', 'Thriller'], imdbRating: 6.9 },
 	{ title: 'Primer', year: 2004, genres: ['Drama', 'Sci-Fi', 'Thriller'], imdbRating: 7.0 },
 	{ title: 'Predestination', year: 2014, genres: ['Action', 'Drama', 'Sci-Fi'], imdbRating: 7.4 },
-	{ title: 'Edge of Tomorrow', year: 2014, genres: ['Action', 'Sci-Fi'], imdbRating: 7.9 },
 	{ title: 'Starship Troopers', year: 1997, genres: ['Action', 'Sci-Fi'], imdbRating: 7.2 },
 	{
 		title: 'Back to the Future Part II',
@@ -499,12 +479,6 @@ export const movies: Movie[] = [
 	{ title: 'Aliens', year: 1986, genres: ['Action', 'Sci-Fi', 'Thriller'], imdbRating: 8.3 },
 
 	// Thriller
-	{ title: 'Se7en', year: 1995, genres: ['Crime', 'Drama', 'Mystery'], imdbRating: 8.6 },
-	{ title: 'Zodiac', year: 2007, genres: ['Crime', 'Drama', 'Mystery'], imdbRating: 7.7 },
-	{ title: 'Gone Girl', year: 2014, genres: ['Drama', 'Mystery', 'Thriller'], imdbRating: 8.1 },
-	{ title: 'Prisoners', year: 2013, genres: ['Crime', 'Drama', 'Mystery'], imdbRating: 8.1 },
-	{ title: 'Nightcrawler', year: 2014, genres: ['Crime', 'Thriller'], imdbRating: 7.9 },
-	{ title: 'Sicario', year: 2015, genres: ['Action', 'Crime', 'Drama'], imdbRating: 7.6 },
 	{
 		title: 'The Girl with the Dragon Tattoo',
 		year: 2011,
@@ -524,14 +498,7 @@ export const movies: Movie[] = [
 	},
 	{ title: 'Fight Club', year: 1999, genres: ['Drama', 'Thriller'], imdbRating: 8.8 },
 	{ title: 'Oldboy', year: 2003, genres: ['Action', 'Drama', 'Mystery'], imdbRating: 8.4 },
-	{
-		title: 'The Usual Suspects',
-		year: 1995,
-		genres: ['Crime', 'Mystery', 'Thriller'],
-		imdbRating: 8.5
-	},
 	{ title: 'Donnie Darko', year: 2001, genres: ['Drama', 'Mystery', 'Sci-Fi'], imdbRating: 8.1 },
 	{ title: 'Black Swan', year: 2010, genres: ['Drama', 'Thriller'], imdbRating: 8.0 },
-	{ title: 'Nocturnal Animals', year: 2016, genres: ['Drama', 'Thriller'], imdbRating: 7.5 },
-	{ title: 'Gone Girl', year: 2014, genres: ['Drama', 'Mystery', 'Thriller'], imdbRating: 8.1 }
+	{ title: 'Nocturnal Animals', year: 2016, genres: ['Drama', 'Thriller'], imdbRating: 7.5 }
 ];

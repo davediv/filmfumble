@@ -1,8 +1,3 @@
-/**
- * Content safety filter for AI-generated descriptions.
- * Blocks unsafe content and validates description quality.
- */
-
 const BLOCKLIST = new Set([
 	// Slurs and offensive terms — simplified, common examples
 	'nigger',
@@ -23,7 +18,6 @@ const BLOCKLIST = new Set([
 	'whore'
 ]);
 
-// Normalize for comparison
 function normalize(text: string): string {
 	return text.toLowerCase().replace(/[^a-z]/g, '');
 }
@@ -34,14 +28,9 @@ export interface FilterResult {
 	reason?: string;
 }
 
-/**
- * Validate and sanitize an AI-generated description.
- * Returns { safe, filtered } — if safe=false, caller should use fallback.
- */
 export function filterContent(text: string, movieTitle?: string): FilterResult {
 	let filtered = text.trim();
 
-	// Length check: truncate at last sentence boundary if > 180 chars
 	if (filtered.length > 180) {
 		const lastPeriod = filtered.lastIndexOf('.');
 		const lastQuestion = filtered.lastIndexOf('?');
@@ -54,7 +43,6 @@ export function filterContent(text: string, movieTitle?: string): FilterResult {
 		}
 	}
 
-	// Blocklist check
 	const words = filtered.split(/\s+/);
 	for (const word of words) {
 		const normalized = normalize(word);
@@ -63,12 +51,11 @@ export function filterContent(text: string, movieTitle?: string): FilterResult {
 		}
 	}
 
-	// Movie title leak check
 	if (movieTitle) {
 		const titleWords = movieTitle.toLowerCase().split(/\s+/);
+		const normalizedFiltered = normalize(filtered);
 		for (const word of titleWords) {
-			// Only check words longer than 2 chars to avoid false positives
-			if (word.length > 2 && normalize(filtered).includes(word)) {
+			if (word.length > 2 && normalizedFiltered.includes(word)) {
 				return { safe: false, filtered, reason: 'movie title detected in description' };
 			}
 		}
