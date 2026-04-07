@@ -39,24 +39,36 @@
 >
 	<div class="flex flex-col items-center gap-3 text-center">
 		{#if correct}
-			<div class="flex h-16 w-16 items-center justify-center rounded-full bg-green-500/20">
-				<Check class="size-8 text-green-500" strokeWidth={2.5} />
+			<div
+				class="flex h-14 w-14 items-center justify-center rounded-full bg-green-500/20 sm:h-16 sm:w-16"
+			>
+				<Check class="size-7 text-green-500 sm:size-8" strokeWidth={2.5} />
 			</div>
-			<h2 id="feedback-title" class="text-2xl font-bold text-green-600 dark:text-green-400">
+			<h2
+				id="feedback-title"
+				class="text-xl font-bold text-green-600 sm:text-2xl md:text-3xl dark:text-green-400"
+			>
 				Correct!
 			</h2>
 		{:else}
-			<div class="flex h-16 w-16 items-center justify-center rounded-full bg-red-500/20">
-				<X class="size-8 text-red-500" strokeWidth={2.5} />
+			<div
+				class="flex h-14 w-14 items-center justify-center rounded-full bg-red-500/20 sm:h-16 sm:w-16"
+			>
+				<X class="size-7 text-red-500 sm:size-8" strokeWidth={2.5} />
 			</div>
-			<h2 id="feedback-title" class="text-2xl font-bold text-red-600 dark:text-red-400">Wrong!</h2>
+			<h2
+				id="feedback-title"
+				class="text-xl font-bold text-red-600 sm:text-2xl md:text-3xl dark:text-red-400"
+			>
+				Wrong!
+			</h2>
 		{/if}
 
 		<div class="mt-2 flex flex-col items-center gap-1">
-			<p class="text-muted-foreground text-sm">
+			<p class="text-muted-foreground text-xs sm:text-sm">
 				{resultLabel}
 			</p>
-			<p class="text-xl font-semibold">{correctTitle}</p>
+			<p class="text-lg font-semibold sm:text-xl">{correctTitle}</p>
 		</div>
 	</div>
 

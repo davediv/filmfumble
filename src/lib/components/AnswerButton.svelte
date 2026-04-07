@@ -27,7 +27,7 @@
 <Button
 	variant="outline"
 	class={cn(
-		'min-h-12 w-full text-base font-normal transition-all duration-200',
+		'min-h-12 w-full text-sm font-normal transition-all duration-200 sm:min-h-14 sm:text-base',
 		stateClass,
 		state === 'incorrect' && 'animate-shake'
 	)}

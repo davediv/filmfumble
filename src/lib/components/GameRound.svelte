@@ -17,16 +17,20 @@
 	const revealCorrect = $derived(selectedIndex !== null);
 </script>
 
-<div class="flex min-h-screen flex-col px-4 py-6">
+<div class="flex min-h-screen flex-col px-3 py-4 sm:px-4 sm:py-6 md:px-6 lg:px-8">
 	<ScoreBar {score} round={roundNumber} />
 
-	<div class="my-8 flex flex-1 items-center justify-center">
-		<p class="text-center text-2xl leading-relaxed font-medium" role="status" aria-live="polite">
+	<div class="my-6 flex flex-1 items-center justify-center sm:my-8">
+		<p
+			class="px-2 text-center text-lg leading-relaxed font-medium sm:text-xl md:text-2xl lg:text-3xl"
+			role="status"
+			aria-live="polite"
+		>
 			{roundData.description}
 		</p>
 	</div>
 
-	<div class="grid grid-rows-4 gap-3">
+	<div class="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
 		{#each roundData.options as option, i (i)}
 			{@const isCorrect = i === correctIndex}
 			{@const isSelected = i === selectedIndex}
