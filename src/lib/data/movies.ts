@@ -1,4 +1,4 @@
-import type { Movie } from '../types/index.ts';
+import type { Movie } from '$lib/types/index';
 
 export const movies: Movie[] = [
 	// Action

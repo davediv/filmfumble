@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button';
-	import { Film, Trophy, Target, RotateCcw } from '@lucide/svelte';
+	import { Film, Hash, Target, RotateCcw } from '@lucide/svelte';
 
 	interface Props {
 		score: number;
@@ -63,10 +63,10 @@
 			<!-- Correct answers -->
 			<div class="flex flex-col items-center gap-1">
 				<div class="text-muted-foreground flex items-center gap-1.5">
-					<Trophy class="size-3.5" strokeWidth={2} />
-					<span class="text-xs font-medium tracking-wide uppercase">Correct</span>
+					<Hash class="size-3.5" strokeWidth={2} />
+					<span class="text-xs font-medium tracking-wide uppercase">Rounds</span>
 				</div>
-				<p class="text-xl font-bold sm:text-2xl">{score}</p>
+				<p class="text-xl font-bold sm:text-2xl">{roundNumber}</p>
 			</div>
 		</div>
 

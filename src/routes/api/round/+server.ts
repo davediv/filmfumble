@@ -73,17 +73,12 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 		usedFallback = true;
 
 		if (fallback.usedFallbackMovie !== movie.title) {
-			const fallbackMovieTitle = fallback.usedFallbackMovie;
-			const rePickUsed = new Set(usedIds);
-			rePickUsed.add(movie.title);
-			const fallbackMovieOptions = movies.filter((m) => !rePickUsed.has(m.title));
-			const newMovie =
-				fallbackMovieOptions.find((m) => m.title === fallbackMovieTitle) ??
-				fallbackMovieOptions[0] ??
-				pickMovie([...rePickUsed]);
-
-			if (newMovie) {
-				movie = newMovie;
+			const rePickUsed = new Set([...usedIds, movie.title]);
+			const swapTarget = movies.find(
+				(m) => m.title === fallback.usedFallbackMovie && !rePickUsed.has(m.title)
+			);
+			if (swapTarget) {
+				movie = swapTarget;
 			}
 		}
 	}

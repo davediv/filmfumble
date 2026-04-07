@@ -8,11 +8,10 @@
 		score: number;
 		roundNumber: number;
 		selectedIndex: number | null;
-		correctIndex: number | null;
 		onAnswer: (index: number) => void;
 	}
 
-	let { roundData, score, roundNumber, selectedIndex, correctIndex, onAnswer }: Props = $props();
+	let { roundData, score, roundNumber, selectedIndex, onAnswer }: Props = $props();
 
 	const revealCorrect = $derived(selectedIndex !== null);
 </script>
@@ -32,7 +31,7 @@
 
 	<div class="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
 		{#each roundData.options as option, i (i)}
-			{@const isCorrect = i === correctIndex}
+			{@const isCorrect = i === roundData.correctIndex}
 			{@const isSelected = i === selectedIndex}
 			<AnswerButton
 				title={option}

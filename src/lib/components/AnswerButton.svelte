@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button';
-	import { cn } from '$lib/utils.js';
+	import { cn } from '$lib/utils';
 
 	type ButtonState = 'default' | 'correct' | 'incorrect' | 'disabled';
 

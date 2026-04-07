@@ -1,6 +1,6 @@
-import type { Movie } from '../types/index.ts';
-import { movies } from '../data/movies.ts';
-import { shuffle, pickRandom } from '../utils.js';
+import type { Movie } from '$lib/types/index';
+import { movies } from '$lib/data/movies';
+import { shuffle, pickRandom } from '$lib/utils';
 
 export function pickMovie(usedIds: string[]): Movie | null {
 	const used = new Set(usedIds);
@@ -19,24 +19,12 @@ export function pickDecoys(correctMovie: Movie, count: number = 3): Movie[] {
 		return m.genres.some((g) => correctGenres.has(g));
 	});
 
-	const shuffledGenre = shuffle(genreMatched);
-	const result: Movie[] = [];
-
-	for (const decoy of shuffledGenre) {
-		if (result.length >= count) break;
-		if (!used.has(decoy.title)) {
-			result.push(decoy);
-			used.add(decoy.title);
-		}
-	}
+	const result = shuffle(genreMatched).slice(0, count);
+	for (const m of result) used.add(m.title);
 
 	if (result.length < count) {
-		const randomPool = shuffle(movies.filter((m) => !used.has(m.title)));
-		for (const candidate of randomPool) {
-			if (result.length >= count) break;
-			result.push(candidate);
-			used.add(candidate.title);
-		}
+		const filler = shuffle(movies.filter((m) => !used.has(m.title)));
+		result.push(...filler.slice(0, count - result.length));
 	}
 
 	return shuffle(result);

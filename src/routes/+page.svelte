@@ -67,11 +67,13 @@
 
 	async function fetchRound() {
 		errorType = null;
+		phase = 'loading';
 		try {
 			const res = await fetchRoundApi();
 
 			if (!res.ok) {
 				if (res.status === 503) {
+					roundNumber = Math.max(0, roundNumber - 1);
 					errorType = 'exhausted';
 					phase = 'ended';
 					return;
@@ -98,14 +100,14 @@
 	}
 
 	async function handleNext() {
-		roundNumber += 1;
 		if (preloadedRound && !usedMovieIds.includes(preloadedRound.movieId)) {
+			roundNumber += 1;
 			errorType = null;
 			applyRoundData(preloadedRound);
 			preloadedRound = null;
 		} else {
 			preloadedRound = null;
-			phase = 'loading';
+			roundNumber += 1;
 			await fetchRound();
 		}
 	}
@@ -127,31 +129,17 @@
 	<LoadingSkeleton />
 {:else if phase === 'error' && errorType}
 	<ErrorState {errorType} onRetry={fetchRound} onPlayAgain={handlePlayAgain} />
-{:else if phase === 'playing'}
-	<GameRound
-		{roundData}
-		{score}
-		{roundNumber}
-		{selectedIndex}
-		correctIndex={roundData.correctIndex}
-		onAnswer={handleAnswer}
-	/>
-{:else if phase === 'feedback'}
-	<GameRound
-		{roundData}
-		{score}
-		{roundNumber}
-		{selectedIndex}
-		correctIndex={roundData.correctIndex}
-		onAnswer={() => {}}
-	/>
-	<FeedbackOverlay
-		correct={selectedIndex === roundData.correctIndex}
-		correctTitle={roundData.correctIndex !== null
-			? (roundData.options[roundData.correctIndex] ?? '')
-			: ''}
-		onNext={handleNext}
-	/>
+{:else if phase === 'playing' || phase === 'feedback'}
+	<GameRound {roundData} {score} {roundNumber} {selectedIndex} onAnswer={handleAnswer} />
+	{#if phase === 'feedback'}
+		<FeedbackOverlay
+			correct={selectedIndex === roundData.correctIndex}
+			correctTitle={roundData.correctIndex !== null
+				? (roundData.options[roundData.correctIndex] ?? '')
+				: ''}
+			onNext={handleNext}
+		/>
+	{/if}
 {:else if phase === 'ended'}
 	<ScoreSummary {score} {roundNumber} onPlayAgain={handlePlayAgain} />
 {/if}

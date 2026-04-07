@@ -53,9 +53,12 @@ export function filterContent(text: string, movieTitle?: string): FilterResult {
 
 	if (movieTitle) {
 		const titleWords = movieTitle.toLowerCase().split(/\s+/);
-		const normalizedFiltered = normalize(filtered);
+		const descWords = filtered
+			.toLowerCase()
+			.split(/\s+/)
+			.map((w) => w.replace(/[^a-z]/g, ''));
 		for (const word of titleWords) {
-			if (word.length > 2 && normalizedFiltered.includes(word)) {
+			if (word.length > 3 && descWords.includes(word)) {
 				return { safe: false, filtered, reason: 'movie title detected in description' };
 			}
 		}
