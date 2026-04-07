@@ -26,9 +26,45 @@
 
 <Button
 	variant="outline"
-	class={cn('min-h-12 w-full text-base font-normal', stateClass)}
+	class={cn(
+		'min-h-12 w-full text-base font-normal transition-all duration-200',
+		stateClass,
+		state === 'incorrect' && 'animate-shake'
+	)}
 	disabled={isDisabled}
 	{onclick}
 >
 	{title}
 </Button>
+
+<style>
+	@keyframes shake {
+		0%,
+		100% {
+			transform: translateX(0);
+		}
+		10%,
+		30%,
+		50%,
+		70%,
+		90% {
+			transform: translateX(-4px);
+		}
+		20%,
+		40%,
+		60%,
+		80% {
+			transform: translateX(4px);
+		}
+	}
+
+	.animate-shake {
+		animation: shake 0.5s ease-in-out;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.animate-shake {
+			animation: none;
+		}
+	}
+</style>

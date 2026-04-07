@@ -13,6 +13,24 @@
 	const resultLabel = $derived(correct ? 'It was:' : 'The correct answer was:');
 </script>
 
+{#if correct}
+	<div class="confetti-container" aria-hidden="true">
+		{#each Array(50).keys() as i (i)}
+			<div
+				class="confetti-piece"
+				style="--delay: {Math.random() * 0.5}s; --x: {Math.random() *
+					100}vw; --rotation: {Math.random() * 360}deg; --color: {[
+					'#22c55e',
+					'#eab308',
+					'#3b82f6',
+					'#ec4899',
+					'#f97316'
+				][Math.floor(Math.random() * 5)]};"
+			></div>
+		{/each}
+	</div>
+{/if}
+
 <div
 	class="bg-background/95 fixed inset-0 z-50 flex flex-col items-center justify-center gap-6 px-6 backdrop-blur-sm"
 	role="dialog"
@@ -46,3 +64,43 @@
 		<Button size="lg" onclick={onNext}>Next Round</Button>
 	</div>
 </div>
+
+<style>
+	.confetti-container {
+		position: fixed;
+		inset: 0;
+		pointer-events: none;
+		z-index: 49;
+		overflow: hidden;
+	}
+
+	.confetti-piece {
+		position: absolute;
+		top: -10px;
+		left: var(--x);
+		width: 10px;
+		height: 10px;
+		background-color: var(--color);
+		opacity: 0.8;
+		border-radius: 2px;
+		animation: confetti-fall 1.4s ease-out var(--delay) forwards;
+		transform: rotate(var(--rotation));
+	}
+
+	@keyframes confetti-fall {
+		0% {
+			transform: translateY(0) rotate(0deg);
+			opacity: 0.8;
+		}
+		100% {
+			transform: translateY(100vh) rotate(720deg);
+			opacity: 0;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.confetti-container {
+			display: none;
+		}
+	}
+</style>
