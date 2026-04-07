@@ -7,10 +7,7 @@
 	"name": "filmfumble",
 	"main": ".svelte-kit/cloudflare/_worker.js",
 	"compatibility_date": "2026-04-06",
-	"compatibility_flags": [
-		"nodejs_compat",
-		"nodejs_als"
-	],
+	"compatibility_flags": ["nodejs_compat", "nodejs_als"],
 	"assets": {
 		"binding": "ASSETS",
 		"directory": ".svelte-kit/cloudflare"
@@ -37,6 +34,12 @@
 	 * https://developers.cloudflare.com/workers/configuration/secrets/
 	 */
 	// "vars": {  "MY_VARIABLE": "production_value" }
+	/**
+	 * Secrets (do not commit values):
+	 * - OPENROUTER_API_KEY: Required for AI description generation
+	 *   Set via: wrangler secret put OPENROUTER_API_KEY
+	 *   Local dev: add to .dev.vars (already in .gitignore)
+	 */
 	/**
 	 * Service Bindings (communicate between multiple Workers)
 	 * https://developers.cloudflare.com/workers/wrangler/configuration/#service-bindings
