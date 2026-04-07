@@ -52,7 +52,7 @@
 		color: rgba(255, 255, 255, 0.6);
 	}
 
-	.header-icon {
+	:global(.header-icon) {
 		width: 1.25rem;
 		height: 1.25rem;
 	}

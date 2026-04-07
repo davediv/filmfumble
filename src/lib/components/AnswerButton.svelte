@@ -58,12 +58,12 @@
 		}
 	}
 
-	.animate-shake {
+	:global(.animate-shake) {
 		animation: shake 0.5s ease-in-out;
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.animate-shake {
+		:global(.animate-shake) {
 			animation: none;
 		}
 	}
