@@ -1,0 +1,2 @@
+# FilmFumble
+FilmFumble is a lightweight, browser-based party game where an AI generates intentionally terrible one-line descriptions of well-known movies and players must guess which movie is being described from four multiple-choice options. Think "Explain a Film Plot Badly" meets trivia night.
