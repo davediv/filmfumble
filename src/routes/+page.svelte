@@ -3,6 +3,7 @@
 	import StartScreen from '$lib/components/StartScreen.svelte';
 	import GameRound from '$lib/components/GameRound.svelte';
 	import FeedbackOverlay from '$lib/components/FeedbackOverlay.svelte';
+	import LoadingSkeleton from '$lib/components/LoadingSkeleton.svelte';
 	import type { RoundData } from '$lib/types/index';
 
 	interface ApiResponse {
@@ -102,15 +103,10 @@
 {#if phase === 'start'}
 	<StartScreen onStart={startGame} />
 {:else if phase === 'loading'}
-	<div class="flex min-h-screen flex-col items-center justify-center gap-4">
-		<div class="flex flex-col items-center gap-3">
-			<div class="border-muted border-t-primary h-10 w-10 animate-spin rounded-full border-4"></div>
-			<p class="text-muted-foreground">The AI is conjuring something terrible...</p>
-		</div>
-		{#if errorMessage}
-			<p class="text-destructive text-sm">{errorMessage}</p>
-		{/if}
-	</div>
+	<LoadingSkeleton />
+	{#if errorMessage}
+		<p class="text-destructive fixed right-0 bottom-4 left-0 text-center text-sm">{errorMessage}</p>
+	{/if}
 {:else if phase === 'playing'}
 	<GameRound
 		{roundData}
