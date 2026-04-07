@@ -13,7 +13,7 @@
 
 	let { title, state = 'default', disabled = false, onclick }: Props = $props();
 
-	const isDisabled = disabled || state === 'disabled';
+	const isDisabled = $derived(disabled || state === 'disabled');
 
 	const stateClass = $derived(
 		state === 'correct'

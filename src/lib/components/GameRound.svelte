@@ -14,7 +14,7 @@
 
 	let { roundData, score, roundNumber, selectedIndex, correctIndex, onAnswer }: Props = $props();
 
-	const revealCorrect = selectedIndex !== null;
+	const revealCorrect = $derived(selectedIndex !== null);
 </script>
 
 <div class="flex min-h-screen flex-col px-4 py-6">
