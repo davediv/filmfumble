@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { Button } from '$lib/components/ui/button';
-	import { RefreshCw, RotateCcw, AlertTriangle } from '@lucide/svelte';
+	import { AlertTriangle } from '@lucide/svelte';
 	import type { ErrorType } from '$lib/types/index';
 
 	interface Props {
@@ -18,51 +17,46 @@
 		},
 		exhausted: {
 			title: "You've Seen Them All",
-			body: "That's impressive. You've burned through every movie in our library. Your film instincts are terrifying."
+			body: "That's impressive. You've burned through every movie in our library."
 		},
 		generic: {
 			title: 'Something Went Wrong',
-			body: "We've encountered an error our writers couldn't have prepared for. Even the outtakes are gone."
+			body: "We've encountered an error our writers couldn't have prepared for."
 		}
 	};
 
-	const icons: Record<ErrorType, typeof AlertTriangle> = {
-		network: RefreshCw,
-		exhausted: AlertTriangle,
-		generic: AlertTriangle
-	};
-
 	let { title, body } = $derived(messages[errorType]);
-	let Icon = $derived(icons[errorType]);
 </script>
 
-<div class="flex min-h-screen flex-col items-center justify-center gap-6 px-4 sm:gap-8 sm:px-6">
+<div class="flex flex-1 flex-col items-center justify-center gap-6 px-6">
 	<div class="flex flex-col items-center gap-4 text-center">
-		<div
-			class="bg-destructive/10 flex h-16 w-16 items-center justify-center rounded-full sm:h-20 sm:w-20"
-		>
-			<Icon class="text-destructive size-8 sm:size-10" />
-		</div>
+		<AlertTriangle class="size-8 text-gold/50" />
 
-		<h2 class="text-2xl font-bold sm:text-3xl md:text-4xl">{title}</h2>
-		<p class="text-muted-foreground max-w-xs text-base sm:max-w-sm sm:text-lg">{body}</p>
+		<h2 class="font-heading text-2xl tracking-wider sm:text-3xl md:text-4xl">{title}</h2>
+		<p class="max-w-xs text-sm font-light text-muted-foreground">{body}</p>
 	</div>
 
 	<div class="flex flex-col gap-3">
 		{#if errorType === 'exhausted'}
-			<Button size="lg" onclick={onPlayAgain}>
-				<RotateCcw class="mr-2 size-4" />
-				Play Again
-			</Button>
+			<button
+				class="border border-gold/50 px-8 py-2.5 font-heading text-sm tracking-[0.2em] text-gold transition-colors duration-200 outline-none hover:bg-gold hover:text-background focus-visible:ring-2 focus-visible:ring-gold/50 active:scale-[0.97]"
+				onclick={onPlayAgain}
+			>
+				PLAY AGAIN
+			</button>
 		{:else}
-			<Button size="lg" onclick={onRetry}>
-				<RefreshCw class="mr-2 size-4" />
-				Try Again
-			</Button>
-			<Button size="lg" variant="outline" onclick={onPlayAgain}>
-				<RotateCcw class="mr-2 size-4" />
-				Play Again
-			</Button>
+			<button
+				class="border border-gold/50 px-8 py-2.5 font-heading text-sm tracking-[0.2em] text-gold transition-colors duration-200 outline-none hover:bg-gold hover:text-background focus-visible:ring-2 focus-visible:ring-gold/50 active:scale-[0.97]"
+				onclick={onRetry}
+			>
+				TRY AGAIN
+			</button>
+			<button
+				class="border border-border/60 px-8 py-2.5 font-heading text-sm tracking-[0.2em] text-muted-foreground transition-colors duration-200 outline-none hover:border-gold/30 hover:text-gold focus-visible:ring-2 focus-visible:ring-gold/50 active:scale-[0.97]"
+				onclick={onPlayAgain}
+			>
+				START OVER
+			</button>
 		{/if}
 	</div>
 </div>

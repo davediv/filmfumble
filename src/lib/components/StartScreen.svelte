@@ -1,7 +1,4 @@
 <script lang="ts">
-	import { Button } from '$lib/components/ui/button';
-	import { Film } from '@lucide/svelte';
-
 	interface Props {
 		onStart: () => void;
 	}
@@ -9,28 +6,34 @@
 	let { onStart }: Props = $props();
 </script>
 
-<div
-	class="flex min-h-screen flex-col items-center justify-center gap-5 px-4 sm:gap-6 sm:px-6 md:px-8"
->
-	<div class="flex flex-col items-center gap-3 px-2 text-center">
-		<div class="bg-primary flex h-16 w-16 items-center justify-center rounded-2xl sm:h-20 sm:w-20">
-			<Film class="text-primary-foreground size-10 sm:size-12" />
-		</div>
+<div class="flex flex-1 flex-col items-center justify-center gap-8 px-6">
+	<div
+		class="flex flex-col items-center gap-6 text-center"
+		style="animation: reveal 0.5s ease-out both"
+	>
+		<div class="h-px w-12 bg-gold/30"></div>
 
-		<h1 class="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">FilmFumble</h1>
-		<p class="text-muted-foreground max-w-xs sm:max-w-sm md:max-w-md">
+		<h1 class="font-heading text-6xl tracking-wider text-gold sm:text-7xl md:text-8xl lg:text-9xl">
+			FILMFUMBLE
+		</h1>
+
+		<p
+			class="max-w-xs text-sm font-light tracking-wide text-muted-foreground sm:max-w-sm sm:text-base"
+		>
 			Guess the movie from the world's worst description
 		</p>
+
+		<div class="h-px w-12 bg-gold/30"></div>
 	</div>
 
-	<div class="flex flex-col items-center gap-4">
-		<Button size="lg" class="min-w-48 sm:min-w-56" onclick={onStart}>Start Game</Button>
-		<p class="text-muted-foreground text-xs">No account required. Just play.</p>
-	</div>
+	<div class="flex flex-col items-center gap-5" style="animation: reveal 0.5s ease-out 0.12s both">
+		<button
+			class="border border-gold/50 px-10 py-3 font-heading text-lg tracking-[0.2em] text-gold transition-colors duration-200 outline-none hover:bg-gold hover:text-background focus-visible:ring-2 focus-visible:ring-gold/50 active:scale-[0.97]"
+			onclick={onStart}
+		>
+			START GAME
+		</button>
 
-	<div class="absolute bottom-8 text-center">
-		<p class="text-muted-foreground/60 text-xs">
-			AI-generated descriptions. Guaranteed to be terrible.
-		</p>
+		<p class="text-xs tracking-wide text-muted-foreground/50">No account needed — just play</p>
 	</div>
 </div>

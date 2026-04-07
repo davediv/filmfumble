@@ -25,39 +25,36 @@
 	});
 </script>
 
-<div class="flex min-h-screen flex-col px-4 py-6">
-	<!-- ScoreBar skeleton -->
-	<div class="flex items-center justify-between px-2">
-		<div class="flex items-center gap-1.5">
-			<div class="bg-muted h-4 w-4 animate-pulse rounded"></div>
-			<div class="bg-muted h-4 w-16 animate-pulse rounded"></div>
-		</div>
-		<div class="flex items-center gap-1.5">
-			<div class="bg-muted h-4 w-4 animate-pulse rounded"></div>
-			<div class="bg-muted h-4 w-20 animate-pulse rounded"></div>
-		</div>
+<div class="flex flex-1 flex-col px-4 py-4 sm:px-5 sm:py-5">
+	<!-- Score skeleton -->
+	<div class="flex items-center justify-between px-1">
+		<div class="h-5 w-10 animate-pulse rounded-sm bg-muted/60"></div>
+		<div class="h-5 w-14 animate-pulse rounded-sm bg-muted/60"></div>
 	</div>
 
 	<!-- Description skeleton -->
 	<div class="my-8 flex flex-1 items-center justify-center">
-		<div class="flex w-full max-w-lg flex-col items-center gap-3">
-			<div class="bg-muted/50 h-8 w-3/4 animate-pulse rounded-lg"></div>
-			<div class="bg-muted/50 h-8 w-2/3 animate-pulse rounded-lg"></div>
-			<div class="bg-muted/50 h-8 w-1/2 animate-pulse rounded-lg"></div>
+		<div class="flex w-full max-w-md flex-col items-center gap-3">
+			<div class="h-5 w-3/4 animate-pulse rounded-sm bg-muted/40"></div>
+			<div class="h-5 w-2/3 animate-pulse rounded-sm bg-muted/40"></div>
 		</div>
 	</div>
 
-	<!-- Answer button placeholders -->
-	<div class="grid grid-rows-4 gap-3">
+	<!-- Answer skeleton -->
+	<div class="grid grid-cols-1 gap-2.5 sm:grid-cols-2 sm:gap-3">
 		{#each [0, 1, 2, 3] as i (i)}
-			<div class="bg-muted/40 border-muted/60 h-12 w-full animate-pulse rounded-md border"></div>
+			<div class="h-12 animate-pulse rounded-sm border border-border/30 bg-card/20 sm:h-14"></div>
 		{/each}
 	</div>
 
-	<!-- Humorous message -->
+	<!-- Spinner + message -->
 	<div class="mt-6 flex flex-col items-center gap-3">
-		<div class="border-muted border-t-primary h-8 w-8 animate-spin rounded-full border-4"></div>
-		<p class="text-muted-foreground text-center text-base italic" role="status" aria-live="polite">
+		<div class="size-6 animate-spin rounded-full border-2 border-gold/20 border-t-gold"></div>
+		<p
+			class="text-center text-sm font-light text-muted-foreground italic"
+			role="status"
+			aria-live="polite"
+		>
 			{message}
 		</p>
 	</div>

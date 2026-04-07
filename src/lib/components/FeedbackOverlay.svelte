@@ -1,7 +1,4 @@
 <script lang="ts">
-	import { Button } from '$lib/components/ui/button';
-	import { Check, X } from '@lucide/svelte';
-
 	interface Props {
 		correct: boolean;
 		correctTitle: string;
@@ -10,14 +7,12 @@
 
 	let { correct, correctTitle, onNext }: Props = $props();
 
-	const resultLabel = $derived(correct ? 'It was:' : 'The correct answer was:');
-
-	const CONFETTI_COLORS = ['#22c55e', '#eab308', '#3b82f6', '#ec4899', '#f97316'];
+	const CONFETTI_COLORS = ['#d4a017', '#eab308', '#f59e0b', '#fbbf24', '#b8860b'];
 </script>
 
 {#if correct}
 	<div class="confetti-container" aria-hidden="true">
-		{#each Array(50).keys() as i (i)}
+		{#each Array(25).keys() as i (i)}
 			<div
 				class="confetti-piece"
 				style="--delay: {Math.random() * 0.5}s; --x: {Math.random() *
@@ -30,49 +25,36 @@
 {/if}
 
 <div
-	class="bg-background/95 fixed inset-0 z-50 flex flex-col items-center justify-center gap-6 px-6 backdrop-blur-sm"
+	class="fixed inset-0 z-50 flex flex-col items-center justify-center gap-6 bg-background/95 px-6 backdrop-blur-sm"
+	style="animation: fade-in 0.2s ease-out both"
 	role="dialog"
 	aria-modal="true"
 	aria-labelledby="feedback-title"
 >
-	<div class="flex flex-col items-center gap-3 text-center">
-		{#if correct}
-			<div
-				class="flex h-14 w-14 items-center justify-center rounded-full bg-green-500/20 sm:h-16 sm:w-16"
-			>
-				<Check class="size-7 text-green-500 sm:size-8" strokeWidth={2.5} />
-			</div>
-			<h2
-				id="feedback-title"
-				class="text-xl font-bold text-green-600 sm:text-2xl md:text-3xl dark:text-green-400"
-			>
-				Correct!
-			</h2>
-		{:else}
-			<div
-				class="flex h-14 w-14 items-center justify-center rounded-full bg-red-500/20 sm:h-16 sm:w-16"
-			>
-				<X class="size-7 text-red-500 sm:size-8" strokeWidth={2.5} />
-			</div>
-			<h2
-				id="feedback-title"
-				class="text-xl font-bold text-red-600 sm:text-2xl md:text-3xl dark:text-red-400"
-			>
-				Wrong!
-			</h2>
-		{/if}
+	<div class="flex flex-col items-center gap-4 text-center">
+		<h2
+			id="feedback-title"
+			class="font-heading text-4xl tracking-wider sm:text-5xl md:text-6xl {correct
+				? 'text-correct'
+				: 'text-incorrect'}"
+		>
+			{correct ? 'CORRECT' : 'WRONG'}
+		</h2>
 
-		<div class="mt-2 flex flex-col items-center gap-1">
-			<p class="text-muted-foreground text-xs sm:text-sm">
-				{resultLabel}
+		<div class="mt-1 flex flex-col items-center gap-1">
+			<p class="text-xs tracking-[0.15em] text-muted-foreground uppercase">
+				{correct ? 'It was:' : 'The answer was:'}
 			</p>
-			<p class="text-lg font-semibold sm:text-xl">{correctTitle}</p>
+			<p class="text-lg font-medium text-gold sm:text-xl">{correctTitle}</p>
 		</div>
 	</div>
 
-	<div class="mt-4">
-		<Button size="lg" onclick={onNext}>Next Round</Button>
-	</div>
+	<button
+		class="mt-4 border border-gold/50 px-8 py-2.5 font-heading text-sm tracking-[0.2em] text-gold transition-colors duration-200 outline-none hover:bg-gold hover:text-background focus-visible:ring-2 focus-visible:ring-gold/50 active:scale-[0.97]"
+		onclick={onNext}
+	>
+		NEXT ROUND
+	</button>
 </div>
 
 <style>
@@ -80,7 +62,7 @@
 		position: fixed;
 		inset: 0;
 		pointer-events: none;
-		z-index: 49;
+		z-index: 51;
 		overflow: hidden;
 	}
 
@@ -88,24 +70,12 @@
 		position: absolute;
 		top: -10px;
 		left: var(--x);
-		width: 10px;
-		height: 10px;
+		width: 8px;
+		height: 8px;
 		background-color: var(--color);
-		opacity: 0.8;
-		border-radius: 2px;
+		opacity: 0.9;
 		animation: confetti-fall 1.4s ease-out var(--delay) forwards;
 		transform: rotate(var(--rotation));
-	}
-
-	@keyframes confetti-fall {
-		0% {
-			transform: translateY(0) rotate(0deg);
-			opacity: 0.8;
-		}
-		100% {
-			transform: translateY(100vh) rotate(720deg);
-			opacity: 0;
-		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {

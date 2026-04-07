@@ -16,25 +16,30 @@
 	const revealCorrect = $derived(selectedIndex !== null);
 </script>
 
-<div class="flex min-h-screen flex-col px-3 py-4 sm:px-4 sm:py-6 md:px-6 lg:px-8">
+<div class="flex flex-1 flex-col px-4 py-4 sm:px-5 sm:py-5">
 	<ScoreBar {score} round={roundNumber} />
 
 	<div class="my-6 flex flex-1 items-center justify-center sm:my-8">
-		<p
-			class="px-2 text-center text-lg leading-relaxed font-medium sm:text-xl md:text-2xl lg:text-3xl"
-			role="status"
-			aria-live="polite"
-		>
-			{roundData.description}
-		</p>
+		<div class="max-w-2xl px-4">
+			<div class="mx-auto mb-4 h-px w-8 bg-gold/20"></div>
+			<p
+				class="text-center text-lg leading-relaxed font-light tracking-wide sm:text-xl md:text-2xl"
+				role="status"
+				aria-live="polite"
+			>
+				{roundData.description}
+			</p>
+			<div class="mx-auto mt-4 h-px w-8 bg-gold/20"></div>
+		</div>
 	</div>
 
-	<div class="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
+	<div class="grid grid-cols-1 gap-2.5 sm:grid-cols-2 sm:gap-3">
 		{#each roundData.options as option, i (i)}
 			{@const isCorrect = i === roundData.correctIndex}
 			{@const isSelected = i === selectedIndex}
 			<AnswerButton
 				title={option}
+				index={i}
 				state={revealCorrect
 					? isCorrect
 						? 'correct'

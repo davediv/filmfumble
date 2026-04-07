@@ -1,7 +1,4 @@
 <script lang="ts">
-	import { Button } from '$lib/components/ui/button';
-	import { Film, Hash, Target, RotateCcw } from '@lucide/svelte';
-
 	interface Props {
 		score: number;
 		roundNumber: number;
@@ -22,66 +19,48 @@
 </script>
 
 <div
-	class="bg-background/95 fixed inset-0 z-50 flex flex-col items-center justify-center gap-6 px-6 backdrop-blur-sm"
-	role="dialog"
-	aria-modal="true"
-	aria-labelledby="summary-title"
+	class="flex flex-1 flex-col items-center justify-center gap-6 px-6"
+	style="animation: reveal 0.5s ease-out both"
 >
 	<div class="flex flex-col items-center gap-5 text-center">
-		<!-- Icon -->
-		<div class="bg-primary flex h-16 w-16 items-center justify-center rounded-2xl sm:h-20 sm:w-20">
-			<Film class="text-primary-foreground size-10 sm:size-12" />
-		</div>
+		<div class="h-px w-12 bg-gold/30"></div>
 
-		<!-- Title -->
-		<h2 id="summary-title" class="text-2xl font-bold tracking-tight sm:text-3xl md:text-4xl">
-			Game Over!
+		<h2 class="font-heading text-4xl tracking-wider text-gold sm:text-5xl md:text-6xl">
+			GAME OVER
 		</h2>
 
-		<!-- Score display -->
 		<div class="flex flex-col items-center gap-1">
-			<p class="text-muted-foreground text-sm">You scored</p>
-			<p class="text-5xl font-bold sm:text-6xl md:text-7xl">
-				{score}<span class="text-muted-foreground text-2xl sm:text-3xl">/{roundNumber}</span>
+			<p class="text-xs tracking-[0.15em] text-muted-foreground uppercase">Final Score</p>
+			<p class="font-heading text-6xl text-foreground sm:text-7xl">
+				{score}<span class="text-3xl text-muted-foreground">/{roundNumber}</span>
 			</p>
 		</div>
 
-		<!-- Stats row -->
-		<div class="bg-muted/50 flex items-center gap-6 rounded-xl px-5 py-3 sm:gap-8">
-			<!-- Accuracy -->
-			<div class="flex flex-col items-center gap-1">
-				<div class="text-muted-foreground flex items-center gap-1.5">
-					<Target class="size-3.5" strokeWidth={2} />
-					<span class="text-xs font-medium tracking-wide uppercase">Accuracy</span>
-				</div>
-				<p class="text-xl font-bold sm:text-2xl">{accuracy}%</p>
+		<div class="flex items-center gap-6 border-y border-border/40 py-3">
+			<div class="flex flex-col items-center gap-0.5">
+				<span class="text-[10px] tracking-[0.15em] text-muted-foreground uppercase">
+					Accuracy
+				</span>
+				<span class="font-heading text-2xl text-gold">{accuracy}%</span>
 			</div>
-
-			<!-- Divider -->
-			<div class="bg-border h-8 w-px"></div>
-
-			<!-- Correct answers -->
-			<div class="flex flex-col items-center gap-1">
-				<div class="text-muted-foreground flex items-center gap-1.5">
-					<Hash class="size-3.5" strokeWidth={2} />
-					<span class="text-xs font-medium tracking-wide uppercase">Rounds</span>
-				</div>
-				<p class="text-xl font-bold sm:text-2xl">{roundNumber}</p>
+			<div class="h-6 w-px bg-border/40"></div>
+			<div class="flex flex-col items-center gap-0.5">
+				<span class="text-[10px] tracking-[0.15em] text-muted-foreground uppercase"> Rounds </span>
+				<span class="font-heading text-2xl text-foreground">{roundNumber}</span>
 			</div>
 		</div>
 
-		<!-- Performance message -->
-		<p class="text-muted-foreground px-4 text-sm sm:text-base">
-			{performanceMessage}
-		</p>
+		<p class="max-w-xs text-sm font-light text-muted-foreground">{performanceMessage}</p>
 
-		<!-- Play Again -->
-		<div class="mt-2 flex flex-col items-center gap-3">
-			<Button size="lg" class="min-w-48 gap-2 sm:min-w-56" onclick={onPlayAgain}>
-				<RotateCcw class="size-4" />
-				Play Again
-			</Button>
-			<p class="text-muted-foreground/70 text-xs">No account required. Just play.</p>
-		</div>
+		<div class="h-px w-12 bg-gold/30"></div>
+
+		<button
+			class="border border-gold/50 px-8 py-2.5 font-heading text-sm tracking-[0.2em] text-gold transition-colors duration-200 outline-none hover:bg-gold hover:text-background focus-visible:ring-2 focus-visible:ring-gold/50 active:scale-[0.97]"
+			onclick={onPlayAgain}
+		>
+			PLAY AGAIN
+		</button>
+
+		<p class="text-xs tracking-wide text-muted-foreground/40">No account needed — just play</p>
 	</div>
 </div>
