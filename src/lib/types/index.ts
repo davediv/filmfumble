@@ -19,6 +19,8 @@ export interface RoundResult {
 
 export type GamePhase = 'idle' | 'playing' | 'answering' | 'feedback' | 'ended';
 
+export type ErrorType = 'network' | 'exhausted' | 'generic';
+
 export interface GameState {
 	score: number;
 	roundNumber: number;

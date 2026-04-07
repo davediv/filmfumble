@@ -4,7 +4,8 @@
 	import GameRound from '$lib/components/GameRound.svelte';
 	import FeedbackOverlay from '$lib/components/FeedbackOverlay.svelte';
 	import LoadingSkeleton from '$lib/components/LoadingSkeleton.svelte';
-	import type { RoundData } from '$lib/types/index';
+	import type { RoundData, ErrorType } from '$lib/types/index';
+	import ErrorState from '$lib/components/ErrorState.svelte';
 
 	interface ApiResponse {
 		description: string;
@@ -15,7 +16,7 @@
 		error?: string;
 	}
 
-	type Phase = 'start' | 'loading' | 'playing' | 'feedback' | 'ended';
+	type Phase = 'start' | 'loading' | 'playing' | 'feedback' | 'ended' | 'error';
 
 	let phase = $state<Phase>('start');
 	let score = $state(0);
@@ -25,7 +26,7 @@
 	let correctIndex = $state<number | null>(null);
 	let currentDescription = $state('');
 	let currentOptions = $state<string[]>([]);
-	let errorMessage = $state('');
+	let errorType = $state<ErrorType | null>(null);
 
 	async function startGame() {
 		phase = 'loading';
@@ -36,7 +37,7 @@
 	}
 
 	async function fetchRound() {
-		errorMessage = '';
+		errorType = null;
 		try {
 			const res = await fetch('/api/round', {
 				method: 'POST',
@@ -46,8 +47,7 @@
 
 			if (!res.ok) {
 				if (res.status === 503) {
-					const data = (await res.json()) as { error?: string };
-					errorMessage = data.error ?? 'All movies used!';
+					errorType = 'exhausted';
 					phase = 'ended';
 					return;
 				}
@@ -61,10 +61,9 @@
 			usedMovieIds = [...usedMovieIds, data.movieId];
 			phase = 'playing';
 			selectedIndex = null;
-		} catch (err) {
-			console.error('[page] fetchRound error:', err);
-			errorMessage = 'The AI took a coffee break. Try again.';
-			phase = 'start';
+		} catch {
+			errorType = 'network';
+			phase = 'error';
 		}
 	}
 
@@ -85,7 +84,10 @@
 
 	function handlePlayAgain() {
 		phase = 'start';
-		errorMessage = '';
+		errorType = null;
+		score = 0;
+		roundNumber = 0;
+		usedMovieIds = [];
 	}
 
 	const roundData = $derived<RoundData>({
@@ -104,9 +106,8 @@
 	<StartScreen onStart={startGame} />
 {:else if phase === 'loading'}
 	<LoadingSkeleton />
-	{#if errorMessage}
-		<p class="text-destructive fixed right-0 bottom-4 left-0 text-center text-sm">{errorMessage}</p>
-	{/if}
+{:else if phase === 'error' && errorType}
+	<ErrorState {errorType} onRetry={fetchRound} onPlayAgain={handlePlayAgain} />
 {:else if phase === 'playing'}
 	<GameRound
 		{roundData}
