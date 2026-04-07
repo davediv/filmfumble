@@ -76,10 +76,10 @@
 		phase = 'feedback';
 	}
 
-	function handleNext() {
+	async function handleNext() {
 		roundNumber += 1;
 		phase = 'loading';
-		fetchRound();
+		await fetchRound();
 	}
 
 	function handlePlayAgain() {
