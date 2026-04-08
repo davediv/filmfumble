@@ -3,12 +3,17 @@ export interface Movie {
 	year: number;
 	genres: string[];
 	imdbRating: number;
-	posterUrl?: string;
+	posterPath?: string;
+}
+
+export interface OptionItem {
+	title: string;
+	posterPath: string | null;
 }
 
 export interface ApiResponse {
 	description: string;
-	options: string[];
+	options: OptionItem[];
 	correctIndex: number;
 	movieId: string;
 	usedFallback: boolean;
@@ -17,7 +22,7 @@ export interface ApiResponse {
 
 export interface RoundData {
 	description: string;
-	options: string[];
+	options: OptionItem[];
 	correctIndex: number | null;
 }
 

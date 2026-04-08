@@ -87,7 +87,7 @@ interface FetchedMovie {
 	year: number;
 	genres: string[];
 	imdbRating: number;
-	posterUrl: string | null;
+	posterPath: string | null;
 }
 
 async function fetchMoviesFromEndpoint(
@@ -117,7 +117,7 @@ async function fetchMoviesFromEndpoint(
 				year,
 				genres,
 				imdbRating: Math.round(m.vote_average * 10) / 10,
-				posterUrl: m.poster_path ? `https://image.tmdb.org/t/p/w500${m.poster_path}` : null
+				posterPath: m.poster_path ?? null
 			});
 		}
 
@@ -175,7 +175,7 @@ function generateMoviesTs(movies: FetchedMovie[]): string {
 
 		lines.push(`\t// ${genre}`);
 		for (const m of genreMovies) {
-			const poster = m.posterUrl ? `, posterUrl: '${m.posterUrl}'` : '';
+			const poster = m.posterPath ? `, posterPath: '${m.posterPath}'` : '';
 			lines.push(
 				`\t{ title: '${escapeString(m.title)}', year: ${m.year}, genres: [${m.genres.map((g) => `'${g}'`).join(', ')}], imdbRating: ${m.imdbRating}${poster} },`
 			);
@@ -188,7 +188,7 @@ function generateMoviesTs(movies: FetchedMovie[]): string {
 	if (otherMovies.length > 0) {
 		lines.push('\t// Other');
 		for (const m of otherMovies) {
-			const poster = m.posterUrl ? `, posterUrl: '${m.posterUrl}'` : '';
+			const poster = m.posterPath ? `, posterPath: '${m.posterPath}'` : '';
 			lines.push(
 				`\t{ title: '${escapeString(m.title)}', year: ${m.year}, genres: [${m.genres.map((g) => `'${g}'`).join(', ')}], imdbRating: ${m.imdbRating}${poster} },`
 			);

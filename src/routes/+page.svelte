@@ -135,7 +135,7 @@
 		<FeedbackOverlay
 			correct={selectedIndex === roundData.correctIndex}
 			correctTitle={roundData.correctIndex !== null
-				? (roundData.options[roundData.correctIndex] ?? '')
+				? (roundData.options[roundData.correctIndex]?.title ?? '')
 				: ''}
 			onNext={handleNext}
 		/>

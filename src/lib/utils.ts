@@ -22,3 +22,8 @@ export function shuffle<T>(arr: T[]): T[] {
 export function pickRandom<T>(arr: T[]): T {
 	return arr[Math.floor(Math.random() * arr.length)];
 }
+
+/** Build a TMDB image URL from a poster path. */
+export function posterUrl(path: string, size: string = 'w92'): string {
+	return `https://image.tmdb.org/t/p/${size}${path}`;
+}

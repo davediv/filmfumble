@@ -1,504 +1,200 @@
-import type { Movie } from '$lib/types/index';
+import type { Movie } from '../types/index.ts';
 
 export const movies: Movie[] = [
 	// Action
-	{ title: 'Die Hard', year: 1988, genres: ['Action', 'Thriller'], imdbRating: 8.2 },
-	{ title: 'The Dark Knight', year: 2008, genres: ['Action', 'Crime', 'Drama'], imdbRating: 9.0 },
-	{
-		title: 'Mad Max: Fury Road',
-		year: 2015,
-		genres: ['Action', 'Adventure', 'Sci-Fi'],
-		imdbRating: 8.1
-	},
-	{ title: 'Gladiator', year: 2000, genres: ['Action', 'Adventure', 'Drama'], imdbRating: 8.5 },
-	{ title: 'The Bourne Identity', year: 2002, genres: ['Action', 'Thriller'], imdbRating: 7.9 },
-	{ title: 'John Wick', year: 2014, genres: ['Action', 'Crime', 'Thriller'], imdbRating: 7.4 },
-	{
-		title: 'Casino Royale',
-		year: 2006,
-		genres: ['Action', 'Adventure', 'Thriller'],
-		imdbRating: 8.0
-	},
-	{ title: 'The Matrix', year: 1999, genres: ['Action', 'Sci-Fi'], imdbRating: 8.7 },
-	{ title: 'Inception', year: 2010, genres: ['Action', 'Adventure', 'Sci-Fi'], imdbRating: 8.8 },
-	{ title: 'Interstellar', year: 2014, genres: ['Adventure', 'Drama', 'Sci-Fi'], imdbRating: 8.6 },
-	{ title: 'The Avengers', year: 2012, genres: ['Action', 'Sci-Fi'], imdbRating: 8.0 },
-	{
-		title: 'Guardians of the Galaxy',
-		year: 2014,
-		genres: ['Action', 'Adventure', 'Sci-Fi'],
-		imdbRating: 8.0
-	},
-	{
-		title: 'Spider-Man: Into the Spider-Verse',
-		year: 2018,
-		genres: ['Action', 'Adventure', 'Animation'],
-		imdbRating: 8.4
-	},
-	{
-		title: 'Black Panther',
-		year: 2018,
-		genres: ['Action', 'Adventure', 'Sci-Fi'],
-		imdbRating: 7.3
-	},
-	{
-		title: 'Wonder Woman',
-		year: 2017,
-		genres: ['Action', 'Adventure', 'Fantasy'],
-		imdbRating: 7.4
-	},
-	{
-		title: 'Captain America: The Winter Soldier',
-		year: 2014,
-		genres: ['Action', 'Adventure', 'Sci-Fi'],
-		imdbRating: 7.7
-	},
-	{ title: 'The Raid 2', year: 2014, genres: ['Action', 'Crime', 'Thriller'], imdbRating: 7.6 },
-	{ title: 'Edge of Tomorrow', year: 2014, genres: ['Action', 'Sci-Fi'], imdbRating: 7.9 },
-	{
-		title: 'Kingsman: The Secret Service',
-		year: 2014,
-		genres: ['Action', 'Adventure', 'Comedy'],
-		imdbRating: 7.0
-	},
-	{
-		title: 'Mission: Impossible - Fallout',
-		year: 2018,
-		genres: ['Action', 'Adventure', 'Thriller'],
-		imdbRating: 7.7
-	},
+	{ title: 'The Dark Knight', year: 2008, genres: ['Action', 'Crime', 'Thriller'], imdbRating: 8.5, posterPath: '/qJ2tW6WMUDux911r6m7haRef0WH.jpg' },
+	{ title: 'Seven Samurai', year: 1954, genres: ['Action', 'Drama'], imdbRating: 8.5, posterPath: '/lOMGc8bnSwQhS4XyE1S99uH8NXf.jpg' },
+	{ title: 'Harakiri', year: 1962, genres: ['Action', 'Drama', 'History'], imdbRating: 8.4, posterPath: '/3nPwMd3KviJWaHzG9fZCqlwWMas.jpg' },
+	{ title: 'Inception', year: 2010, genres: ['Action', 'Science Fiction', 'Adventure'], imdbRating: 8.4, posterPath: '/xlaY2zyzMfkhk0HSC5VUwzoZPU1.jpg' },
+	{ title: 'The Matrix', year: 1999, genres: ['Action', 'Science Fiction'], imdbRating: 8.2, posterPath: '/aOIuZAjPaRIE6CMzbazvcHuHXDc.jpg' },
+	{ title: 'Counterattack', year: 2025, genres: ['Action', 'Adventure', 'Thriller'], imdbRating: 8.2, posterPath: '/38I76hGcFY6xB47pjm7pZwkfuAF.jpg' },
+	{ title: 'Gladiator', year: 2000, genres: ['Action', 'Drama', 'Adventure'], imdbRating: 8.2, posterPath: '/wN2xWp1eIwCKOD0BHTcErTBv1Uq.jpg' },
+	{ title: 'Spider-Man: No Way Home', year: 2021, genres: ['Action', 'Adventure', 'Science Fiction'], imdbRating: 7.9, posterPath: '/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg' },
+	{ title: 'Mardaani 3', year: 2026, genres: ['Action', 'Crime', 'Thriller'], imdbRating: 7.8, posterPath: '/dHxLBtHw4InwsVumnthupZYz6NM.jpg' },
+	{ title: 'Vanaveera', year: 2026, genres: ['Action', 'Drama'], imdbRating: 7.8, posterPath: '/oBYExKI8E3bTzQjPkofhpV2EJon.jpg' },
+	{ title: 'Predator: Badlands', year: 2025, genres: ['Action', 'Science Fiction', 'Adventure'], imdbRating: 7.7, posterPath: '/erTRAi241eYF4K8KoGGOI8kFPox.jpg' },
+	{ title: 'Dhurandhar: The Revenge', year: 2026, genres: ['Action', 'Crime', 'Thriller'], imdbRating: 7.7, posterPath: '/ov8vrRLZGoXHpYjSY9Vpv1tHJX7.jpg' },
+	{ title: 'Avatar: The Way of Water', year: 2022, genres: ['Action', 'Adventure', 'Science Fiction'], imdbRating: 7.6, posterPath: '/t6HIqrRAclMCA60NsSmeqe9RmNV.jpg' },
+	{ title: 'War Machine', year: 2026, genres: ['Action', 'Science Fiction', 'Thriller'], imdbRating: 7.3, posterPath: '/tlPgDzwIE7VYYIIAGCTUOnN4wI1.jpg' },
+	{ title: 'The Shadow\'s Edge', year: 2025, genres: ['Action', 'Crime', 'Drama', 'Thriller'], imdbRating: 7.2, posterPath: '/gPbBp0A3NXxc4lHT29TzT0YjTs6.jpg' },
+	{ title: 'Hunting Season', year: 2025, genres: ['Action', 'Drama', 'Thriller'], imdbRating: 7, posterPath: '/cbryTyaWdqrKpQCw6K7zm2jrB5v.jpg' },
+	{ title: 'The Rip', year: 2026, genres: ['Action', 'Thriller', 'Crime'], imdbRating: 7, posterPath: '/eZo31Dhl5BQ6GfbMNf3oU0tUvPZ.jpg' },
+	{ title: 'Dhurandhar', year: 2025, genres: ['Action', 'Crime', 'Thriller'], imdbRating: 7, posterPath: '/snBOuXDdhmTvlzMUvP9Em3Pp1u1.jpg' },
+	{ title: 'The Wrecking Crew', year: 2026, genres: ['Action', 'Comedy', 'Crime', 'Mystery'], imdbRating: 6.9, posterPath: '/gbVwHl4YPSq6BcC92TQpe7qUTh6.jpg' },
+	{ title: 'Hellfire', year: 2026, genres: ['Action', 'Thriller'], imdbRating: 6.9, posterPath: '/tQti9QTf13MfzNpXguijgNh7ojE.jpg' },
+	{ title: 'Shelter', year: 2026, genres: ['Action', 'Crime', 'Thriller'], imdbRating: 6.8, posterPath: '/buPFnHZ3xQy6vZEHxbHgL1Pc6CR.jpg' },
+	{ title: 'The Running Man', year: 2025, genres: ['Action', 'Thriller', 'Science Fiction'], imdbRating: 6.8, posterPath: '/dKL78O9zxczVgjtNcQ9UkbYLzqX.jpg' },
+	{ title: 'Oscar Shaw', year: 2026, genres: ['Action', 'Crime', 'Thriller', 'Western'], imdbRating: 6.5, posterPath: '/tsE3nySukwrfUjouz8vzvKTcXNC.jpg' },
+	{ title: 'The Internship', year: 2026, genres: ['Action'], imdbRating: 6.2, posterPath: '/fYqSOkix4rbDiZW0ACNnvZCpT6X.jpg' },
+	{ title: 'Bāhubali: The Epic', year: 2025, genres: ['Action', 'Drama'], imdbRating: 6, posterPath: '/z9YIo2qscyaXYgRqIdRJtND3bw8.jpg' },
 
 	// Adventure
-	{ title: 'Jurassic Park', year: 1993, genres: ['Adventure', 'Sci-Fi'], imdbRating: 8.1 },
-	{
-		title: 'Indiana Jones and the Last Crusade',
-		year: 1989,
-		genres: ['Adventure', 'Action'],
-		imdbRating: 8.3
-	},
-	{ title: 'The Goonies', year: 1985, genres: ['Adventure', 'Comedy', 'Family'], imdbRating: 7.9 },
-	{
-		title: 'Back to the Future',
-		year: 1985,
-		genres: ['Adventure', 'Comedy', 'Sci-Fi'],
-		imdbRating: 8.5
-	},
-	{ title: 'Up', year: 2009, genres: ['Adventure', 'Animation', 'Comedy'], imdbRating: 8.3 },
-	{
-		title: 'The Princess Bride',
-		year: 1987,
-		genres: ['Adventure', 'Comedy', 'Fantasy'],
-		imdbRating: 8.0
-	},
-	{ title: "Pan's Labyrinth", year: 2006, genres: ['Drama', 'Fantasy', 'War'], imdbRating: 8.2 },
-	{ title: 'Stardust', year: 2007, genres: ['Adventure', 'Fantasy', 'Romance'], imdbRating: 7.6 },
-	{
-		title: 'How to Train Your Dragon',
-		year: 2010,
-		genres: ['Adventure', 'Animation', 'Family'],
-		imdbRating: 8.1
-	},
-	{ title: 'Moana', year: 2016, genres: ['Adventure', 'Animation', 'Comedy'], imdbRating: 7.6 },
-	{ title: 'Coco', year: 2017, genres: ['Adventure', 'Animation', 'Drama'], imdbRating: 8.4 },
-	{
-		title: 'Ratatouille',
-		year: 2007,
-		genres: ['Adventure', 'Animation', 'Comedy'],
-		imdbRating: 8.1
-	},
-	{ title: 'Soul', year: 2020, genres: ['Adventure', 'Animation', 'Comedy'], imdbRating: 8.0 },
-	{
-		title: 'The Secret Life of Walter Mitty',
-		year: 2013,
-		genres: ['Adventure', 'Comedy', 'Drama'],
-		imdbRating: 7.3
-	},
-	{ title: 'Wild', year: 2014, genres: ['Adventure', 'Drama'], imdbRating: 7.1 },
-	{
-		title: 'The Grand Budapest Hotel',
-		year: 2014,
-		genres: ['Adventure', 'Comedy', 'Crime'],
-		imdbRating: 8.1
-	},
-	{
-		title: 'Pirates of the Caribbean: The Curse of the Black Pearl',
-		year: 2003,
-		genres: ['Adventure', 'Fantasy', 'Action'],
-		imdbRating: 8.0
-	},
-	{
-		title: 'Fantastic Beasts and Where to Find Them',
-		year: 2016,
-		genres: ['Adventure', 'Family', 'Fantasy'],
-		imdbRating: 7.2
-	},
-	{
-		title: 'National Treasure',
-		year: 2004,
-		genres: ['Adventure', 'Action', 'Mystery'],
-		imdbRating: 6.5
-	},
-	{
-		title: 'The Jungle Book',
-		year: 2016,
-		genres: ['Adventure', 'Family', 'Fantasy'],
-		imdbRating: 7.4
-	},
+	{ title: 'The Lord of the Rings: The Return of the King', year: 2003, genres: ['Adventure', 'Fantasy', 'Action'], imdbRating: 8.5, posterPath: '/rCzpDGLbOoPwLjy3OAm5NUPOTrC.jpg' },
+	{ title: 'Interstellar', year: 2014, genres: ['Adventure', 'Drama', 'Science Fiction'], imdbRating: 8.5, posterPath: '/yQvGrMoipbRoddT0ZR8tPoR7NfX.jpg' },
+	{ title: 'The Lord of the Rings: The Fellowship of the Ring', year: 2001, genres: ['Adventure', 'Fantasy', 'Action'], imdbRating: 8.4, posterPath: '/6oom5QYQ2yQTMJIbnvbkBL9cHo6.jpg' },
+	{ title: 'The Lord of the Rings: The Two Towers', year: 2002, genres: ['Adventure', 'Fantasy', 'Action'], imdbRating: 8.4, posterPath: '/5VTN0pR8gcqV3EPUHHfMGnJYN9L.jpg' },
+	{ title: 'The Empire Strikes Back', year: 1980, genres: ['Adventure', 'Action', 'Science Fiction'], imdbRating: 8.4, posterPath: '/nNAeTmF4CtdSgMDplXTDPOpYzsX.jpg' },
+	{ title: 'Back to the Future', year: 1985, genres: ['Adventure', 'Comedy', 'Science Fiction'], imdbRating: 8.3, posterPath: '/vN5B5WgYscRGcQpVhHl6p9DDTP0.jpg' },
+	{ title: 'Princess Mononoke', year: 1997, genres: ['Adventure', 'Fantasy', 'Animation'], imdbRating: 8.3, posterPath: '/cMYCDADoLKLbB83g4WnJegaZimC.jpg' },
+	{ title: 'Avengers: Endgame', year: 2019, genres: ['Adventure', 'Science Fiction', 'Action'], imdbRating: 8.2, posterPath: '/ulzhLuWrPK07P1YkdWQLZnQh1JL.jpg' },
+	{ title: 'Avengers: Infinity War', year: 2018, genres: ['Adventure', 'Action', 'Science Fiction'], imdbRating: 8.2, posterPath: '/7WsyChQLEftFiDOVTGkv3hFpyyt.jpg' },
+	{ title: 'Starbright', year: 2026, genres: ['Adventure', 'Action'], imdbRating: 7.3, posterPath: '/m1Zl07DNYeSyNcz9hf8hDsS2oB5.jpg' },
+	{ title: 'Star Wars: The Last Jedi', year: 2017, genres: ['Adventure', 'Action', 'Science Fiction'], imdbRating: 6.8, posterPath: '/kOVEVeg59E0wsnXmF9nrh6OmWII.jpg' },
+	{ title: 'Greenland 2: Migration', year: 2026, genres: ['Adventure', 'Thriller', 'Science Fiction'], imdbRating: 6.5, posterPath: '/z2tqCJLsw6uEJ8nJV8BsQXGa3dr.jpg' },
 
 	// Animation
-	{
-		title: 'Spirited Away',
-		year: 2001,
-		genres: ['Animation', 'Adventure', 'Family'],
-		imdbRating: 8.6
-	},
-	{ title: 'Toy Story', year: 1995, genres: ['Animation', 'Adventure', 'Comedy'], imdbRating: 8.3 },
-	{
-		title: 'Toy Story 3',
-		year: 2010,
-		genres: ['Animation', 'Adventure', 'Comedy'],
-		imdbRating: 8.3
-	},
-	{
-		title: 'Inside Out',
-		year: 2015,
-		genres: ['Animation', 'Adventure', 'Comedy'],
-		imdbRating: 8.1
-	},
-	{ title: 'WALL-E', year: 2008, genres: ['Animation', 'Adventure', 'Family'], imdbRating: 8.3 },
-	{
-		title: 'The Incredibles',
-		year: 2004,
-		genres: ['Animation', 'Adventure', 'Action'],
-		imdbRating: 8.0
-	},
-	{
-		title: 'Finding Nemo',
-		year: 2003,
-		genres: ['Animation', 'Adventure', 'Comedy'],
-		imdbRating: 8.2
-	},
-	{ title: 'Shrek', year: 2001, genres: ['Animation', 'Adventure', 'Comedy'], imdbRating: 8.1 },
-	{ title: 'Shrek 2', year: 2004, genres: ['Animation', 'Adventure', 'Comedy'], imdbRating: 7.2 },
-	{
-		title: 'Kung Fu Panda',
-		year: 2008,
-		genres: ['Animation', 'Adventure', 'Action'],
-		imdbRating: 7.6
-	},
-	{ title: 'Ice Age', year: 2002, genres: ['Animation', 'Adventure', 'Comedy'], imdbRating: 7.5 },
-	{
-		title: 'Despicable Me',
-		year: 2010,
-		genres: ['Animation', 'Adventure', 'Comedy'],
-		imdbRating: 7.6
-	},
-	{ title: 'Frozen', year: 2013, genres: ['Animation', 'Adventure', 'Comedy'], imdbRating: 7.4 },
-	{ title: 'Zootopia', year: 2016, genres: ['Animation', 'Adventure', 'Comedy'], imdbRating: 8.0 },
-	{
-		title: 'Big Hero 6',
-		year: 2014,
-		genres: ['Animation', 'Adventure', 'Comedy'],
-		imdbRating: 7.8
-	},
-	{
-		title: 'The Lion King',
-		year: 1994,
-		genres: ['Animation', 'Adventure', 'Drama'],
-		imdbRating: 8.5
-	},
-	{
-		title: 'Beauty and the Beast',
-		year: 1991,
-		genres: ['Animation', 'Family', 'Fantasy'],
-		imdbRating: 8.0
-	},
-	{ title: 'Aladdin', year: 1992, genres: ['Animation', 'Adventure', 'Family'], imdbRating: 8.0 },
-	{ title: 'Mulan', year: 1998, genres: ['Animation', 'Adventure', 'Family'], imdbRating: 7.6 },
-	{
-		title: 'The Nightmare Before Christmas',
-		year: 1993,
-		genres: ['Animation', 'Family', 'Fantasy'],
-		imdbRating: 8.0
-	},
+	{ title: 'Spirited Away', year: 2001, genres: ['Animation', 'Family', 'Fantasy'], imdbRating: 8.5, posterPath: '/39wmItIWsg5sZMyRUHLkWBcuVCM.jpg' },
+	{ title: 'Your Name.', year: 2016, genres: ['Animation', 'Romance', 'Drama'], imdbRating: 8.5, posterPath: '/q719jXXEzOoYaps6babgKnONONX.jpg' },
+	{ title: 'Grave of the Fireflies', year: 1988, genres: ['Animation', 'Drama', 'War'], imdbRating: 8.4, posterPath: '/k9tv1rXZbOhH7eiCk378x61kNQ1.jpg' },
+	{ title: 'Spider-Man: Into the Spider-Verse', year: 2018, genres: ['Animation', 'Action', 'Adventure', 'Science Fiction'], imdbRating: 8.4, posterPath: '/iiZZdoQBEYBv6id8su7ImL0oCbD.jpg' },
+	{ title: 'A Silent Voice: The Movie', year: 2016, genres: ['Animation', 'Drama', 'Romance'], imdbRating: 8.4, posterPath: '/tuFaWiqX0TXoWu7DGNcmX3UW7sT.jpg' },
+	{ title: 'Spider-Man: Across the Spider-Verse', year: 2023, genres: ['Animation', 'Action', 'Adventure', 'Science Fiction'], imdbRating: 8.3, posterPath: '/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg' },
+	{ title: 'Chainsaw Man - The Movie: Reze Arc', year: 2025, genres: ['Animation', 'Action', 'Romance', 'Fantasy'], imdbRating: 8.3, posterPath: '/pHyxb2RV5wLlboAwm9ZJ9qTVEDw.jpg' },
+	{ title: 'The Quintessential Quintuplets Movie', year: 2022, genres: ['Animation', 'Comedy', 'Romance'], imdbRating: 8.3, posterPath: '/sg7klpt1xwK1IJirBI9EHaqQwJ5.jpg' },
+	{ title: 'Violet Evergarden: The Movie', year: 2020, genres: ['Animation', 'Drama', 'Fantasy', 'Romance'], imdbRating: 8.3, posterPath: '/bajajkoErDst0JxdFyBkABiF9rW.jpg' },
+	{ title: 'Perfect Blue', year: 1998, genres: ['Animation', 'Thriller'], imdbRating: 8.3, posterPath: '/6WTiOCfDPP8XV4jqfloiVWf7KHq.jpg' },
+	{ title: 'The Legend of Hei', year: 2019, genres: ['Animation', 'Fantasy', 'Action'], imdbRating: 8.3, posterPath: '/4jfbKKLpqts3i2h2obkrONcjTg1.jpg' },
+	{ title: 'Once Upon a Studio', year: 2023, genres: ['Animation', 'Family', 'Fantasy', 'Drama', 'Comedy'], imdbRating: 8.3, posterPath: '/aiy3G1cYWV3LgKZHY6a3jL8bjYL.jpg' },
+	{ title: 'Neon Genesis Evangelion: The End of Evangelion', year: 1997, genres: ['Animation', 'Science Fiction', 'Drama', 'Fantasy'], imdbRating: 8.3, posterPath: '/j6G24dqI4WgUtChhWjfnI4lnmiK.jpg' },
+	{ title: 'Rascal Does Not Dream of a Dreaming Girl', year: 2019, genres: ['Animation', 'Romance', 'Drama', 'Fantasy'], imdbRating: 8.3, posterPath: '/AtFnN4OztDJy8IFwYd5JfU0jlEM.jpg' },
+	{ title: 'Given', year: 2020, genres: ['Animation', 'Drama', 'Music', 'Romance'], imdbRating: 8.3, posterPath: '/pegCub2zdYD5As43AOmGsIctuKc.jpg' },
+	{ title: 'Josee, the Tiger and the Fish', year: 2020, genres: ['Animation', 'Drama', 'Romance'], imdbRating: 8.3, posterPath: '/z1D8xi9x4uEhyFruo7uEHXUMD4K.jpg' },
+	{ title: 'The Lion King', year: 1994, genres: ['Animation', 'Family', 'Drama', 'Adventure'], imdbRating: 8.3, posterPath: '/sKCr78MXSLixwmZ8DyJLrpMsd15.jpg' },
+	{ title: 'Klaus', year: 2019, genres: ['Animation', 'Family', 'Comedy', 'Adventure'], imdbRating: 8.2, posterPath: '/q125RHUDgR4gjwh1QkfYuJLYkL.jpg' },
+	{ title: 'The Boy, the Mole, the Fox and the Horse', year: 2022, genres: ['Animation', 'Family', 'Drama', 'Adventure'], imdbRating: 8.2, posterPath: '/wAKBWRhMmBtrCCuqmFwPm2RGTph.jpg' },
+	{ title: 'I Want to Eat Your Pancreas', year: 2018, genres: ['Animation', 'Drama', 'Romance'], imdbRating: 8.2, posterPath: '/qpV8kvRfAntV7D4aOOsLIz7OdPc.jpg' },
+	{ title: 'David', year: 2025, genres: ['Animation', 'Family', 'Drama', 'Music'], imdbRating: 8.1, posterPath: '/bESlrLOrsQ9gKzaGQGHXKOyIUtX.jpg' },
+	{ title: 'Shrounding the Heavens Movie：Fighting Against Wang Teng with Copper Coffin', year: 2026, genres: ['Animation', 'Action'], imdbRating: 8, posterPath: '/298clyKoBbZPp4zgUiDSxhCO0wk.jpg' },
+	{ title: 'GOAT', year: 2026, genres: ['Animation', 'Comedy', 'Family'], imdbRating: 7.9, posterPath: '/wfuqMlaExcoYiUEvKfVpUTt1v4u.jpg' },
+	{ title: 'We Bare Bears: The Movie', year: 2020, genres: ['Animation', 'Adventure', 'Family', 'Comedy', 'TV Movie'], imdbRating: 7.8, posterPath: '/khtIr0Gxtz52T10RRQZ42o1a5Ry.jpg' },
+	{ title: 'Demon Slayer: Kimetsu no Yaiba Infinity Castle', year: 2025, genres: ['Animation', 'Action', 'Fantasy'], imdbRating: 7.7, posterPath: '/fWVSwgjpT2D78VUh6X8UBd2rorW.jpg' },
+	{ title: 'Hoppers', year: 2026, genres: ['Animation', 'Family', 'Science Fiction', 'Comedy', 'Adventure'], imdbRating: 7.6, posterPath: '/xjtWQ2CL1mpmMNwuU5HeS4Iuwuu.jpg' },
+	{ title: 'Zootopia 2', year: 2025, genres: ['Animation', 'Family', 'Mystery', 'Adventure', 'Comedy'], imdbRating: 7.6, posterPath: '/oJ7g2CifqpStmoYQyaLQgEU32qO.jpg' },
+	{ title: 'Inside Out 2', year: 2024, genres: ['Animation', 'Adventure', 'Comedy', 'Family'], imdbRating: 7.5, posterPath: '/vpnVM9B6NMmQpWeZvzLvDESb2QY.jpg' },
+	{ title: 'The Super Mario Galaxy Movie', year: 2026, genres: ['Animation', 'Adventure', 'Fantasy', 'Family', 'Comedy'], imdbRating: 7, posterPath: '/eJGWx219ZcEMVQJhAgMiqo8tYY.jpg' },
+	{ title: 'In Your Dreams', year: 2025, genres: ['Animation', 'Family', 'Comedy', 'Adventure', 'Fantasy'], imdbRating: 7, posterPath: '/ug0TqgmByPCEYzR9lQWQmyAa7sw.jpg' },
+	{ title: 'The SpongeBob Movie: Search for SquarePants', year: 2025, genres: ['Animation', 'Family', 'Comedy', 'Adventure', 'Fantasy'], imdbRating: 6.7, posterPath: '/xJnOMMsFASxNiFnG7v3TNIQ3ife.jpg' },
 
 	// Comedy
-	{ title: 'Superbad', year: 2007, genres: ['Comedy'], imdbRating: 7.6 },
-	{ title: 'The Hangover', year: 2009, genres: ['Comedy'], imdbRating: 7.7 },
-	{ title: 'Step Brothers', year: 2008, genres: ['Comedy'], imdbRating: 6.9 },
-	{
-		title: 'Anchorman: The Legend of Ron Burgundy',
-		year: 2004,
-		genres: ['Comedy'],
-		imdbRating: 6.9
-	},
-	{ title: 'Tropic Thunder', year: 2008, genres: ['Action', 'Comedy'], imdbRating: 7.2 },
-	{ title: 'Hot Fuzz', year: 2007, genres: ['Action', 'Comedy', 'Crime'], imdbRating: 7.6 },
-	{ title: 'Shaun of the Dead', year: 2004, genres: ['Comedy', 'Horror'], imdbRating: 7.9 },
-	{
-		title: 'Monty Python and the Holy Grail',
-		year: 1975,
-		genres: ['Adventure', 'Comedy', 'Fantasy'],
-		imdbRating: 8.2
-	},
-	{ title: 'Airplane!', year: 1980, genres: ['Comedy'], imdbRating: 7.7 },
-	{ title: 'Dr. Strangelove', year: 1964, genres: ['Comedy', 'War'], imdbRating: 8.4 },
-	{ title: 'Blazing Saddles', year: 1974, genres: ['Comedy', 'Western'], imdbRating: 7.5 },
-	{
-		title: 'Young Frankenstein',
-		year: 1974,
-		genres: ['Comedy', 'Horror', 'Sci-Fi'],
-		imdbRating: 8.0
-	},
-	{ title: 'This Is Spinal Tap', year: 1984, genres: ['Comedy', 'Music'], imdbRating: 7.9 },
-	{ title: 'The Big Lebowski', year: 1998, genres: ['Comedy', 'Crime', 'Sport'], imdbRating: 8.1 },
-	{ title: 'Office Space', year: 1999, genres: ['Comedy'], imdbRating: 7.7 },
-	{ title: 'Dodgeball: A True Underdog Story', year: 2004, genres: ['Comedy'], imdbRating: 6.7 },
-	{ title: 'Wedding Crashers', year: 2005, genres: ['Comedy', 'Romance'], imdbRating: 6.9 },
-	{ title: 'Borat', year: 2006, genres: ['Comedy'], imdbRating: 7.3 },
+	{ title: '¿Quieres ser mi hijo?', year: 2023, genres: ['Comedy', 'Romance'], imdbRating: 8.6, posterPath: '/9GuvODahvuFqdhuZ16aBLR4UJoP.jpg' },
+	{ title: 'Dilwale Dulhania Le Jayenge', year: 1995, genres: ['Comedy', 'Drama', 'Romance'], imdbRating: 8.5, posterPath: '/2CAL2433ZeIihfX1Hb2139CX0pW.jpg' },
+	{ title: 'Parasite', year: 2019, genres: ['Comedy', 'Thriller', 'Drama'], imdbRating: 8.5, posterPath: '/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg' },
+	{ title: 'Forrest Gump', year: 1994, genres: ['Comedy', 'Drama', 'Romance'], imdbRating: 8.5, posterPath: '/saHP97rTPS5eLmrLQEcANmKrsFl.jpg' },
+	{ title: 'Life Is Beautiful', year: 1997, genres: ['Comedy', 'Drama'], imdbRating: 8.4, posterPath: '/mfnkSeeVOBVheuyn2lo4tfmOPQb.jpg' },
+	{ title: 'A Dog\'s Will', year: 2000, genres: ['Comedy', 'Drama', 'Fantasy', 'Romance'], imdbRating: 8.4, posterPath: '/z9Au9XtK0ARzkKGsZCzMkmKgMPf.jpg' },
+	{ title: 'The Great Dictator', year: 1940, genres: ['Comedy', 'War'], imdbRating: 8.3, posterPath: '/1QpO9wo7JWecZ4NiBuu625FiY1j.jpg' },
+	{ title: 'Modern Times', year: 1936, genres: ['Comedy', 'Drama', 'Romance'], imdbRating: 8.3, posterPath: '/7uoiKOEjxBBW0AgDGQWrlfGQ90w.jpg' },
+	{ title: 'Out of the Clear Blue Sky', year: 2019, genres: ['Comedy', 'Drama', 'Music'], imdbRating: 8.3, posterPath: '/o9cSEHrXzPOO4OIoT9yrdxc216w.jpg' },
+	{ title: 'City Lights', year: 1931, genres: ['Comedy', 'Drama', 'Romance'], imdbRating: 8.3, posterPath: '/bXNvzjULc9jrOVhGfjcc64uKZmZ.jpg' },
+	{ title: 'How to Make a Killing', year: 2026, genres: ['Comedy', 'Thriller'], imdbRating: 7, posterPath: '/vxMeKC7o5Gi8IHMi6lUgsdprTqv.jpg' },
+	{ title: 'Mike & Nick & Nick & Alice', year: 2026, genres: ['Comedy', 'Science Fiction', 'Crime'], imdbRating: 6.9, posterPath: '/7F0jc75HrSkLVcvOXR2FXAIwuEv.jpg' },
+	{ title: 'Pizza Movie', year: 2026, genres: ['Comedy', 'Adventure'], imdbRating: 6.7, posterPath: '/2c2ib9pS3BTIoMnYHi4z6t9nxuA.jpg' },
+	{ title: 'Rocky Aur Rani Kii Prem Kahaani', year: 2023, genres: ['Comedy', 'Drama', 'Family', 'Romance'], imdbRating: 6.1, posterPath: '/vTQIqlxUkOuyf2UKhlM2OUaFGKz.jpg' },
 
 	// Crime
-	{ title: 'Pulp Fiction', year: 1994, genres: ['Crime', 'Drama'], imdbRating: 8.9 },
-	{ title: 'The Godfather', year: 1972, genres: ['Crime', 'Drama'], imdbRating: 9.2 },
-	{ title: 'The Godfather Part II', year: 1974, genres: ['Crime', 'Drama'], imdbRating: 9.0 },
-	{ title: 'Goodfellas', year: 1990, genres: ['Crime', 'Drama'], imdbRating: 8.7 },
-	{ title: 'Reservoir Dogs', year: 1992, genres: ['Crime', 'Thriller'], imdbRating: 8.3 },
-	{ title: 'Se7en', year: 1995, genres: ['Crime', 'Drama', 'Mystery'], imdbRating: 8.6 },
-	{ title: 'The Departed', year: 2006, genres: ['Crime', 'Drama', 'Thriller'], imdbRating: 8.5 },
-	{
-		title: 'No Country for Old Men',
-		year: 2007,
-		genres: ['Crime', 'Drama', 'Thriller'],
-		imdbRating: 8.1
-	},
-	{ title: 'Heat', year: 1995, genres: ['Action', 'Crime', 'Drama'], imdbRating: 8.2 },
-	{
-		title: 'The Usual Suspects',
-		year: 1995,
-		genres: ['Crime', 'Mystery', 'Thriller'],
-		imdbRating: 8.5
-	},
-	{ title: 'Django Unchained', year: 2012, genres: ['Drama', 'Western'], imdbRating: 8.4 },
-	{ title: 'Sicario', year: 2015, genres: ['Action', 'Crime', 'Drama'], imdbRating: 7.6 },
-	{ title: 'Spotlight', year: 2015, genres: ['Crime', 'Drama', 'History'], imdbRating: 8.1 },
-	{ title: 'Nightcrawler', year: 2014, genres: ['Crime', 'Thriller'], imdbRating: 7.9 },
-	{ title: 'Zodiac', year: 2007, genres: ['Crime', 'Drama', 'Mystery'], imdbRating: 7.7 },
-	{ title: 'Prisoners', year: 2013, genres: ['Crime', 'Drama', 'Mystery'], imdbRating: 8.1 },
-	{ title: 'The Irishman', year: 2019, genres: ['Crime', 'Drama'], imdbRating: 7.8 },
-	{
-		title: 'Once Upon a Time in Hollywood',
-		year: 2019,
-		genres: ['Crime', 'Drama'],
-		imdbRating: 7.6
-	},
-	{ title: 'Knives Out', year: 2019, genres: ['Crime', 'Comedy', 'Mystery'], imdbRating: 7.9 },
-	{ title: 'Drive', year: 2011, genres: ['Crime', 'Drama'], imdbRating: 7.8 },
+	{ title: 'Se7en', year: 1995, genres: ['Crime', 'Mystery', 'Thriller'], imdbRating: 8.4, posterPath: '/191nKfP0ehp3uIvWqgPbFmI4lv9.jpg' },
+	{ title: 'The Silence of the Lambs', year: 1991, genres: ['Crime', 'Thriller', 'Drama'], imdbRating: 8.3, posterPath: '/uS9m8OBk1A8eM9I042bx8XXpqAq.jpg' },
+	{ title: 'Léon: The Professional', year: 1994, genres: ['Crime', 'Drama', 'Action'], imdbRating: 8.3, posterPath: '/bxB2q91nKYp8JNzqE7t7TWBVupB.jpg' },
+	{ title: 'A Brighter Summer Day', year: 1991, genres: ['Crime', 'Drama', 'Romance'], imdbRating: 8.3, posterPath: '/3l8fOAwiN3N5n3hHnZ51eog7Zu2.jpg' },
+	{ title: 'Peaky Blinders: The Immortal Man', year: 2026, genres: ['Crime', 'Drama'], imdbRating: 7.3, posterPath: '/gRMalasZEzsZi4w2VFuYusfSfqf.jpg' },
+	{ title: 'Crime 101', year: 2026, genres: ['Crime', 'Thriller'], imdbRating: 7, posterPath: '/tVvpFIoteRHNnoZMhdnwIVwJpCA.jpg' },
+	{ title: 'Now You See Me: Now You Don\'t', year: 2025, genres: ['Crime', 'Thriller'], imdbRating: 6.5, posterPath: '/oD3Eey4e4Z259XLm3eD3WGcoJAh.jpg' },
 
 	// Drama
-	{ title: 'The Shawshank Redemption', year: 1994, genres: ['Drama'], imdbRating: 9.3 },
-	{ title: 'Forrest Gump', year: 1994, genres: ['Drama', 'Romance'], imdbRating: 8.8 },
-	{ title: 'The Green Mile', year: 1999, genres: ['Crime', 'Drama', 'Fantasy'], imdbRating: 8.6 },
-	{ title: 'Saving Private Ryan', year: 1998, genres: ['Drama', 'War'], imdbRating: 8.6 },
-	{ title: 'The Social Network', year: 2010, genres: ['Biography', 'Drama'], imdbRating: 7.8 },
-	{ title: 'A Beautiful Mind', year: 2001, genres: ['Biography', 'Drama'], imdbRating: 8.2 },
-	{
-		title: "The King's Speech",
-		year: 2010,
-		genres: ['Biography', 'Drama', 'History'],
-		imdbRating: 8.0
-	},
-	{
-		title: '12 Years a Slave',
-		year: 2013,
-		genres: ['Biography', 'Drama', 'History'],
-		imdbRating: 8.1
-	},
-	{ title: 'The Revenant', year: 2015, genres: ['Action', 'Adventure', 'Drama'], imdbRating: 8.0 },
-	{ title: 'The Martian', year: 2015, genres: ['Adventure', 'Drama', 'Sci-Fi'], imdbRating: 8.0 },
-	{ title: 'Gravity', year: 2013, genres: ['Drama', 'Sci-Fi', 'Thriller'], imdbRating: 7.7 },
-	{ title: 'Birdman', year: 2014, genres: ['Comedy', 'Drama'], imdbRating: 7.7 },
-	{ title: 'Moonlight', year: 2016, genres: ['Drama'], imdbRating: 7.4 },
-	{ title: 'La La Land', year: 2016, genres: ['Comedy', 'Drama', 'Music'], imdbRating: 8.0 },
-	{ title: 'Manchester by the Sea', year: 2016, genres: ['Drama'], imdbRating: 7.8 },
-	{ title: 'Call Me by Your Name', year: 2017, genres: ['Drama', 'Romance'], imdbRating: 7.8 },
-	{
-		title: 'Three Billboards Outside Ebbing, Missouri',
-		year: 2017,
-		genres: ['Comedy', 'Crime', 'Drama'],
-		imdbRating: 8.1
-	},
-	{ title: 'Get Out', year: 2017, genres: ['Horror', 'Mystery', 'Thriller'], imdbRating: 7.7 },
-	{ title: 'A Quiet Place', year: 2018, genres: ['Horror', 'Drama', 'Sci-Fi'], imdbRating: 7.5 },
+	{ title: 'The Shawshank Redemption', year: 1994, genres: ['Drama', 'Crime'], imdbRating: 8.7, posterPath: '/9cqNxx0GxF0bflZmeSMuL5tnGzr.jpg' },
+	{ title: 'The Godfather', year: 1972, genres: ['Drama', 'Crime'], imdbRating: 8.7, posterPath: '/3bhkrj58Vtu7enYsRolD1fZdja1.jpg' },
+	{ title: 'The Godfather Part II', year: 1974, genres: ['Drama', 'Crime'], imdbRating: 8.6, posterPath: '/hek3koDUyRQk7FIhPXsa6mT2Zc3.jpg' },
+	{ title: 'Schindler\'s List', year: 1993, genres: ['Drama', 'History', 'War'], imdbRating: 8.6, posterPath: '/sF1U4EUQS8YHUYjNl3pMGNIQyr0.jpg' },
+	{ title: '12 Angry Men', year: 1957, genres: ['Drama'], imdbRating: 8.6, posterPath: '/zhG3vKWyDRaZYoaww1UVAi29T9h.jpg' },
+	{ title: 'GoodFellas', year: 1990, genres: ['Drama', 'Crime'], imdbRating: 8.5, posterPath: '/9OkCLM73MIU2CrKZbqiT8Ln1wY2.jpg' },
+	{ title: 'The Unknown Man', year: 2021, genres: ['Drama'], imdbRating: 8.5, posterPath: '/4TpBhdaSl5ALHbgeaYOLF8Q3haz.jpg' },
+	{ title: 'Fight Club', year: 1999, genres: ['Drama', 'Thriller'], imdbRating: 8.4, posterPath: '/jSziioSwPVrOy9Yow3XhWIBDjq1.jpg' },
+	{ title: 'City of God', year: 2002, genres: ['Drama', 'Crime'], imdbRating: 8.4, posterPath: '/k7eYdWvhYQyRQoU2TB2A2Xu2TfD.jpg' },
+	{ title: 'Cinema Paradiso', year: 1988, genres: ['Drama', 'Romance'], imdbRating: 8.4, posterPath: '/gCI2AeMV4IHSewhJkzsur5MEp6R.jpg' },
+	{ title: 'One Flew Over the Cuckoo\'s Nest', year: 1975, genres: ['Drama'], imdbRating: 8.4, posterPath: '/kjWsMh72V6d8KRLV4EOoSJLT1H7.jpg' },
+	{ title: 'Hope', year: 2013, genres: ['Drama'], imdbRating: 8.4, posterPath: '/x9yjkm9gIz5qI5fJMUTfBnWiB2o.jpg' },
+	{ title: 'Once Upon a Time in America', year: 1984, genres: ['Drama', 'Crime'], imdbRating: 8.4, posterPath: '/i0enkzsL5dPeneWnjl1fCWm6L7k.jpg' },
+	{ title: 'The Pianist', year: 2002, genres: ['Drama', 'War'], imdbRating: 8.4, posterPath: '/2hFvxCCWrTmCYwfy7yum0GKRi3Y.jpg' },
+	{ title: 'Whiplash', year: 2014, genres: ['Drama', 'Music', 'Thriller'], imdbRating: 8.4, posterPath: '/7fn624j5lj3xTme2SgiLCeuedmO.jpg' },
+	{ title: 'Lucy Shimmers and the Prince of Peace', year: 2020, genres: ['Drama', 'Family'], imdbRating: 8.4, posterPath: '/yfnJ5qIYx7q33fY4jqv9Pu95RSg.jpg' },
+	{ title: 'High and Low', year: 1963, genres: ['Drama', 'Crime', 'Thriller'], imdbRating: 8.4, posterPath: '/tgNjemQPG96uIezpiUiXFcer5ga.jpg' },
+	{ title: 'American History X', year: 1998, genres: ['Drama'], imdbRating: 8.3, posterPath: '/x2drgoXYZ8484lqyDj7L1CEVR4T.jpg' },
+	{ title: 'Radical', year: 2023, genres: ['Drama'], imdbRating: 8.3, posterPath: '/lOAJYpX608aT0ApIv63ZTnol27Y.jpg' },
+	{ title: 'Ikiru', year: 1952, genres: ['Drama'], imdbRating: 8.3, posterPath: '/dgNTS4EQDDVfkzJI5msKuHu2Ei3.jpg' },
+	{ title: 'Dead Poets Society', year: 1989, genres: ['Drama'], imdbRating: 8.3, posterPath: '/l5NbiHKUmahlAT3Q1ig8Tyl9xrc.jpg' },
+	{ title: 'We All Loved Each Other So Much', year: 1974, genres: ['Drama', 'Comedy'], imdbRating: 8.3, posterPath: '/zGGWYpiKNwjpKxelPxOMqJnUgDs.jpg' },
+	{ title: 'Dedicated to my ex', year: 2019, genres: ['Drama', 'Comedy'], imdbRating: 8.3, posterPath: '/xc4bTXVwYNXi10jG9dwcaYt5IpU.jpg' },
+	{ title: 'It\'s a Wonderful Life', year: 1946, genres: ['Drama', 'Family', 'Fantasy'], imdbRating: 8.3, posterPath: '/bSqt9rhDZx1Q7UZ86dBPKdNomp2.jpg' },
+	{ title: 'Sunset Boulevard', year: 1950, genres: ['Drama'], imdbRating: 8.3, posterPath: '/zt8aQ6ksqK6p1AopC5zVTDS9pKT.jpg' },
+	{ title: 'Once Upon a Time in the West', year: 1968, genres: ['Drama', 'Western'], imdbRating: 8.3, posterPath: '/qbYgqOczabWNn2XKwgMtVrntD6P.jpg' },
+	{ title: 'The Intouchables', year: 2011, genres: ['Drama', 'Comedy'], imdbRating: 8.3, posterPath: '/1QU7HKgsQbGpzsJbJK4pAVQV9F5.jpg' },
+	{ title: 'Apocalypse Now', year: 1979, genres: ['Drama', 'War'], imdbRating: 8.3, posterPath: '/gQB8Y5RCMkv2zwzFHbUJX3kAhvA.jpg' },
+	{ title: 'Miracle in Cell No. 7', year: 2019, genres: ['Drama'], imdbRating: 8.3, posterPath: '/bOth4QmNyEkalwahfPCfiXjNh1r.jpg' },
+	{ title: 'Le Trou', year: 1960, genres: ['Drama', 'Thriller', 'Crime'], imdbRating: 8.2, posterPath: '/xyZhiOz5NHVBUKlpioxjwajy7pm.jpg' },
+	{ title: 'The Legend of 1900', year: 1998, genres: ['Drama', 'Music'], imdbRating: 8.2, posterPath: '/iOcbJ5pxokOPDRgieVDbsFMrCc6.jpg' },
+	{ title: 'Oldboy', year: 2003, genres: ['Drama', 'Thriller', 'Mystery', 'Action'], imdbRating: 8.2, posterPath: '/pWDtjs568ZfOTMbURQBYuT4Qxka.jpg' },
+	{ title: 'Life in a Year', year: 2020, genres: ['Drama', 'Romance'], imdbRating: 8.2, posterPath: '/bP7u19opmHXYeTCUwGjlLldmUMc.jpg' },
+	{ title: 'The Forge', year: 2024, genres: ['Drama', 'Family'], imdbRating: 8.2, posterPath: '/oranxontIQRmhuyQlkoAwxpeBYz.jpg' },
+	{ title: 'Green Book', year: 2018, genres: ['Drama', 'Comedy', 'History'], imdbRating: 8.2, posterPath: '/7BsvSuDQuoqhWmU2fL7W2GOcZHU.jpg' },
+	{ title: 'The Ten Commandments', year: 1956, genres: ['Drama', 'History'], imdbRating: 7.8, posterPath: '/3Ei59AR64x6dMZfWobPCkZjbqTL.jpg' },
+	{ title: 'My Fault', year: 2023, genres: ['Drama', 'Romance', 'Thriller'], imdbRating: 7.8, posterPath: '/w46Vw536HwNnEzOa7J24YH9DPRS.jpg' },
+	{ title: 'The Passion of the Christ', year: 2004, genres: ['Drama'], imdbRating: 7.5, posterPath: '/v9f9MMrq2nGQrN7cHnQRmEq9lSE.jpg' },
+	{ title: 'The Devil Wears Prada', year: 2006, genres: ['Drama', 'Comedy'], imdbRating: 7.4, posterPath: '/8912AsVuS7Sj915apArUFbv6F9L.jpg' },
+	{ title: 'Lola\'s Secret', year: 1984, genres: ['Drama', 'Comedy', 'Horror'], imdbRating: 6.9, posterPath: '/qaJ4iQngrLbyz9OgaQkJLppDN6m.jpg' },
+	{ title: 'Wicked', year: 2024, genres: ['Drama', 'Romance', 'Fantasy'], imdbRating: 6.9, posterPath: '/xDGbZ0JJ3mYaGKy4Nzd9Kph6M9L.jpg' },
+	{ title: 'Agent Zeta', year: 2026, genres: ['Drama', 'Thriller'], imdbRating: 6.6, posterPath: '/1cKLG9KMoCjsgFB8Nw1EuglteVi.jpg' },
+	{ title: 'The Giant Falls', year: 2026, genres: ['Drama'], imdbRating: 6.2, posterPath: '/lARMzlnHtusEnY8LrTmNID92CJo.jpg' },
 
 	// Horror
-	{ title: 'The Exorcist', year: 1973, genres: ['Horror'], imdbRating: 8.0 },
-	{ title: 'Hereditary', year: 2018, genres: ['Horror', 'Drama', 'Mystery'], imdbRating: 7.3 },
-	{ title: 'The Witch', year: 2015, genres: ['Horror', 'Mystery'], imdbRating: 6.9 },
-	{ title: 'It Follows', year: 2014, genres: ['Horror', 'Mystery', 'Thriller'], imdbRating: 6.8 },
-	{ title: 'The Babadook', year: 2014, genres: ['Horror', 'Drama'], imdbRating: 6.8 },
-	{ title: 'Annihilation', year: 2018, genres: ['Adventure', 'Drama', 'Horror'], imdbRating: 6.8 },
-	{ title: 'The Ring', year: 2002, genres: ['Horror', 'Mystery'], imdbRating: 7.1 },
-	{
-		title: 'The Conjuring',
-		year: 2013,
-		genres: ['Horror', 'Mystery', 'Thriller'],
-		imdbRating: 7.5
-	},
-	{ title: 'Insidious', year: 2010, genres: ['Horror', 'Mystery', 'Thriller'], imdbRating: 6.6 },
-	{ title: 'Sinister', year: 2012, genres: ['Horror', 'Mystery', 'Thriller'], imdbRating: 6.8 },
-	{ title: 'The Others', year: 2001, genres: ['Horror', 'Mystery', 'Thriller'], imdbRating: 7.6 },
-	{
-		title: 'Let the Right One In',
-		year: 2008,
-		genres: ['Drama', 'Horror', 'Romance'],
-		imdbRating: 7.9
-	},
-	{ title: 'Tucker and Dale vs. Evil', year: 2010, genres: ['Comedy', 'Horror'], imdbRating: 7.0 },
-	{
-		title: 'Cabin in the Woods',
-		year: 2012,
-		genres: ['Horror', 'Mystery', 'Thriller'],
-		imdbRating: 7.0
-	},
-	{
-		title: 'What We Do in the Shadows',
-		year: 2014,
-		genres: ['Comedy', 'Fantasy', 'Horror'],
-		imdbRating: 7.5
-	},
-	{
-		title: 'Train to Busan',
-		year: 2016,
-		genres: ['Action', 'Horror', 'Thriller'],
-		imdbRating: 7.6
-	},
-	{ title: 'Raw', year: 2016, genres: ['Drama', 'Horror'], imdbRating: 7.0 },
+	{ title: 'Psycho', year: 1960, genres: ['Horror', 'Thriller', 'Mystery'], imdbRating: 8.4, posterPath: '/yz4QVqPx3h1hD1DfqqQkCq3rmxW.jpg' },
+	{ title: 'Sinners', year: 2025, genres: ['Horror', 'Action', 'Thriller'], imdbRating: 7.5, posterPath: '/705nQHqe4JGdEisrQmVYmXyjs1U.jpg' },
+	{ title: 'Ready or Not: Here I Come', year: 2026, genres: ['Horror', 'Comedy'], imdbRating: 7.3, posterPath: '/jRf89HVEtBZiSnOXXWDhZOfuTwW.jpg' },
+	{ title: '28 Years Later: The Bone Temple', year: 2026, genres: ['Horror', 'Thriller', 'Science Fiction'], imdbRating: 7.2, posterPath: '/kK1BGkG3KAvWB0WMV1DfOx9yTMZ.jpg' },
+	{ title: 'Send Help', year: 2026, genres: ['Horror', 'Thriller', 'Comedy'], imdbRating: 7.1, posterPath: '/mjkS2iAgWj3ik1DTjvI15nHZ7yl.jpg' },
+	{ title: 'Dracula', year: 2025, genres: ['Horror', 'Fantasy', 'Romance'], imdbRating: 7.1, posterPath: '/dYRqA50yd0nB3qBR7AtWEJJQ8q.jpg' },
+	{ title: 'They Will Kill You', year: 2026, genres: ['Horror', 'Action', 'Comedy'], imdbRating: 6.6, posterPath: '/6oI4oQKTWMVUlr8Ivqydp28Ruu6.jpg' },
+	{ title: 'Lake Jesup: Bonecrusher\'s Revenge', year: 2024, genres: ['Horror', 'Comedy', 'Adventure'], imdbRating: 6.3, posterPath: '/1Z1TgGXS1MD4DDfIkBNloM43vvj.jpg' },
+	{ title: 'A Desert', year: 2025, genres: ['Horror', 'Thriller'], imdbRating: 6.1, posterPath: '/vd194U3uHmxs5rZBV2QU7HNDdEf.jpg' },
+	{ title: 'The Virgin of the Quarry Lake', year: 2025, genres: ['Horror', 'Thriller'], imdbRating: 6.1, posterPath: '/xqbUNS0uvqWEgvTWFuxba7Qs4yi.jpg' },
+	{ title: 'Scream 7', year: 2026, genres: ['Horror', 'Mystery', 'Crime'], imdbRating: 6, posterPath: '/jjyuk0edLiW8vOSnlfwWCCLpbh5.jpg' },
 
 	// Romance
-	{ title: 'Titanic', year: 1997, genres: ['Drama', 'Romance'], imdbRating: 7.9 },
-	{
-		title: 'The Shape of Water',
-		year: 2017,
-		genres: ['Drama', 'Fantasy', 'Romance'],
-		imdbRating: 7.3
-	},
-	{
-		title: 'Crazy, Stupid, Love',
-		year: 2011,
-		genres: ['Comedy', 'Drama', 'Romance'],
-		imdbRating: 7.4
-	},
-	{
-		title: 'Scott Pilgrim vs. The World',
-		year: 2010,
-		genres: ['Action', 'Comedy', 'Fantasy'],
-		imdbRating: 7.5
-	},
-	{
-		title: 'Silver Linings Playbook',
-		year: 2012,
-		genres: ['Comedy', 'Drama', 'Romance'],
-		imdbRating: 7.7
-	},
-	{
-		title: '500 Days of Summer',
-		year: 2009,
-		genres: ['Comedy', 'Drama', 'Romance'],
-		imdbRating: 7.7
-	},
-	{
-		title: 'Eternal Sunshine of the Spotless Mind',
-		year: 2004,
-		genres: ['Drama', 'Romance', 'Sci-Fi'],
-		imdbRating: 8.3
-	},
-	{ title: 'Lost in Translation', year: 2003, genres: ['Drama', 'Romance'], imdbRating: 7.4 },
-	{ title: 'The Big Sick', year: 2017, genres: ['Comedy', 'Drama', 'Romance'], imdbRating: 7.5 },
-	{ title: 'The Before Trilogy', year: 1995, genres: ['Drama', 'Romance'], imdbRating: 8.1 },
-	{ title: 'Amelie', year: 2001, genres: ['Comedy', 'Romance'], imdbRating: 8.3 },
-	{
-		title: 'Romancing the Stone',
-		year: 1984,
-		genres: ['Action', 'Adventure', 'Comedy'],
-		imdbRating: 6.9
-	},
-	{ title: 'Groundhog Day', year: 1993, genres: ['Comedy', 'Fantasy', 'Romance'], imdbRating: 8.0 },
-	{ title: 'Notting Hill', year: 1999, genres: ['Comedy', 'Romance'], imdbRating: 7.0 },
-	{ title: 'Love, Actually', year: 2003, genres: ['Comedy', 'Drama', 'Romance'], imdbRating: 7.6 },
-	{ title: 'The Holiday', year: 2006, genres: ['Comedy', 'Romance'], imdbRating: 6.9 },
-	{
-		title: "Bridget Jones's Diary",
-		year: 2001,
-		genres: ['Comedy', 'Drama', 'Romance'],
-		imdbRating: 6.7
-	},
-
-	// Sci-Fi
-	{
-		title: 'Blade Runner 2049',
-		year: 2017,
-		genres: ['Drama', 'Mystery', 'Sci-Fi'],
-		imdbRating: 8.0
-	},
-	{ title: 'Arrival', year: 2016, genres: ['Drama', 'Mystery', 'Sci-Fi'], imdbRating: 7.9 },
-	{ title: 'Ex Machina', year: 2014, genres: ['Drama', 'Sci-Fi', 'Thriller'], imdbRating: 7.7 },
-	{ title: 'Dune', year: 2021, genres: ['Action', 'Adventure', 'Sci-Fi'], imdbRating: 8.0 },
-	{
-		title: 'Everything Everywhere All at Once',
-		year: 2022,
-		genres: ['Action', 'Adventure', 'Comedy'],
-		imdbRating: 7.8
-	},
-	{ title: 'Minority Report', year: 2002, genres: ['Action', 'Crime', 'Mystery'], imdbRating: 7.6 },
-	{ title: 'Looper', year: 2012, genres: ['Action', 'Crime', 'Sci-Fi'], imdbRating: 7.4 },
-	{ title: 'Moon', year: 2009, genres: ['Drama', 'Mystery', 'Sci-Fi'], imdbRating: 7.8 },
-	{ title: 'Her', year: 2013, genres: ['Drama', 'Romance', 'Sci-Fi'], imdbRating: 8.0 },
-	{ title: 'District 9', year: 2009, genres: ['Action', 'Sci-Fi', 'Thriller'], imdbRating: 7.9 },
-	{
-		title: 'Children of Men',
-		year: 2006,
-		genres: ['Drama', 'Sci-Fi', 'Thriller'],
-		imdbRating: 7.9
-	},
-	{ title: 'Coherence', year: 2013, genres: ['Drama', 'Sci-Fi', 'Thriller'], imdbRating: 6.9 },
-	{ title: 'Primer', year: 2004, genres: ['Drama', 'Sci-Fi', 'Thriller'], imdbRating: 7.0 },
-	{ title: 'Predestination', year: 2014, genres: ['Action', 'Drama', 'Sci-Fi'], imdbRating: 7.4 },
-	{ title: 'Starship Troopers', year: 1997, genres: ['Action', 'Sci-Fi'], imdbRating: 7.2 },
-	{
-		title: 'Back to the Future Part II',
-		year: 1989,
-		genres: ['Adventure', 'Comedy', 'Sci-Fi'],
-		imdbRating: 7.8
-	},
-	{
-		title: 'Terminator 2: Judgment Day',
-		year: 1991,
-		genres: ['Action', 'Sci-Fi'],
-		imdbRating: 8.5
-	},
-	{ title: 'Aliens', year: 1986, genres: ['Action', 'Sci-Fi', 'Thriller'], imdbRating: 8.3 },
+	{ title: 'Gabriel\'s Inferno', year: 2020, genres: ['Romance', 'Drama'], imdbRating: 8.4, posterPath: '/oyG9TL7FcRP4EZ9Vid6uKzwdndz.jpg' },
+	{ title: 'Gabriel\'s Inferno: Part II', year: 2020, genres: ['Romance', 'Drama'], imdbRating: 8.4, posterPath: '/x5o8cLZfEXMoZczTYWLrUo1P7UJ.jpg' },
+	{ title: 'Gabriel\'s Inferno: Part III', year: 2020, genres: ['Romance', 'Drama'], imdbRating: 8.4, posterPath: '/fYtHxTxlhzD4QWfEbrC1rypysSD.jpg' },
+	{ title: 'Dou kyu sei – Classmates', year: 2016, genres: ['Romance', 'Animation'], imdbRating: 8.3, posterPath: '/cIfRCA5wEvj9tApca4UDUagQEiM.jpg' },
+	{ title: 'Hotarubi no Mori e', year: 2011, genres: ['Romance', 'Animation', 'Fantasy'], imdbRating: 8.3, posterPath: '/mDqzHV8UXWWNpZkoAbKmKX1ZxEE.jpg' },
+	{ title: 'The Drama', year: 2026, genres: ['Romance', 'Comedy', 'Drama'], imdbRating: 7, posterPath: '/rnIOUhzwJDfgQakx8EjoNyItKgs.jpg' },
+	{ title: 'Your Heart Will Be Broken', year: 2026, genres: ['Romance', 'Drama'], imdbRating: 6.6, posterPath: '/iGpMm603GUKH2SiXB2S5m4sZ17t.jpg' },
+	{ title: '"Wuthering Heights"', year: 2026, genres: ['Romance', 'Drama'], imdbRating: 6.5, posterPath: '/3YBce6dTh1D5oCMITXk2S5QhPt.jpg' },
 
 	// Thriller
-	{
-		title: 'The Girl with the Dragon Tattoo',
-		year: 2011,
-		genres: ['Crime', 'Drama', 'Mystery'],
-		imdbRating: 7.8
-	},
-	{ title: 'Shutter Island', year: 2010, genres: ['Mystery', 'Thriller'], imdbRating: 8.2 },
-	{ title: 'Vertigo', year: 1958, genres: ['Mystery', 'Romance', 'Thriller'], imdbRating: 8.3 },
-	{ title: 'Rear Window', year: 1954, genres: ['Mystery', 'Thriller'], imdbRating: 8.5 },
-	{ title: 'The Sixth Sense', year: 1999, genres: ['Drama', 'Mystery', 'Sci-Fi'], imdbRating: 8.1 },
-	{ title: 'Memento', year: 2000, genres: ['Mystery', 'Thriller'], imdbRating: 8.4 },
-	{
-		title: 'The Silence of the Lambs',
-		year: 1991,
-		genres: ['Crime', 'Drama', 'Thriller'],
-		imdbRating: 8.6
-	},
-	{ title: 'Fight Club', year: 1999, genres: ['Drama', 'Thriller'], imdbRating: 8.8 },
-	{ title: 'Oldboy', year: 2003, genres: ['Action', 'Drama', 'Mystery'], imdbRating: 8.4 },
-	{ title: 'Donnie Darko', year: 2001, genres: ['Drama', 'Mystery', 'Sci-Fi'], imdbRating: 8.1 },
-	{ title: 'Black Swan', year: 2010, genres: ['Drama', 'Thriller'], imdbRating: 8.0 },
-	{ title: 'Nocturnal Animals', year: 2016, genres: ['Drama', 'Thriller'], imdbRating: 7.5 }
+	{ title: 'Pulp Fiction', year: 1994, genres: ['Thriller', 'Crime', 'Comedy'], imdbRating: 8.5, posterPath: '/vQWk5YBFWF4bZaofAbv0tShwBvQ.jpg' },
+	{ title: 'Rear Window', year: 1954, genres: ['Thriller', 'Mystery'], imdbRating: 8.3, posterPath: '/ILVF0eJxHMddjxeQhswFtpMtqx.jpg' },
+	{ title: 'One Battle After Another', year: 2025, genres: ['Thriller', 'Crime', 'Comedy'], imdbRating: 7.4, posterPath: '/lbBWwxBht4JFP5PsuJ5onpMqugW.jpg' },
+	{ title: 'Humint', year: 2026, genres: ['Thriller', 'Action', 'Drama'], imdbRating: 7.2, posterPath: '/82bX2GK4PhaJQtfkTnfmd2P7erG.jpg' },
+	{ title: 'The Red Line', year: 2026, genres: ['Thriller', 'Crime', 'Drama'], imdbRating: 6.7, posterPath: '/q3ROA6OqVA9rWSsC2DzdkPQvxWW.jpg' },
+
+	// Other
+	{ title: 'The Green Mile', year: 1999, genres: ['Fantasy', 'Drama', 'Crime'], imdbRating: 8.5, posterPath: '/8VG8fDNiy50H4FedGwdSVUPoaJe.jpg' },
+	{ title: 'The Good, the Bad and the Ugly', year: 1966, genres: ['Western'], imdbRating: 8.5, posterPath: '/bX2xnavhMYjWDoZp1VM6VnU1xwe.jpg' },
+	{ title: 'Impossible Things', year: 2021, genres: ['Family', 'Drama'], imdbRating: 8.4, posterPath: '/t2Ew8NZ8Ci2kqmoecZUNQUFDJnQ.jpg' },
+	{ title: 'Howl\'s Moving Castle', year: 2004, genres: ['Fantasy', 'Animation', 'Adventure'], imdbRating: 8.4, posterPath: '/13kOl2v0nD2OLbVSHnHk8GUFEhO.jpg' },
+	{ title: 'The Wild Robot', year: 2024, genres: ['Family', 'Animation', 'Science Fiction', 'Adventure'], imdbRating: 8.3, posterPath: '/eG9lz41mJqsI4J6ubMtVqD26q2J.jpg' },
+	{ title: 'Paths of Glory', year: 1957, genres: ['War', 'Drama'], imdbRating: 8.3, posterPath: '/tJXwtzOSNUC8dxJfrdvkNtGrrgW.jpg' },
+	{ title: 'Clouds', year: 2020, genres: ['Music', 'Drama', 'Romance'], imdbRating: 8.2, posterPath: '/2YvT3pdGngzpbAuxamTz4ZlabnT.jpg' },
+	{ title: 'Saving Private Ryan', year: 1998, genres: ['War', 'Drama', 'History'], imdbRating: 8.2, posterPath: '/uqx37cS8cpHg8U35f9U5IBlrCV3.jpg' },
+	{ title: 'Project Hail Mary', year: 2026, genres: ['Science Fiction', 'Adventure'], imdbRating: 8.2, posterPath: '/yihdXomYb5kTeSivtFndMy5iDmf.jpg' },
+	{ title: 'The Avengers', year: 2012, genres: ['Science Fiction', 'Action', 'Adventure'], imdbRating: 8, posterPath: '/RYMX2wcKCBAr24UyPD7xwmjaTn.jpg' },
+	{ title: 'KPop Demon Hunters', year: 2025, genres: ['Fantasy', 'Music', 'Comedy', 'Animation'], imdbRating: 8, posterPath: '/zT7Lhw3BhJbMkRqm9Zlx2YGMsY0.jpg' },
+	{ title: 'The Super Mario Bros. Movie', year: 2023, genres: ['Family', 'Comedy', 'Adventure', 'Animation', 'Fantasy'], imdbRating: 7.6, posterPath: '/qNBAXBIQlnOThrVvA6mA2B5ggV6.jpg' },
+	{ title: 'Avatar', year: 2009, genres: ['Science Fiction', 'Action', 'Adventure'], imdbRating: 7.6, posterPath: '/gKY6q7SjCkAU6FqvqWybDYgUKIF.jpg' },
+	{ title: 'Avatar: Fire and Ash', year: 2025, genres: ['Science Fiction', 'Adventure', 'Fantasy'], imdbRating: 7.4, posterPath: '/bRBeSHfGHwkEpImlhxPmOcUsaeg.jpg' },
+	{ title: 'The Housemaid', year: 2025, genres: ['Mystery', 'Thriller'], imdbRating: 7.2, posterPath: '/cWsBscZzwu5brg9YjNkGewRUvJX.jpg' },
+	{ title: 'Mercy', year: 2026, genres: ['Science Fiction', 'Action', 'Thriller', 'Crime'], imdbRating: 7, posterPath: '/pyok1kZJCfyuFapYXzHcy7BLlQa.jpg' },
+	{ title: 'Pretty Lethal', year: 2026, genres: ['Music', 'Thriller', 'Action', 'Horror'], imdbRating: 6.9, posterPath: '/znTPnXCK3lEQJgqXCvP7e5FUz6f.jpg' },
+	{ title: 'Feel My Voice', year: 2026, genres: ['Music', 'Drama', 'Comedy'], imdbRating: 6.5, posterPath: '/4Tf0qTA73XLhBnfP6YgvqtLZBnt.jpg' },
+	{ title: 'The Bride!', year: 2026, genres: ['Science Fiction', 'Horror', 'Fantasy'], imdbRating: 6.3, posterPath: '/lV8YHwGkYZsm6EfIqnhaSz2avKt.jpg' },
+	{ title: 'The Draft!', year: 2026, genres: ['Science Fiction', 'Horror'], imdbRating: 6.3, posterPath: '/6WEqtp38s1iW5VrcH78rOIi8a2Z.jpg' },
+	{ title: 'Jurassic World Rebirth', year: 2025, genres: ['Science Fiction', 'Adventure', 'Action'], imdbRating: 6.3, posterPath: '/1RICxzeoNCAO5NpcRMIgg1XT6fm.jpg' },
 ];

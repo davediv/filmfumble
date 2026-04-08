@@ -84,8 +84,11 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 	}
 
 	const decoys = pickDecoys(movie, 3);
-	const options = shuffle([movie.title, ...decoys.map((d) => d.title)]);
-	const correctIndex = options.indexOf(movie.title);
+	const options = shuffle([
+		{ title: movie.title, posterPath: movie.posterPath ?? null },
+		...decoys.map((d) => ({ title: d.title, posterPath: d.posterPath ?? null }))
+	]);
+	const correctIndex = options.findIndex((o) => o.title === movie.title);
 
 	return json({
 		description,

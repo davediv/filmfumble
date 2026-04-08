@@ -38,9 +38,10 @@
 			{@const isCorrect = i === roundData.correctIndex}
 			{@const isSelected = i === selectedIndex}
 			<AnswerButton
-				title={option}
+				title={option.title}
+				posterPath={option.posterPath}
 				index={i}
-				state={revealCorrect
+				buttonState={revealCorrect
 					? isCorrect
 						? 'correct'
 						: isSelected
