@@ -55,11 +55,11 @@
 	</span>
 
 	<div
-		class="flex h-[60px] w-[40px] flex-shrink-0 items-center justify-center overflow-hidden rounded-sm bg-white/5 sm:h-[84px] sm:w-[56px]"
+		class="flex h-[72px] w-[48px] flex-shrink-0 items-center justify-center overflow-hidden rounded-sm bg-white/5 sm:h-[96px] sm:w-[64px]"
 	>
 		{#if showPoster}
 			<img
-				src={posterUrl(posterPath!)}
+				src={posterUrl(posterPath!, 'w154')}
 				alt=""
 				loading="lazy"
 				class="h-full w-full object-cover"

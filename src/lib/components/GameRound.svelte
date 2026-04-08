@@ -33,7 +33,7 @@
 		</div>
 	</div>
 
-	<div class="grid grid-cols-1 gap-2.5 sm:grid-cols-2 sm:gap-3">
+	<div class="mx-auto grid w-full max-w-3xl grid-cols-1 gap-2.5 sm:grid-cols-2 sm:gap-3">
 		{#each roundData.options as option, i (i)}
 			{@const isCorrect = i === roundData.correctIndex}
 			{@const isSelected = i === selectedIndex}
