@@ -119,8 +119,31 @@
 </script>
 
 <svelte:head>
-	<title>FilmFumble</title>
-	<meta name="description" content="Guess the movie from the world's worst description" />
+	<title>FilmFumble — Guess Movies from Terrible Descriptions</title>
+	<meta name="description" content="AI generates hilariously bad movie descriptions. Can you guess the film? A free browser party game." />
+
+	<!-- Open Graph -->
+	<meta property="og:type" content="website" />
+	<meta property="og:title" content="FilmFumble — Guess Movies from Terrible Descriptions" />
+	<meta property="og:description" content="AI generates hilariously bad movie descriptions. Can you guess the film? A free browser party game." />
+	<meta property="og:site_name" content="FilmFumble" />
+
+	<!-- Twitter Card -->
+	<meta name="twitter:card" content="summary" />
+	<meta name="twitter:title" content="FilmFumble — Guess Movies from Terrible Descriptions" />
+	<meta name="twitter:description" content="AI generates hilariously bad movie descriptions. Can you guess the film? A free browser party game." />
+
+	<!-- JSON-LD -->
+	{@html '<script type="application/ld+json">' + JSON.stringify({
+		"@context": "https://schema.org",
+		"@type": "WebApplication",
+		"name": "FilmFumble",
+		"description": "AI generates hilariously bad movie descriptions. Can you guess the film? A free browser party game.",
+		"applicationCategory": "Game",
+		"genre": "Trivia",
+		"operatingSystem": "Any",
+		"offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+	}) + '</script>'}
 </svelte:head>
 
 {#if phase === 'start'}
