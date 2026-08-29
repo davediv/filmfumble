@@ -8,6 +8,7 @@ import { movies } from '$lib/data/movies';
 import { shuffle, pickRandom } from '$lib/utils';
 
 const FALLBACK_KEYS = Object.keys(fallbacks);
+const GENERATION_BUDGET_MS = 8000;
 
 function getFallbackForMovie(movieTitle: string): {
 	description: string;
@@ -52,9 +53,13 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 	let description: string | null = null;
 
 	if (apiKey) {
+		const generationDeadline = Date.now() + GENERATION_BUDGET_MS;
 		for (let attempt = 0; attempt < 2; attempt++) {
+			const remainingTime = generationDeadline - Date.now();
+			if (remainingTime <= 0) break;
+
 			try {
-				const result = await generateDescription(movie.title, movie.year, apiKey);
+				const result = await generateDescription(movie.title, movie.year, apiKey, remainingTime);
 				const filtered = filterContent(result.description, movie.title);
 				if (filtered.safe) {
 					description = filtered.filtered;

@@ -14,10 +14,11 @@ export interface GenerationResult {
 export async function generateDescription(
 	movieTitle: string,
 	year: number,
-	apiKey: string
+	apiKey: string,
+	timeoutMs: number = 8000
 ): Promise<GenerationResult> {
 	const controller = new AbortController();
-	const timeout = setTimeout(() => controller.abort(), 8000);
+	const timeout = setTimeout(() => controller.abort(), timeoutMs);
 
 	try {
 		const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
@@ -52,8 +53,6 @@ Rules:
 			})
 		});
 
-		clearTimeout(timeout);
-
 		if (!response.ok) {
 			throw new Error(`OpenRouter API error: ${response.status} ${response.statusText}`);
 		}
@@ -66,8 +65,7 @@ Rules:
 		}
 
 		return { description: content, fromFallback: false };
-	} catch (err) {
+	} finally {
 		clearTimeout(timeout);
-		throw err;
 	}
 }
