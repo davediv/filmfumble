@@ -17,6 +17,7 @@
 	let roundData = $state<RoundData>({ description: '', options: [], correctIndex: null });
 	let errorType = $state<ErrorType | null>(null);
 	let preloadedRound = $state<ApiResponse | null>(null);
+	let preloadedRoundPromise: Promise<ApiResponse | null> | null = null;
 
 	function fetchRoundApi(): Promise<Response> {
 		return fetch('/api/round', {
@@ -26,15 +27,18 @@
 		});
 	}
 
-	async function preloadRound() {
-		try {
-			const res = await fetchRoundApi();
-			if (res.ok) {
-				preloadedRound = (await res.json()) as ApiResponse;
+	function preloadRound() {
+		const request = fetchRoundApi()
+			.then(async (res) => (res.ok ? ((await res.json()) as ApiResponse) : null))
+			.catch(() => null);
+
+		preloadedRound = null;
+		preloadedRoundPromise = request;
+		void request.then((data) => {
+			if (preloadedRoundPromise === request) {
+				preloadedRound = data;
 			}
-		} catch {
-			// Swallow — handleNext will fall back to fetchRound
-		}
+		});
 	}
 
 	function resetState() {
@@ -45,6 +49,7 @@
 		roundData = { description: '', options: [], correctIndex: null };
 		errorType = null;
 		preloadedRound = null;
+		preloadedRoundPromise = null;
 	}
 
 	async function startGame() {
@@ -100,16 +105,25 @@
 	}
 
 	async function handleNext() {
-		if (preloadedRound && !usedMovieIds.includes(preloadedRound.movieId)) {
-			roundNumber += 1;
-			errorType = null;
-			applyRoundData(preloadedRound);
-			preloadedRound = null;
-		} else {
-			preloadedRound = null;
-			roundNumber += 1;
-			await fetchRound();
+		roundNumber += 1;
+		errorType = null;
+
+		const pendingRound = preloadedRoundPromise;
+		if (!preloadedRound && pendingRound) {
+			phase = 'loading';
+			preloadedRound = await pendingRound;
 		}
+
+		const nextRound = preloadedRound;
+		preloadedRound = null;
+		preloadedRoundPromise = null;
+
+		if (nextRound && !usedMovieIds.includes(nextRound.movieId)) {
+			applyRoundData(nextRound);
+			return;
+		}
+
+		await fetchRound();
 	}
 
 	function handlePlayAgain() {
