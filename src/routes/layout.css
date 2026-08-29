@@ -1,6 +1,4 @@
 @import 'tailwindcss';
-@plugin '@tailwindcss/forms';
-@plugin '@tailwindcss/typography';
 
 @theme {
 	--font-sans: 'Josefin Sans', ui-sans-serif, system-ui, sans-serif;
