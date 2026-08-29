@@ -1,5 +1,21 @@
 @import 'tailwindcss';
 
+@font-face {
+	font-family: 'Bebas Neue';
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	src: url('/fonts/bebas-neue-latin.441b026d.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'Josefin Sans';
+	font-style: normal;
+	font-weight: 300 600;
+	font-display: swap;
+	src: url('/fonts/josefin-sans-latin.444f5c46.woff2') format('woff2');
+}
+
 @theme {
 	--font-sans: 'Josefin Sans', ui-sans-serif, system-ui, sans-serif;
 	--font-heading: 'Bebas Neue', Impact, 'Arial Narrow', sans-serif;
