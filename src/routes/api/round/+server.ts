@@ -6,9 +6,91 @@ import { filterContent } from '$lib/services/contentFilter';
 import { fallbacks } from '$lib/data/fallbacks';
 import { movies } from '$lib/data/movies';
 import { shuffle, pickRandom } from '$lib/utils';
+import type { Movie } from '$lib/types/index';
 
 const FALLBACK_KEYS = Object.keys(fallbacks);
 const GENERATION_BUDGET_MS = 8000;
+const DESCRIPTION_CACHE_VERSION = 'v1';
+const DESCRIPTION_CACHE_TTL_SECONDS = 60 * 60 * 24 * 7;
+const pendingDescriptions = new Map<string, Promise<string | null>>();
+
+function getDescriptionCacheKey(requestUrl: string, movie: Movie): Request {
+	const cacheUrl = new URL(requestUrl);
+	cacheUrl.pathname = `/__filmfumble/descriptions/${DESCRIPTION_CACHE_VERSION}/${encodeURIComponent(movie.title)}`;
+	cacheUrl.search = new URLSearchParams({ year: String(movie.year) }).toString();
+	cacheUrl.hash = '';
+	return new Request(cacheUrl, { method: 'GET' });
+}
+
+async function getCachedDescription(
+	cache: Cache,
+	cacheKey: Request,
+	movie: Movie
+): Promise<string | null> {
+	try {
+		const response = await cache.match(cacheKey);
+		if (!response?.ok) return null;
+
+		const filtered = filterContent(await response.text(), movie.title);
+		return filtered.safe ? filtered.filtered : null;
+	} catch (err) {
+		console.warn(`[round] description cache read failed for "${movie.title}":`, err);
+		return null;
+	}
+}
+
+function cacheDescription(
+	cache: Cache,
+	cacheKey: Request,
+	description: string,
+	ctx: ExecutionContext
+) {
+	const response = new Response(description, {
+		headers: {
+			'Cache-Control': `public, max-age=${DESCRIPTION_CACHE_TTL_SECONDS}`,
+			'Content-Type': 'text/plain; charset=utf-8'
+		}
+	});
+
+	ctx.waitUntil(
+		cache
+			.put(cacheKey, response)
+			.catch((err) => console.warn('[round] description cache write failed:', err))
+	);
+}
+
+async function generateSafeDescription(movie: Movie, apiKey: string): Promise<string | null> {
+	const generationDeadline = Date.now() + GENERATION_BUDGET_MS;
+	for (let attempt = 0; attempt < 2; attempt++) {
+		const remainingTime = generationDeadline - Date.now();
+		if (remainingTime <= 0) break;
+
+		try {
+			const result = await generateDescription(movie.title, movie.year, apiKey, remainingTime);
+			const filtered = filterContent(result.description, movie.title);
+			if (filtered.safe) return filtered.filtered;
+			console.warn(`[round] attempt ${attempt + 1}: content filtered for "${movie.title}"`);
+		} catch (err) {
+			console.error(`[round] attempt ${attempt + 1} OpenRouter error:`, err);
+		}
+	}
+
+	return null;
+}
+
+function getPendingDescription(movie: Movie, apiKey: string): Promise<string | null> {
+	const pendingKey = `${movie.title}\u0000${movie.year}`;
+	const existing = pendingDescriptions.get(pendingKey);
+	if (existing) return existing;
+
+	const pending = generateSafeDescription(movie, apiKey).finally(() => {
+		if (pendingDescriptions.get(pendingKey) === pending) {
+			pendingDescriptions.delete(pendingKey);
+		}
+	});
+	pendingDescriptions.set(pendingKey, pending);
+	return pending;
+}
 
 function getFallbackForMovie(movieTitle: string): {
 	description: string;
@@ -40,6 +122,7 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 
 	const usedIds = body.usedMovieIds ?? [];
 	const apiKey = platform?.env?.OPENROUTER_API_KEY as string | undefined;
+	const cache = platform?.caches?.default;
 
 	let movie = pickMovie(usedIds);
 	if (!movie) {
@@ -51,24 +134,16 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 
 	let usedFallback = false;
 	let description: string | null = null;
+	const descriptionCacheKey = cache ? getDescriptionCacheKey(request.url, movie) : null;
 
-	if (apiKey) {
-		const generationDeadline = Date.now() + GENERATION_BUDGET_MS;
-		for (let attempt = 0; attempt < 2; attempt++) {
-			const remainingTime = generationDeadline - Date.now();
-			if (remainingTime <= 0) break;
+	if (cache && descriptionCacheKey) {
+		description = await getCachedDescription(cache, descriptionCacheKey, movie);
+	}
 
-			try {
-				const result = await generateDescription(movie.title, movie.year, apiKey, remainingTime);
-				const filtered = filterContent(result.description, movie.title);
-				if (filtered.safe) {
-					description = filtered.filtered;
-					break;
-				}
-				console.warn(`[round] attempt ${attempt + 1}: content filtered for "${movie.title}"`);
-			} catch (err) {
-				console.error(`[round] attempt ${attempt + 1} OpenRouter error:`, err);
-			}
+	if (description === null && apiKey) {
+		description = await getPendingDescription(movie, apiKey);
+		if (description && cache && descriptionCacheKey && platform?.ctx) {
+			cacheDescription(cache, descriptionCacheKey, description, platform.ctx);
 		}
 	}
 

@@ -5,13 +5,18 @@ interface Env {
 	OPENROUTER_API_KEY: string;
 }
 
+interface CloudflarePlatformCacheStorage {
+	readonly default: Cache;
+	open(cacheName: string): Promise<Cache>;
+}
+
 declare global {
 	namespace App {
 		interface Platform {
 			env: Env;
 			cf: CfProperties;
 			ctx: ExecutionContext;
-			caches: CacheStorage;
+			caches: CloudflarePlatformCacheStorage;
 		}
 	}
 }
