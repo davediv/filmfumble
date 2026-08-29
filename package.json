@@ -41,7 +41,6 @@
 		"wrangler": "^4.80.0"
 	},
 	"dependencies": {
-		"@lucide/svelte": "^1.7.0",
 		"clsx": "^2.1.1",
 		"shadcn-svelte": "^1.2.7",
 		"tailwind-merge": "^3.5.0",
