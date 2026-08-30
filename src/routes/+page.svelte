@@ -42,14 +42,14 @@
 	<title>FilmFumble — Guess Movies from Terrible Descriptions</title>
 	<meta
 		name="description"
-		content="AI generates hilariously bad movie descriptions. Can you guess the film? A free browser party game."
+		content="Guess movies from hilariously bad descriptions in a quick, free solo browser trivia game."
 	/>
 
 	<meta property="og:type" content="website" />
 	<meta property="og:title" content="FilmFumble — Guess Movies from Terrible Descriptions" />
 	<meta
 		property="og:description"
-		content="AI generates hilariously bad movie descriptions. Can you guess the film? A free browser party game."
+		content="Guess movies from hilariously bad descriptions in a quick, free solo browser trivia game."
 	/>
 	<meta property="og:site_name" content="FilmFumble" />
 
@@ -57,7 +57,7 @@
 	<meta name="twitter:title" content="FilmFumble — Guess Movies from Terrible Descriptions" />
 	<meta
 		name="twitter:description"
-		content="AI generates hilariously bad movie descriptions. Can you guess the film? A free browser party game."
+		content="Guess movies from hilariously bad descriptions in a quick, free solo browser trivia game."
 	/>
 </svelte:head>
 

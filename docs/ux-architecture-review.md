@@ -30,7 +30,7 @@ The current experience is intentionally compact and has several strengths worth 
 
 ### Medium priority
 
-- [ ] **Align the party-game promise with the actual mode.** The product metadata describes a party game, but the implementation tracks one player and one score. Position the current experience as quick solo trivia unless a deliberate local-party or team mode is added.
+- [x] **Align the party-game promise with the actual mode.** The product metadata describes a party game, but the implementation tracks one player and one score. Position the current experience as quick solo trivia unless a deliberate local-party or team mode is added.
 
 - [ ] **Make errors specific and progress-safe.** Server, content, and connectivity failures currently collapse into “Connection Lost,” and ordinary completion uses an outage status. Model typed failures, retry the same round idempotently, and preserve progress through recovery.
 
