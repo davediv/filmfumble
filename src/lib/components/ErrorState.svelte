@@ -10,17 +10,21 @@
 	let { errorType, onRetry, onPlayAgain }: Props = $props();
 
 	const messages: Record<ErrorType, { title: string; body: string }> = {
-		network: {
-			title: 'Connection Lost',
-			body: 'Even our description generator gave up. The AI just needs a moment to recollect itself.'
+		offline: {
+			title: "You're Offline",
+			body: 'Reconnect to the internet, then try this round again. Your score is safely saved.'
 		},
-		exhausted: {
-			title: "You've Seen Them All",
-			body: "That's impressive. You've burned through every movie in our library."
+		service: {
+			title: 'Service Unavailable',
+			body: 'The game could not load the next round. Your progress is saved, so it is safe to retry.'
 		},
-		generic: {
-			title: 'Something Went Wrong',
-			body: "We've encountered an error our writers couldn't have prepared for."
+		content: {
+			title: 'Clue Unavailable',
+			body: 'That movie pool could not provide a reviewed clue. Try again or choose another movie mix.'
+		},
+		'invalid-response': {
+			title: 'Game Data Changed',
+			body: 'The saved round no longer matches this version of the game. Start over to continue safely.'
 		}
 	};
 
@@ -50,26 +54,17 @@
 	</div>
 
 	<div class="flex flex-col gap-3">
-		{#if errorType === 'exhausted'}
-			<button
-				class="border border-gold/50 px-8 py-2.5 font-heading text-sm tracking-[0.2em] text-gold transition-colors duration-200 outline-none hover:bg-gold hover:text-background focus-visible:ring-2 focus-visible:ring-gold/50 active:scale-[0.97]"
-				onclick={onPlayAgain}
-			>
-				PLAY AGAIN
-			</button>
-		{:else}
-			<button
-				class="border border-gold/50 px-8 py-2.5 font-heading text-sm tracking-[0.2em] text-gold transition-colors duration-200 outline-none hover:bg-gold hover:text-background focus-visible:ring-2 focus-visible:ring-gold/50 active:scale-[0.97]"
-				onclick={onRetry}
-			>
-				TRY AGAIN
-			</button>
-			<button
-				class="border border-border/60 px-8 py-2.5 font-heading text-sm tracking-[0.2em] text-muted-foreground transition-colors duration-200 outline-none hover:border-gold/30 hover:text-gold focus-visible:ring-2 focus-visible:ring-gold/50 active:scale-[0.97]"
-				onclick={onPlayAgain}
-			>
-				START OVER
-			</button>
-		{/if}
+		<button
+			class="border border-gold/50 px-8 py-2.5 font-heading text-sm tracking-[0.2em] text-gold transition-colors duration-200 outline-none hover:bg-gold hover:text-background focus-visible:ring-2 focus-visible:ring-gold/50 active:scale-[0.97]"
+			onclick={onRetry}
+		>
+			TRY AGAIN
+		</button>
+		<button
+			class="border border-border/60 px-8 py-2.5 font-heading text-sm tracking-[0.2em] text-muted-foreground transition-colors duration-200 outline-none hover:border-gold/30 hover:text-gold focus-visible:ring-2 focus-visible:ring-gold/50 active:scale-[0.97]"
+			onclick={onPlayAgain}
+		>
+			START OVER
+		</button>
 	</div>
 </div>

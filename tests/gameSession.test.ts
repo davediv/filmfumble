@@ -13,6 +13,7 @@ import {
 import type { ApiResponse } from '../src/lib/types/index.ts';
 
 const round: ApiResponse = {
+	status: 'round',
 	clueId: 'correct-2000-clue-1',
 	description: 'A test clue',
 	options: [

@@ -8,7 +8,7 @@ import type {
 	RoundResult
 } from '../types/index.ts';
 
-const SESSION_KEY = 'filmfumble.game-session.v2';
+const SESSION_KEY = 'filmfumble.game-session.v3';
 const SETTINGS_KEY = 'filmfumble.game-settings.v1';
 const GAME_PHASES: GamePhase[] = ['start', 'loading', 'playing', 'feedback', 'ended', 'error'];
 
@@ -69,7 +69,7 @@ export function isGameSettings(value: unknown): value is GameSettings {
 export function isGameSession(value: unknown): value is GameSession {
 	return (
 		isRecord(value) &&
-		value.schemaVersion === 2 &&
+		value.schemaVersion === 3 &&
 		typeof value.id === 'string' &&
 		GAME_PHASES.includes(value.phase as GamePhase) &&
 		isGameSettings(value.settings) &&
@@ -82,9 +82,10 @@ export function isGameSession(value: unknown): value is GameSession {
 		Array.isArray(value.history) &&
 		value.history.every(isRoundResult) &&
 		(value.errorType === null ||
-			value.errorType === 'network' ||
-			value.errorType === 'exhausted' ||
-			value.errorType === 'generic')
+			value.errorType === 'offline' ||
+			value.errorType === 'service' ||
+			value.errorType === 'content' ||
+			value.errorType === 'invalid-response')
 	);
 }
 

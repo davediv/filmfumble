@@ -13,28 +13,44 @@ export const POST: RequestHandler = async ({ request }) => {
 	try {
 		body = await request.json();
 	} catch {
-		return json({ error: 'Invalid JSON body' }, { status: 400 });
+		return json({ code: 'INVALID_REQUEST', error: 'Invalid JSON body' }, { status: 400 });
 	}
 
 	if (
 		!Array.isArray(body.usedMovieIds) ||
 		!body.usedMovieIds.every((id) => typeof id === 'string')
 	) {
-		return json({ error: 'usedMovieIds must be an array of strings' }, { status: 400 });
+		return json(
+			{ code: 'INVALID_REQUEST', error: 'usedMovieIds must be an array of strings' },
+			{ status: 400 }
+		);
 	}
 	if (body.contentPreset !== undefined && !isContentPresetId(body.contentPreset)) {
-		return json({ error: 'contentPreset is not supported' }, { status: 400 });
+		return json(
+			{ code: 'INVALID_REQUEST', error: 'contentPreset is not supported' },
+			{ status: 400 }
+		);
 	}
 
 	const moviePool = getPlayableMovies(body.contentPreset ?? 'all');
 	const movie = pickMovie(body.usedMovieIds, moviePool);
 	if (!movie) {
-		return json({ error: 'All curated movies have been used this session.' }, { status: 503 });
+		return json({ status: 'complete' });
 	}
 
 	const clue = getClueForMovie(movie.id);
 	if (!clue) {
-		return json({ error: 'No reviewed clue is available for this movie.' }, { status: 503 });
+		console.error(
+			JSON.stringify({
+				event: 'missing_clue',
+				movieId: movie.id,
+				contentPreset: body.contentPreset
+			})
+		);
+		return json(
+			{ code: 'CONTENT_UNAVAILABLE', error: 'No reviewed clue is available for this movie.' },
+			{ status: 500 }
+		);
 	}
 
 	const decoys = pickDecoys(movie, 3);
@@ -47,6 +63,7 @@ export const POST: RequestHandler = async ({ request }) => {
 	]);
 
 	return json({
+		status: 'round',
 		clueId: clue.id,
 		description: clue.text,
 		options,
