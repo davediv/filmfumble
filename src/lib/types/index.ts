@@ -15,6 +15,18 @@ export interface Clue {
 	source: 'curated';
 }
 
+export type Difficulty = 'casual' | 'challenging';
+
+export type ContentPresetId =
+	| 'all'
+	| Difficulty
+	| 'classic'
+	| 'modern'
+	| 'action'
+	| 'crime'
+	| 'drama'
+	| 'science-fiction';
+
 export interface OptionItem {
 	title: string;
 	posterPath: string | null;
@@ -42,6 +54,7 @@ export type GamePhase = 'start' | 'loading' | 'playing' | 'feedback' | 'ended' |
 
 export interface GameSettings {
 	roundLimit: number | null;
+	contentPreset: ContentPresetId;
 }
 
 export interface RoundResult {

@@ -1,11 +1,15 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { getClueForMovie, playableMovies } from '$lib/services/contentRepository';
+import {
+	getClueForMovie,
+	getPlayableMovies,
+	isContentPresetId
+} from '$lib/services/contentRepository';
 import { pickDecoys, pickMovie } from '$lib/services/moviePicker';
 import { shuffle } from '$lib/utils';
 
 export const POST: RequestHandler = async ({ request }) => {
-	let body: { usedMovieIds?: string[] };
+	let body: { usedMovieIds?: string[]; contentPreset?: unknown };
 	try {
 		body = await request.json();
 	} catch {
@@ -18,8 +22,12 @@ export const POST: RequestHandler = async ({ request }) => {
 	) {
 		return json({ error: 'usedMovieIds must be an array of strings' }, { status: 400 });
 	}
+	if (body.contentPreset !== undefined && !isContentPresetId(body.contentPreset)) {
+		return json({ error: 'contentPreset is not supported' }, { status: 400 });
+	}
 
-	const movie = pickMovie(body.usedMovieIds, playableMovies);
+	const moviePool = getPlayableMovies(body.contentPreset ?? 'all');
+	const movie = pickMovie(body.usedMovieIds, moviePool);
 	if (!movie) {
 		return json({ error: 'All curated movies have been used this session.' }, { status: 503 });
 	}
