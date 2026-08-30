@@ -36,15 +36,15 @@
 
 <button
 	class={cn(
-		'flex w-full items-center gap-3 border px-4 py-3.5 text-left transition-colors duration-150 outline-none focus-visible:ring-2 focus-visible:ring-gold/40 disabled:pointer-events-none sm:py-4',
+		'flex w-full items-center gap-3 border px-4 py-3.5 text-left transition-colors duration-150 outline-none focus-visible:ring-2 focus-visible:ring-gold disabled:pointer-events-none sm:py-4',
 		buttonState === 'correct'
 			? 'border-correct/60 bg-correct/10'
 			: buttonState === 'incorrect'
 				? 'animate-shake border-incorrect/60 bg-incorrect/10'
-				: 'border-border/60 bg-card/40 hover:border-gold/30 hover:bg-card/70',
-		isDisabled && buttonState === 'default' && 'opacity-40'
+				: 'border-border/60 bg-card/40 hover:border-gold/30 hover:bg-card/70'
 	)}
 	disabled={isDisabled}
+	aria-keyshortcuts={`${label} ${index + 1}`}
 	{onclick}
 >
 	<span
@@ -54,7 +54,7 @@
 				? 'text-correct'
 				: buttonState === 'incorrect'
 					? 'text-incorrect'
-					: 'text-gold/40'
+					: 'text-gold'
 		)}
 	>
 		{label}
@@ -81,6 +81,7 @@
 				stroke-linecap="round"
 				stroke-linejoin="round"
 				class="h-5 w-5 text-gold/20 sm:h-6 sm:w-6"
+				aria-hidden="true"
 			>
 				<rect width="18" height="18" x="3" y="3" rx="2" />
 				<path d="M7 3v18" />

@@ -119,7 +119,7 @@
 
 	<div class="flex flex-col items-center gap-5" style="animation: reveal 0.5s ease-out 0.12s both">
 		<button
-			class="border border-gold/50 px-10 py-3 font-heading text-lg tracking-[0.2em] text-gold transition-colors duration-200 outline-none hover:bg-gold hover:text-background focus-visible:ring-2 focus-visible:ring-gold/50 active:scale-[0.97]"
+			class="min-h-11 border border-gold/50 px-10 py-3 font-heading text-lg tracking-[0.2em] text-gold transition-colors duration-200 outline-none hover:bg-gold hover:text-background focus-visible:ring-2 focus-visible:ring-gold active:scale-[0.97]"
 			onclick={onStart}
 		>
 			START GAME
@@ -135,7 +135,7 @@
 			</button>
 		{/if}
 
-		<p class="text-xs tracking-wide text-muted-foreground/50">
+		<p class="text-xs tracking-wide text-muted-foreground">
 			{gameLength} · 4 choices · no account
 		</p>
 	</div>

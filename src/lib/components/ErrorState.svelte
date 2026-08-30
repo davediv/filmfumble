@@ -49,19 +49,19 @@
 			<path d="M12 17h.01" />
 		</svg>
 
-		<h2 class="font-heading text-2xl tracking-wider sm:text-3xl md:text-4xl">{title}</h2>
+		<h1 class="font-heading text-2xl tracking-wider sm:text-3xl md:text-4xl">{title}</h1>
 		<p class="max-w-xs text-sm font-light text-muted-foreground">{body}</p>
 	</div>
 
 	<div class="flex flex-col gap-3">
 		<button
-			class="border border-gold/50 px-8 py-2.5 font-heading text-sm tracking-[0.2em] text-gold transition-colors duration-200 outline-none hover:bg-gold hover:text-background focus-visible:ring-2 focus-visible:ring-gold/50 active:scale-[0.97]"
+			class="min-h-11 border border-gold/50 px-8 py-2.5 font-heading text-sm tracking-[0.2em] text-gold transition-colors duration-200 outline-none hover:bg-gold hover:text-background focus-visible:ring-2 focus-visible:ring-gold active:scale-[0.97]"
 			onclick={onRetry}
 		>
 			TRY AGAIN
 		</button>
 		<button
-			class="border border-border/60 px-8 py-2.5 font-heading text-sm tracking-[0.2em] text-muted-foreground transition-colors duration-200 outline-none hover:border-gold/30 hover:text-gold focus-visible:ring-2 focus-visible:ring-gold/50 active:scale-[0.97]"
+			class="min-h-11 border border-border/60 px-8 py-2.5 font-heading text-sm tracking-[0.2em] text-muted-foreground transition-colors duration-200 outline-none hover:border-gold/30 hover:text-gold focus-visible:ring-2 focus-visible:ring-gold active:scale-[0.97]"
 			onclick={onPlayAgain}
 		>
 			START OVER
