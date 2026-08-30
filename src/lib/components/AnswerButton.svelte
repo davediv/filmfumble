@@ -12,8 +12,14 @@
 		onclick: () => void;
 	}
 
-	let { title, posterPath, index, buttonState = 'default', disabled = false, onclick }: Props =
-		$props();
+	let {
+		title,
+		posterPath,
+		index,
+		buttonState = 'default',
+		disabled = false,
+		onclick
+	}: Props = $props();
 
 	const label = $derived(String.fromCharCode(65 + index));
 	const isDisabled = $derived(disabled || buttonState === 'disabled');
@@ -21,7 +27,7 @@
 	let imgFailed = $state(false);
 
 	$effect(() => {
-		posterPath;
+		void posterPath;
 		imgFailed = false;
 	});
 
