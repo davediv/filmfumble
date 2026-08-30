@@ -35,12 +35,6 @@
 	 */
 	// "vars": {  "MY_VARIABLE": "production_value" }
 	/**
-	 * Secrets (do not commit values):
-	 * - OPENROUTER_API_KEY: Required for AI description generation
-	 *   Set via: wrangler secret put OPENROUTER_API_KEY
-	 *   Local dev: add to .dev.vars (already in .gitignore)
-	 */
-	/**
 	 * Service Bindings (communicate between multiple Workers)
 	 * https://developers.cloudflare.com/workers/wrangler/configuration/#service-bindings
 	 */

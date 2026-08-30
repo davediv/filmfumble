@@ -8,6 +8,7 @@ import type {
 } from '../types/index.ts';
 
 const EMPTY_ROUND: RoundData = {
+	clueId: '',
 	movieId: '',
 	description: '',
 	options: [],
@@ -52,6 +53,7 @@ export function receiveRound(session: GameSession, data: ApiResponse): GameSessi
 		usedMovieIds: [...session.usedMovieIds, data.movieId],
 		selectedIndex: null,
 		currentRound: {
+			clueId: data.clueId,
 			movieId: data.movieId,
 			description: data.description,
 			options: data.options,
@@ -79,6 +81,7 @@ export function answerCurrentRound(session: GameSession, selectedIndex: number):
 	const correct = selectedIndex === currentRound.correctIndex;
 	const result: RoundResult = {
 		roundNumber: session.roundNumber,
+		clueId: currentRound.clueId,
 		movieId: currentRound.movieId,
 		description: currentRound.description,
 		options: currentRound.options,

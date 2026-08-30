@@ -20,7 +20,7 @@ The current experience is intentionally compact and has several strengths worth 
 
 - [ ] **Replace the interruptive feedback overlay.** The full-screen feedback dialog hides the highlighted answer grid and lacks complete modal focus behavior. Prefer inline feedback that keeps the clue and choices visible, moves focus predictably, and provides an obvious Next action.
 
-- [ ] **Remove runtime AI generation from the critical play path.** A round can wait on a live free-model request before using a fallback. Serve pre-generated, moderated, versioned clues synchronously and replenish content outside the request path.
+- [x] **Remove runtime AI generation from the critical play path.** A round can wait on a live free-model request before using a fallback. Serve pre-generated, moderated, versioned clues synchronously and replenish content outside the request path.
 
 - [ ] **Curate the movie pool around recognizability and difficulty.** The generated catalog mixes famous and obscure titles without an explicit difficulty model. Retain stable source metadata, create curated difficulty tiers, and provide simple optional category, era, and difficulty settings while keeping a one-click default.
 
