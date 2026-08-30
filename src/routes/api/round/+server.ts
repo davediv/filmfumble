@@ -14,7 +14,7 @@ const pendingDescriptions = new Map<string, Promise<string | null>>();
 
 function getDescriptionCacheKey(requestUrl: string, movie: Movie): Request {
 	const cacheUrl = new URL(requestUrl);
-	cacheUrl.pathname = `/__filmfumble/descriptions/${DESCRIPTION_CACHE_VERSION}/${encodeURIComponent(movie.title)}`;
+	cacheUrl.pathname = `/__filmfumble/descriptions/${DESCRIPTION_CACHE_VERSION}/${encodeURIComponent(movie.id)}`;
 	cacheUrl.search = new URLSearchParams({ year: String(movie.year) }).toString();
 	cacheUrl.hash = '';
 	return new Request(cacheUrl, { method: 'GET' });
@@ -154,7 +154,7 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 		description,
 		options,
 		correctIndex,
-		movieId: movie.title,
+		movieId: movie.id,
 		usedFallback
 	});
 };

@@ -3,19 +3,21 @@
 	import GameRound from '$lib/components/GameRound.svelte';
 	import FeedbackOverlay from '$lib/components/FeedbackOverlay.svelte';
 	import LoadingSkeleton from '$lib/components/LoadingSkeleton.svelte';
-	import type { RoundData, ErrorType, ApiResponse } from '$lib/types/index';
+	import type { ApiResponse, GameSession } from '$lib/types/index';
 	import ErrorState from '$lib/components/ErrorState.svelte';
 	import ScoreSummary from '$lib/components/ScoreSummary.svelte';
+	import {
+		answerCurrentRound,
+		beginGameSession,
+		completeGameSession,
+		createGameSession,
+		failGameSession,
+		prepareNextRound,
+		receiveRound,
+		requestRound
+	} from '$lib/domain/gameSession';
 
-	type Phase = 'start' | 'loading' | 'playing' | 'feedback' | 'ended' | 'error';
-
-	let phase = $state<Phase>('start');
-	let score = $state(0);
-	let roundNumber = $state(0);
-	let usedMovieIds = $state<string[]>([]);
-	let selectedIndex = $state<number | null>(null);
-	let roundData = $state<RoundData>({ description: '', options: [], correctIndex: null });
-	let errorType = $state<ErrorType | null>(null);
+	let session = $state<GameSession>(createGameSession());
 	let preloadedRound = $state<ApiResponse | null>(null);
 	let preloadedRoundPromise: Promise<ApiResponse | null> | null = null;
 
@@ -23,7 +25,7 @@
 		return fetch('/api/round', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ usedMovieIds })
+			body: JSON.stringify({ usedMovieIds: session.usedMovieIds })
 		});
 	}
 
@@ -42,45 +44,30 @@
 	}
 
 	function resetState() {
-		score = 0;
-		roundNumber = 0;
-		usedMovieIds = [];
-		selectedIndex = null;
-		roundData = { description: '', options: [], correctIndex: null };
-		errorType = null;
+		session = createGameSession(session.settings);
 		preloadedRound = null;
 		preloadedRoundPromise = null;
 	}
 
 	async function startGame() {
-		resetState();
-		phase = 'loading';
-		roundNumber = 1;
+		session = beginGameSession(session.settings);
+		preloadedRound = null;
+		preloadedRoundPromise = null;
 		await fetchRound();
 	}
 
 	function applyRoundData(data: ApiResponse) {
-		roundData = {
-			description: data.description,
-			options: data.options,
-			correctIndex: data.correctIndex
-		};
-		usedMovieIds = [...usedMovieIds, data.movieId];
-		phase = 'playing';
-		selectedIndex = null;
+		session = receiveRound(session, data);
 	}
 
 	async function fetchRound() {
-		errorType = null;
-		phase = 'loading';
+		session = requestRound(session);
 		try {
 			const res = await fetchRoundApi();
 
 			if (!res.ok) {
 				if (res.status === 503) {
-					roundNumber = Math.max(0, roundNumber - 1);
-					errorType = 'exhausted';
-					phase = 'ended';
+					session = completeGameSession(session);
 					return;
 				}
 				throw new Error(`API error: ${res.status}`);
@@ -89,28 +76,25 @@
 			const data = (await res.json()) as ApiResponse;
 			applyRoundData(data);
 		} catch {
-			errorType = 'network';
-			phase = 'error';
+			session = failGameSession(session, 'network');
 		}
 	}
 
 	function handleAnswer(index: number) {
-		if (phase !== 'playing') return;
-		selectedIndex = index;
-		if (index === roundData.correctIndex) {
-			score += 1;
-		}
-		phase = 'feedback';
+		const answeredSession = answerCurrentRound(session, index);
+		if (answeredSession === session) return;
+
+		session = answeredSession;
 		preloadRound();
 	}
 
 	async function handleNext() {
-		roundNumber += 1;
-		errorType = null;
+		const nextSession = prepareNextRound(session);
+		if (nextSession === session) return;
+		session = nextSession;
 
 		const pendingRound = preloadedRoundPromise;
 		if (!preloadedRound && pendingRound) {
-			phase = 'loading';
 			preloadedRound = await pendingRound;
 		}
 
@@ -118,7 +102,7 @@
 		preloadedRound = null;
 		preloadedRoundPromise = null;
 
-		if (nextRound && !usedMovieIds.includes(nextRound.movieId)) {
+		if (nextRound && !session.usedMovieIds.includes(nextRound.movieId)) {
 			applyRoundData(nextRound);
 			return;
 		}
@@ -128,7 +112,6 @@
 
 	function handlePlayAgain() {
 		resetState();
-		phase = 'start';
 	}
 </script>
 
@@ -157,23 +140,33 @@
 	/>
 </svelte:head>
 
-{#if phase === 'start'}
+{#if session.phase === 'start'}
 	<StartScreen onStart={startGame} />
-{:else if phase === 'loading'}
+{:else if session.phase === 'loading'}
 	<LoadingSkeleton />
-{:else if phase === 'error' && errorType}
-	<ErrorState {errorType} onRetry={fetchRound} onPlayAgain={handlePlayAgain} />
-{:else if phase === 'playing' || phase === 'feedback'}
-	<GameRound {roundData} {score} {roundNumber} {selectedIndex} onAnswer={handleAnswer} />
-	{#if phase === 'feedback'}
+{:else if session.phase === 'error' && session.errorType}
+	<ErrorState errorType={session.errorType} onRetry={fetchRound} onPlayAgain={handlePlayAgain} />
+{:else if session.phase === 'playing' || session.phase === 'feedback'}
+	<GameRound
+		roundData={session.currentRound}
+		score={session.score}
+		roundNumber={session.roundNumber}
+		selectedIndex={session.selectedIndex}
+		onAnswer={handleAnswer}
+	/>
+	{#if session.phase === 'feedback'}
 		<FeedbackOverlay
-			correct={selectedIndex === roundData.correctIndex}
-			correctTitle={roundData.correctIndex !== null
-				? (roundData.options[roundData.correctIndex]?.title ?? '')
+			correct={session.selectedIndex === session.currentRound.correctIndex}
+			correctTitle={session.currentRound.correctIndex !== null
+				? (session.currentRound.options[session.currentRound.correctIndex]?.title ?? '')
 				: ''}
 			onNext={handleNext}
 		/>
 	{/if}
-{:else if phase === 'ended'}
-	<ScoreSummary {score} {roundNumber} onPlayAgain={handlePlayAgain} />
+{:else if session.phase === 'ended'}
+	<ScoreSummary
+		score={session.score}
+		roundNumber={session.roundNumber}
+		onPlayAgain={handlePlayAgain}
+	/>
 {/if}

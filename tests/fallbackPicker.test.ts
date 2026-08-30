@@ -15,15 +15,15 @@ test('fallback candidates always have a matching clue', () => {
 
 test('fallback selection never returns a used movie', () => {
 	const candidates = getFallbackCandidates([]);
-	const usedMovieIds = candidates.slice(0, 3).map((movie) => movie.title);
+	const usedMovieIds = candidates.slice(0, 3).map((movie) => movie.id);
 	const round = pickFallbackRound(usedMovieIds, () => 0);
 
 	assert.ok(round);
-	assert.ok(!usedMovieIds.includes(round.movie.title));
+	assert.ok(!usedMovieIds.includes(round.movie.id));
 	assert.equal(round.description, fallbacks[round.movie.title]);
 });
 
 test('fallback selection returns null after safe content is exhausted', () => {
-	const allCandidateIds = getFallbackCandidates([]).map((movie) => movie.title);
+	const allCandidateIds = getFallbackCandidates([]).map((movie) => movie.id);
 	assert.equal(pickFallbackRound(allCandidateIds), null);
 });

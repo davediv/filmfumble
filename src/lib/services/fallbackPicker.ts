@@ -9,7 +9,7 @@ export interface FallbackRound {
 
 export function getFallbackCandidates(usedMovieIds: readonly string[]): Movie[] {
 	const used = new Set(usedMovieIds);
-	return movies.filter((movie) => !used.has(movie.title) && Boolean(fallbacks[movie.title]));
+	return movies.filter((movie) => !used.has(movie.id) && Boolean(fallbacks[movie.title]));
 }
 
 export function pickFallbackRound(

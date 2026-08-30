@@ -14,6 +14,7 @@
  */
 
 import { writeFile } from 'node:fs/promises';
+import { createMovieId } from '../src/lib/domain/movie.ts';
 
 const TMDB_BASE = 'https://api.themoviedb.org/3';
 const API_KEY = process.env.TMDB_API_KEY;
@@ -83,6 +84,7 @@ async function fetchGenres(): Promise<Map<number, string>> {
 }
 
 interface FetchedMovie {
+	id: string;
 	title: string;
 	year: number;
 	genres: string[];
@@ -113,6 +115,7 @@ async function fetchMoviesFromEndpoint(
 				.filter((g): g is string => g !== null);
 
 			allMovies.push({
+				id: createMovieId(m.title, year),
 				title: m.title,
 				year,
 				genres,
@@ -127,12 +130,11 @@ async function fetchMoviesFromEndpoint(
 	return allMovies;
 }
 
-function deduplicateByTitle(movies: FetchedMovie[]): FetchedMovie[] {
+function deduplicateMovies(movies: FetchedMovie[]): FetchedMovie[] {
 	const seen = new Map<string, FetchedMovie>();
 	for (const m of movies) {
-		const key = m.title.toLowerCase().trim();
-		if (!seen.has(key)) {
-			seen.set(key, m);
+		if (!seen.has(m.id)) {
+			seen.set(m.id, m);
 		}
 	}
 	return Array.from(seen.values());
@@ -177,7 +179,7 @@ function generateMoviesTs(movies: FetchedMovie[]): string {
 		for (const m of genreMovies) {
 			const poster = m.posterPath ? `, posterPath: '${m.posterPath}'` : '';
 			lines.push(
-				`\t{ title: '${escapeString(m.title)}', year: ${m.year}, genres: [${m.genres.map((g) => `'${g}'`).join(', ')}], imdbRating: ${m.imdbRating}${poster} },`
+				`\t{ id: '${m.id}', title: '${escapeString(m.title)}', year: ${m.year}, genres: [${m.genres.map((g) => `'${g}'`).join(', ')}], imdbRating: ${m.imdbRating}${poster} },`
 			);
 		}
 		lines.push('');
@@ -190,7 +192,7 @@ function generateMoviesTs(movies: FetchedMovie[]): string {
 		for (const m of otherMovies) {
 			const poster = m.posterPath ? `, posterPath: '${m.posterPath}'` : '';
 			lines.push(
-				`\t{ title: '${escapeString(m.title)}', year: ${m.year}, genres: [${m.genres.map((g) => `'${g}'`).join(', ')}], imdbRating: ${m.imdbRating}${poster} },`
+				`\t{ id: '${m.id}', title: '${escapeString(m.title)}', year: ${m.year}, genres: [${m.genres.map((g) => `'${g}'`).join(', ')}], imdbRating: ${m.imdbRating}${poster} },`
 			);
 		}
 	}
@@ -223,7 +225,7 @@ async function main() {
 	const combined = [...topRated, ...popular];
 	console.log(`Combined: ${combined.length} movies before dedup`);
 
-	const deduped = deduplicateByTitle(combined);
+	const deduped = deduplicateMovies(combined);
 	deduped.sort((a, b) => b.imdbRating - a.imdbRating);
 	console.log(`After dedup: ${deduped.length} unique movies`);
 
