@@ -1,6 +1,7 @@
 import type { Movie } from '../types/index.ts';
+import { createMovieId } from '../domain/movie.ts';
 
-export const movies: Movie[] = [
+const movieSeeds: Omit<Movie, 'id'>[] = [
 	// Action
 	{ title: 'The Dark Knight', year: 2008, genres: ['Action', 'Crime', 'Thriller'], imdbRating: 8.5, posterPath: '/qJ2tW6WMUDux911r6m7haRef0WH.jpg' },
 	{ title: 'Seven Samurai', year: 1954, genres: ['Action', 'Drama'], imdbRating: 8.5, posterPath: '/lOMGc8bnSwQhS4XyE1S99uH8NXf.jpg' },
@@ -198,3 +199,8 @@ export const movies: Movie[] = [
 	{ title: 'The Draft!', year: 2026, genres: ['Science Fiction', 'Horror'], imdbRating: 6.3, posterPath: '/6WEqtp38s1iW5VrcH78rOIi8a2Z.jpg' },
 	{ title: 'Jurassic World Rebirth', year: 2025, genres: ['Science Fiction', 'Adventure', 'Action'], imdbRating: 6.3, posterPath: '/1RICxzeoNCAO5NpcRMIgg1XT6fm.jpg' },
 ];
+
+export const movies: Movie[] = movieSeeds.map((movie) => ({
+	...movie,
+	id: createMovieId(movie.title, movie.year)
+}));
