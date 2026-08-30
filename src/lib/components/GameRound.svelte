@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { onMount, tick } from 'svelte';
+	import { answerIndexForKey } from '$lib/domain/answerKeyboard';
 	import type { ClueReportReason, RoundData } from '$lib/types/index';
 	import ScoreBar from './ScoreBar.svelte';
 	import AnswerButton from './AnswerButton.svelte';
@@ -36,7 +38,38 @@
 		feedback
 	}: Props = $props();
 
+	let clueHeading: HTMLHeadingElement;
+	let focusedClueId = '';
 	const revealCorrect = $derived(feedback !== null);
+
+	$effect(() => {
+		const clueId = roundData.clueId;
+		if (!clueId || clueId === focusedClueId) return;
+
+		focusedClueId = clueId;
+		void tick().then(() => clueHeading?.focus({ preventScroll: true }));
+	});
+
+	onMount(() => {
+		function handleAnswerShortcut(event: KeyboardEvent) {
+			if (feedback || event.altKey || event.ctrlKey || event.metaKey || event.repeat) return;
+			if (
+				event.target instanceof HTMLElement &&
+				event.target.closest('button, input, select, textarea, [contenteditable="true"]')
+			) {
+				return;
+			}
+
+			const answerIndex = answerIndexForKey(event.key, roundData.options.length);
+			if (answerIndex === null) return;
+
+			event.preventDefault();
+			onAnswer(answerIndex);
+		}
+
+		window.addEventListener('keydown', handleAnswerShortcut);
+		return () => window.removeEventListener('keydown', handleAnswerShortcut);
+	});
 </script>
 
 <div class="flex flex-1 flex-col px-4 py-4 sm:px-5 sm:py-5">
@@ -45,13 +78,13 @@
 	<div class="my-6 flex flex-1 items-center justify-center sm:my-8">
 		<div class="max-w-2xl px-4">
 			<div class="mx-auto mb-4 h-px w-8 bg-gold/20"></div>
-			<p
-				class="text-center text-lg leading-relaxed font-light tracking-wide sm:text-xl md:text-2xl"
-				role="status"
-				aria-live="polite"
+			<h1
+				bind:this={clueHeading}
+				tabindex="-1"
+				class="text-center text-lg leading-relaxed font-light tracking-wide outline-none sm:text-xl md:text-2xl"
 			>
 				{roundData.description}
-			</p>
+			</h1>
 			<div class="mx-auto mt-4 h-px w-8 bg-gold/20"></div>
 		</div>
 	</div>

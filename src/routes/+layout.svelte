@@ -17,20 +17,22 @@
 	/>
 </svelte:head>
 
-<div class="flex min-h-screen flex-col bg-background text-foreground">
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<div class="app-shell flex flex-col bg-background text-foreground">
 	<header
-		class="sticky top-0 z-10 flex items-center justify-center border-b border-gold/15 bg-background/80 px-4 py-3 backdrop-blur-md"
+		class="site-header sticky top-0 z-10 flex items-center justify-center border-b border-gold/15 bg-background/80 px-4 py-3 backdrop-blur-md"
 	>
 		<a
 			href={resolve('/')}
-			class="flex min-h-11 items-center px-2 font-heading text-base tracking-[0.25em] text-gold/70 outline-none hover:text-gold focus-visible:ring-2 focus-visible:ring-gold"
+			class="flex min-h-11 items-center px-2 font-heading text-base tracking-[0.25em] text-gold outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-gold"
 			aria-label="FilmFumble home"
 		>
 			FILMFUMBLE
 		</a>
 	</header>
 
-	<main class="flex flex-1 flex-col">
+	<main id="main-content" class="app-main flex flex-1 flex-col" tabindex="-1">
 		{@render children()}
 	</main>
 </div>
