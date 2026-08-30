@@ -63,13 +63,24 @@ export interface RoundResult {
 	movieId: string;
 	description: string;
 	options: OptionItem[];
-	selectedIndex: number;
+	selectedIndex: number | null;
 	correctIndex: number;
 	correct: boolean;
+	skipped: boolean;
+}
+
+export type ClueReportReason = 'inaccurate' | 'ambiguous' | 'offensive' | 'reveals-answer';
+
+export interface ClueReport {
+	sessionId: string;
+	roundNumber: number;
+	clueId: string;
+	movieId: string;
+	reason: ClueReportReason;
 }
 
 export interface GameSession {
-	schemaVersion: 1;
+	schemaVersion: 2;
 	id: string;
 	phase: GamePhase;
 	settings: GameSettings;

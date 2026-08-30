@@ -39,10 +39,10 @@ test('active sessions survive serialization and can be cleared', () => {
 
 test('invalid or stale session payloads are rejected', () => {
 	const storage = new MemoryStorage();
-	storage.setItem('filmfumble.game-session.v1', '{"schemaVersion":0}');
+	storage.setItem('filmfumble.game-session.v2', '{"schemaVersion":1}');
 	assert.equal(loadGameSession(storage), null);
 
-	storage.setItem('filmfumble.game-session.v1', 'not-json');
+	storage.setItem('filmfumble.game-session.v2', 'not-json');
 	assert.equal(loadGameSession(storage), null);
 });
 

@@ -14,7 +14,8 @@
 		prepareNextRound,
 		receiveRound,
 		restartContentCycle,
-		requestRound
+		requestRound,
+		skipCurrentRound
 	} from '$lib/domain/gameSession';
 	import {
 		clearGameSession,
@@ -22,7 +23,7 @@
 		saveGameSession,
 		saveGameSettings
 	} from '$lib/services/sessionPersistence';
-	import type { ApiResponse, GameSession } from '$lib/types/index';
+	import type { ApiResponse, ClueReportReason, GameSession } from '$lib/types/index';
 
 	let session = $state<GameSession>(createGameSession());
 	let ready = $state(false);
@@ -131,6 +132,33 @@
 		if (!hasReachedRoundLimit(session)) preloadRound();
 	}
 
+	function handleSkip() {
+		const skippedSession = skipCurrentRound(session);
+		if (skippedSession === session) return;
+
+		setSession(skippedSession);
+		if (!hasReachedRoundLimit(session)) preloadRound();
+	}
+
+	async function handleReport(reason: ClueReportReason): Promise<boolean> {
+		try {
+			const response = await fetch('/api/report', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					sessionId: session.id,
+					roundNumber: session.roundNumber,
+					clueId: session.currentRound.clueId,
+					movieId: session.currentRound.movieId,
+					reason
+				})
+			});
+			return response.ok;
+		} catch {
+			return false;
+		}
+	}
+
 	async function handleNext() {
 		const nextSession = prepareNextRound(session);
 		if (nextSession === session) return;
@@ -189,16 +217,22 @@
 		roundLimit={session.settings.roundLimit}
 		selectedIndex={session.selectedIndex}
 		onAnswer={handleAnswer}
+		onSkip={handleSkip}
 		onEndGame={handleEndGame}
 		feedback={session.phase === 'feedback'
 			? {
-					correct: session.selectedIndex === session.currentRound.correctIndex,
+					outcome: session.history.at(-1)?.skipped
+						? 'skipped'
+						: session.selectedIndex === session.currentRound.correctIndex
+							? 'correct'
+							: 'incorrect',
 					correctTitle:
 						session.currentRound.correctIndex !== null
 							? (session.currentRound.options[session.currentRound.correctIndex]?.title ?? '')
 							: '',
 					isFinalRound: hasReachedRoundLimit(session),
-					onNext: handleNext
+					onNext: handleNext,
+					onReport: handleReport
 				}
 			: null}
 	/>

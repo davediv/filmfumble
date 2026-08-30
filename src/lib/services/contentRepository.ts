@@ -82,3 +82,7 @@ export function isContentPresetId(value: unknown): value is ContentPresetId {
 export function getClueForMovie(movieId: string): Clue | null {
 	return clues.find((clue) => clue.movieId === movieId) ?? null;
 }
+
+export function getClueById(clueId: string): Clue | null {
+	return clues.find((clue) => clue.id === clueId) ?? null;
+}
