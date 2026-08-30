@@ -2,9 +2,9 @@ import type { Movie } from '$lib/types/index';
 import { movies } from '$lib/data/movies';
 import { shuffle, pickRandom } from '$lib/utils';
 
-export function pickMovie(usedIds: string[]): Movie | null {
+export function pickMovie(usedIds: string[], pool: readonly Movie[] = movies): Movie | null {
 	const used = new Set(usedIds);
-	const available = movies.filter((m) => !used.has(m.id));
+	const available = pool.filter((m) => !used.has(m.id));
 	if (available.length === 0) return null;
 	return pickRandom(available);
 }

@@ -10,6 +10,7 @@ import {
 import type { ApiResponse } from '../src/lib/types/index.ts';
 
 const round: ApiResponse = {
+	clueId: 'correct-2000-clue-1',
 	description: 'A test clue',
 	options: [
 		{ title: 'Correct', posterPath: null },
@@ -17,7 +18,7 @@ const round: ApiResponse = {
 	],
 	correctIndex: 0,
 	movieId: 'correct-2000',
-	usedFallback: false
+	contentSource: 'curated'
 };
 
 test('session transitions preserve one coherent game state', () => {

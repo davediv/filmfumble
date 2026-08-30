@@ -1,22 +1,13 @@
 // See https://svelte.dev/docs/kit/types#app.d.ts
 // for information about these interfaces
 
-interface Env {
-	OPENROUTER_API_KEY: string;
-}
-
-interface CloudflarePlatformCacheStorage {
-	readonly default: Cache;
-	open(cacheName: string): Promise<Cache>;
-}
-
 declare global {
 	namespace App {
 		interface Platform {
-			env: Env;
+			env: Cloudflare.Env;
 			cf: CfProperties;
 			ctx: ExecutionContext;
-			caches: CloudflarePlatformCacheStorage;
+			caches: CacheStorage;
 		}
 	}
 }
