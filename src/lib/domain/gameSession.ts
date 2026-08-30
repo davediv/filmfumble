@@ -22,7 +22,7 @@ export const DEFAULT_GAME_SETTINGS: GameSettings = {
 
 export function createGameSession(settings: GameSettings = DEFAULT_GAME_SETTINGS): GameSession {
 	return {
-		schemaVersion: 1,
+		schemaVersion: 2,
 		id: '',
 		phase: 'start',
 		settings: { ...settings },
@@ -89,7 +89,8 @@ export function answerCurrentRound(session: GameSession, selectedIndex: number):
 		options: currentRound.options,
 		selectedIndex,
 		correctIndex: currentRound.correctIndex,
-		correct
+		correct,
+		skipped: false
 	};
 
 	return {
@@ -97,6 +98,30 @@ export function answerCurrentRound(session: GameSession, selectedIndex: number):
 		phase: 'feedback',
 		selectedIndex,
 		score: session.score + (correct ? 1 : 0),
+		history: [...session.history, result]
+	};
+}
+
+export function skipCurrentRound(session: GameSession): GameSession {
+	const { currentRound } = session;
+	if (session.phase !== 'playing' || currentRound.correctIndex === null) return session;
+
+	const result: RoundResult = {
+		roundNumber: session.roundNumber,
+		clueId: currentRound.clueId,
+		movieId: currentRound.movieId,
+		description: currentRound.description,
+		options: currentRound.options,
+		selectedIndex: null,
+		correctIndex: currentRound.correctIndex,
+		correct: false,
+		skipped: true
+	};
+
+	return {
+		...session,
+		phase: 'feedback',
+		selectedIndex: null,
 		history: [...session.history, result]
 	};
 }

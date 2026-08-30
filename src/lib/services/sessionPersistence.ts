@@ -8,7 +8,7 @@ import type {
 	RoundResult
 } from '../types/index.ts';
 
-const SESSION_KEY = 'filmfumble.game-session.v1';
+const SESSION_KEY = 'filmfumble.game-session.v2';
 const SETTINGS_KEY = 'filmfumble.game-settings.v1';
 const GAME_PHASES: GamePhase[] = ['start', 'loading', 'playing', 'feedback', 'ended', 'error'];
 
@@ -48,10 +48,12 @@ function isRoundResult(value: unknown): value is RoundResult {
 		'roundNumber' in value &&
 		'selectedIndex' in value &&
 		'correct' in value &&
+		'skipped' in value &&
 		Number.isInteger(value.roundNumber) &&
-		Number.isInteger(value.selectedIndex) &&
+		(value.selectedIndex === null || Number.isInteger(value.selectedIndex)) &&
 		Number.isInteger(value.correctIndex) &&
-		typeof value.correct === 'boolean'
+		typeof value.correct === 'boolean' &&
+		typeof value.skipped === 'boolean'
 	);
 }
 
@@ -67,7 +69,7 @@ export function isGameSettings(value: unknown): value is GameSettings {
 export function isGameSession(value: unknown): value is GameSession {
 	return (
 		isRecord(value) &&
-		value.schemaVersion === 1 &&
+		value.schemaVersion === 2 &&
 		typeof value.id === 'string' &&
 		GAME_PHASES.includes(value.phase as GamePhase) &&
 		isGameSettings(value.settings) &&

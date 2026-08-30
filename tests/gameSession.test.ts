@@ -7,7 +7,8 @@ import {
 	hasReachedRoundLimit,
 	prepareNextRound,
 	receiveRound,
-	restartContentCycle
+	restartContentCycle,
+	skipCurrentRound
 } from '../src/lib/domain/gameSession.ts';
 import type { ApiResponse } from '../src/lib/types/index.ts';
 
@@ -73,4 +74,15 @@ test('endless sessions can restart the content cycle without losing history', ()
 	assert.deepEqual(session.usedMovieIds, []);
 	assert.equal(session.history.length, 1);
 	assert.equal(session.roundNumber, 2);
+});
+
+test('skipping a clue is score-neutral and records a reviewable outcome', () => {
+	let session = beginGameSession({ roundLimit: 5, contentPreset: 'all' }, 'session-5');
+	session = receiveRound(session, round);
+	session = skipCurrentRound(session);
+
+	assert.equal(session.phase, 'feedback');
+	assert.equal(session.score, 0);
+	assert.equal(session.history[0]?.skipped, true);
+	assert.equal(session.history[0]?.selectedIndex, null);
 });

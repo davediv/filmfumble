@@ -1,14 +1,15 @@
 <script lang="ts">
-	import type { RoundData } from '$lib/types/index';
+	import type { ClueReportReason, RoundData } from '$lib/types/index';
 	import ScoreBar from './ScoreBar.svelte';
 	import AnswerButton from './AnswerButton.svelte';
 	import RoundFeedback from './RoundFeedback.svelte';
 
 	interface FeedbackData {
-		correct: boolean;
+		outcome: 'correct' | 'incorrect' | 'skipped';
 		correctTitle: string;
 		isFinalRound: boolean;
 		onNext: () => void | Promise<void>;
+		onReport: (reason: ClueReportReason) => Promise<boolean>;
 	}
 
 	interface Props {
@@ -18,6 +19,7 @@
 		roundLimit: number | null;
 		selectedIndex: number | null;
 		onAnswer: (index: number) => void;
+		onSkip: () => void;
 		onEndGame: () => void;
 		feedback: FeedbackData | null;
 	}
@@ -29,11 +31,12 @@
 		roundLimit,
 		selectedIndex,
 		onAnswer,
+		onSkip,
 		onEndGame,
 		feedback
 	}: Props = $props();
 
-	const revealCorrect = $derived(selectedIndex !== null);
+	const revealCorrect = $derived(feedback !== null);
 </script>
 
 <div class="flex flex-1 flex-col px-4 py-4 sm:px-5 sm:py-5">
@@ -68,11 +71,21 @@
 							? 'incorrect'
 							: 'default'
 					: 'default'}
-				disabled={selectedIndex !== null}
+				disabled={revealCorrect}
 				onclick={() => onAnswer(i)}
 			/>
 		{/each}
 	</div>
+
+	{#if !feedback}
+		<button
+			class="mx-auto mt-3 min-h-11 px-4 text-xs tracking-[0.12em] text-muted-foreground uppercase outline-none hover:text-gold focus-visible:ring-2 focus-visible:ring-gold"
+			type="button"
+			onclick={onSkip}
+		>
+			Skip this clue
+		</button>
+	{/if}
 
 	{#if feedback}
 		<RoundFeedback {...feedback} />

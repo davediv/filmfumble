@@ -24,7 +24,7 @@ The current experience is intentionally compact and has several strengths worth 
 
 - [x] **Curate the movie pool around recognizability and difficulty.** The generated catalog mixes famous and obscure titles without an explicit difficulty model. Retain stable source metadata, create curated difficulty tiers, and provide simple optional category, era, and difficulty settings while keeping a one-click default.
 
-- [ ] **Add Skip and Report Bad Clue controls.** Players currently must answer every clue and cannot flag ambiguous, incorrect, offensive, or overly revealing content. Provide a score-neutral skip and a post-answer report action tied to stable movie and clue IDs.
+- [x] **Add Skip and Report Bad Clue controls.** Players currently must answer every clue and cannot flag ambiguous, incorrect, offensive, or overly revealing content. Provide a score-neutral skip and a post-answer report action tied to stable movie and clue IDs.
 
 - [x] **Introduce an explicit domain and session model.** Titles currently act as IDs, and phase, score, rounds, errors, and preload state are independently mutable. Define stable `Movie`, `Clue`, `GameSettings`, `Round`, and `GameSession` models and centralize valid state transitions.
 
