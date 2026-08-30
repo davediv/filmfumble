@@ -10,11 +10,13 @@
 	const accuracy = $derived(roundNumber > 0 ? Math.round((score / roundNumber) * 100) : 0);
 
 	const performanceMessage = $derived(
-		score === roundNumber
-			? 'Perfect score! The AI has nothing on you.'
-			: score > roundNumber / 2
-				? 'Not bad! Some terrible descriptions fool the best.'
-				: "The AI's terrible descriptions got the better of you."
+		roundNumber === 0
+			? 'No rounds completed. Your next game is ready when you are.'
+			: score === roundNumber
+				? 'Perfect score! The AI has nothing on you.'
+				: score > roundNumber / 2
+					? 'Not bad! Some terrible descriptions fool the best.'
+					: "The AI's terrible descriptions got the better of you."
 	);
 </script>
 

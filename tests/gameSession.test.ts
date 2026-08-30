@@ -4,8 +4,10 @@ import {
 	answerCurrentRound,
 	beginGameSession,
 	completeGameSession,
+	hasReachedRoundLimit,
 	prepareNextRound,
-	receiveRound
+	receiveRound,
+	restartContentCycle
 } from '../src/lib/domain/gameSession.ts';
 import type { ApiResponse } from '../src/lib/types/index.ts';
 
@@ -50,4 +52,25 @@ test('answer transitions reject invalid phases and option indexes', () => {
 
 	const playingSession = receiveRound(loadingSession, round);
 	assert.equal(answerCurrentRound(playingSession, 4), playingSession);
+});
+
+test('finite sessions complete after their configured answer count', () => {
+	let session = beginGameSession({ roundLimit: 1, contentPreset: 'all' }, 'session-3');
+	session = receiveRound(session, round);
+	session = answerCurrentRound(session, 1);
+
+	assert.equal(hasReachedRoundLimit(session), true);
+	assert.equal(prepareNextRound(session).phase, 'ended');
+});
+
+test('endless sessions can restart the content cycle without losing history', () => {
+	let session = beginGameSession({ roundLimit: null, contentPreset: 'all' }, 'session-4');
+	session = receiveRound(session, round);
+	session = answerCurrentRound(session, 0);
+	session = prepareNextRound(session);
+	session = restartContentCycle(session);
+
+	assert.deepEqual(session.usedMovieIds, []);
+	assert.equal(session.history.length, 1);
+	assert.equal(session.roundNumber, 2);
 });

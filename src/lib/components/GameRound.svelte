@@ -7,17 +7,20 @@
 		roundData: RoundData;
 		score: number;
 		roundNumber: number;
+		roundLimit: number | null;
 		selectedIndex: number | null;
 		onAnswer: (index: number) => void;
+		onEndGame: () => void;
 	}
 
-	let { roundData, score, roundNumber, selectedIndex, onAnswer }: Props = $props();
+	let { roundData, score, roundNumber, roundLimit, selectedIndex, onAnswer, onEndGame }: Props =
+		$props();
 
 	const revealCorrect = $derived(selectedIndex !== null);
 </script>
 
 <div class="flex flex-1 flex-col px-4 py-4 sm:px-5 sm:py-5">
-	<ScoreBar {score} round={roundNumber} />
+	<ScoreBar {score} round={roundNumber} {roundLimit} {onEndGame} />
 
 	<div class="my-6 flex flex-1 items-center justify-center sm:my-8">
 		<div class="max-w-2xl px-4">

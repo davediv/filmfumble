@@ -16,7 +16,7 @@ const EMPTY_ROUND: RoundData = {
 };
 
 export const DEFAULT_GAME_SETTINGS: GameSettings = {
-	roundLimit: null,
+	roundLimit: 10,
 	contentPreset: 'all'
 };
 
@@ -102,6 +102,7 @@ export function answerCurrentRound(session: GameSession, selectedIndex: number):
 
 export function prepareNextRound(session: GameSession): GameSession {
 	if (session.phase !== 'feedback') return session;
+	if (hasReachedRoundLimit(session)) return completeGameSession(session);
 
 	return {
 		...session,
@@ -110,6 +111,16 @@ export function prepareNextRound(session: GameSession): GameSession {
 		selectedIndex: null,
 		errorType: null
 	};
+}
+
+export function hasReachedRoundLimit(session: GameSession): boolean {
+	return (
+		session.settings.roundLimit !== null && session.history.length >= session.settings.roundLimit
+	);
+}
+
+export function restartContentCycle(session: GameSession): GameSession {
+	return { ...session, phase: 'loading', usedMovieIds: [], errorType: null };
 }
 
 export function completeGameSession(session: GameSession): GameSession {

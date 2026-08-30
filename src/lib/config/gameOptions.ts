@@ -7,6 +7,11 @@ export interface ContentPresetOption {
 	availableMovies: number;
 }
 
+export interface RoundLimitOption {
+	value: number | null;
+	label: string;
+}
+
 export const CONTENT_PRESETS: ContentPresetOption[] = [
 	{
 		id: 'all',
@@ -66,4 +71,20 @@ export const CONTENT_PRESETS: ContentPresetOption[] = [
 
 export function getContentPreset(id: ContentPresetId): ContentPresetOption {
 	return CONTENT_PRESETS.find((preset) => preset.id === id) ?? CONTENT_PRESETS[0];
+}
+
+export function getRoundLimitOptions(contentPreset: ContentPresetId): RoundLimitOption[] {
+	const { availableMovies } = getContentPreset(contentPreset);
+	const finiteOptions = [5, 10, 20]
+		.filter((rounds) => rounds <= availableMovies)
+		.map((rounds) => ({ value: rounds, label: `${rounds} rounds` }));
+
+	return [...finiteOptions, { value: null, label: 'Endless' }];
+}
+
+export function getDefaultRoundLimit(contentPreset: ContentPresetId): number {
+	const finiteOptions = getRoundLimitOptions(contentPreset).filter(
+		(option): option is RoundLimitOption & { value: number } => option.value !== null
+	);
+	return finiteOptions.find((option) => option.value === 10)?.value ?? finiteOptions[0]?.value ?? 1;
 }

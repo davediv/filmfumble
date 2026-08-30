@@ -1,6 +1,10 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { CONTENT_PRESETS } from '../src/lib/config/gameOptions.ts';
+import {
+	CONTENT_PRESETS,
+	getDefaultRoundLimit,
+	getRoundLimitOptions
+} from '../src/lib/config/gameOptions.ts';
 import { filterContent } from '../src/lib/services/contentFilter.ts';
 import {
 	clues,
@@ -33,4 +37,17 @@ test('every curated preset has the documented eligible movie count', () => {
 	for (const preset of CONTENT_PRESETS) {
 		assert.equal(getPlayableMovies(preset.id).length, preset.availableMovies, preset.id);
 	}
+});
+
+test('round choices fit their content pool and always offer endless play', () => {
+	for (const preset of CONTENT_PRESETS) {
+		const options = getRoundLimitOptions(preset.id);
+		assert.equal(options.at(-1)?.value, null);
+		assert.ok(
+			options.every((option) => option.value === null || option.value <= preset.availableMovies)
+		);
+	}
+
+	assert.equal(getDefaultRoundLimit('all'), 10);
+	assert.equal(getDefaultRoundLimit('science-fiction'), 5);
 });
