@@ -69,6 +69,7 @@ export interface RoundResult {
 }
 
 export interface GameSession {
+	schemaVersion: 1;
 	id: string;
 	phase: GamePhase;
 	settings: GameSettings;

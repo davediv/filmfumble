@@ -1,6 +1,7 @@
 <script lang="ts">
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
+	import { resolve } from '$app/paths';
 
 	let { children } = $props();
 </script>
@@ -20,7 +21,13 @@
 	<header
 		class="sticky top-0 z-10 flex items-center justify-center border-b border-gold/15 bg-background/80 px-4 py-3 backdrop-blur-md"
 	>
-		<span class="font-heading text-base tracking-[0.25em] text-gold/70">FILMFUMBLE</span>
+		<a
+			href={resolve('/')}
+			class="flex min-h-11 items-center px-2 font-heading text-base tracking-[0.25em] text-gold/70 outline-none hover:text-gold focus-visible:ring-2 focus-visible:ring-gold"
+			aria-label="FilmFumble home"
+		>
+			FILMFUMBLE
+		</a>
 	</header>
 
 	<main class="flex flex-1 flex-col">

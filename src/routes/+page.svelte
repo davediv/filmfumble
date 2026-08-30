@@ -1,142 +1,40 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
+	import { onMount } from 'svelte';
 	import StartScreen from '$lib/components/StartScreen.svelte';
-	import GameRound from '$lib/components/GameRound.svelte';
-	import FeedbackOverlay from '$lib/components/FeedbackOverlay.svelte';
-	import LoadingSkeleton from '$lib/components/LoadingSkeleton.svelte';
-	import type { ApiResponse, GameSession } from '$lib/types/index';
-	import ErrorState from '$lib/components/ErrorState.svelte';
-	import ScoreSummary from '$lib/components/ScoreSummary.svelte';
+	import { beginGameSession, DEFAULT_GAME_SETTINGS } from '$lib/domain/gameSession';
 	import {
-		answerCurrentRound,
-		beginGameSession,
-		completeGameSession,
-		createGameSession,
-		failGameSession,
-		hasReachedRoundLimit,
-		prepareNextRound,
-		receiveRound,
-		restartContentCycle,
-		requestRound
-	} from '$lib/domain/gameSession';
+		loadGameSession,
+		loadGameSettings,
+		saveGameSession,
+		saveGameSettings
+	} from '$lib/services/sessionPersistence';
+	import type { GameSettings } from '$lib/types/index';
 
-	let session = $state<GameSession>(createGameSession());
-	let preloadedRound = $state<ApiResponse | null>(null);
-	let preloadedRoundPromise: Promise<ApiResponse | null> | null = null;
+	let settings = $state<GameSettings>({ ...DEFAULT_GAME_SETTINGS });
+	let canResume = $state(false);
 
-	function fetchRoundApi(): Promise<Response> {
-		return fetch('/api/round', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({
-				usedMovieIds: session.usedMovieIds,
-				contentPreset: session.settings.contentPreset
-			})
-		});
-	}
+	onMount(() => {
+		settings = loadGameSettings(window.sessionStorage) ?? { ...DEFAULT_GAME_SETTINGS };
+		const savedSession = loadGameSession(window.sessionStorage);
+		canResume = Boolean(savedSession && !['start', 'ended'].includes(savedSession.phase));
+	});
 
-	function preloadRound() {
-		const request = fetchRoundApi()
-			.then(async (res) => (res.ok ? ((await res.json()) as ApiResponse) : null))
-			.catch(() => null);
-
-		preloadedRound = null;
-		preloadedRoundPromise = request;
-		void request.then((data) => {
-			if (preloadedRoundPromise === request) {
-				preloadedRound = data;
-			}
-		});
-	}
-
-	function resetState() {
-		session = createGameSession(session.settings);
-		preloadedRound = null;
-		preloadedRoundPromise = null;
+	function handleSettingsChange(nextSettings: GameSettings) {
+		settings = nextSettings;
+		saveGameSettings(window.sessionStorage, settings);
 	}
 
 	async function startGame() {
-		session = beginGameSession(session.settings);
-		preloadedRound = null;
-		preloadedRoundPromise = null;
-		await fetchRound();
+		const session = beginGameSession(settings);
+		saveGameSettings(window.sessionStorage, settings);
+		saveGameSession(window.sessionStorage, session);
+		await goto(resolve('/play'));
 	}
 
-	function applyRoundData(data: ApiResponse) {
-		session = receiveRound(session, data);
-	}
-
-	async function fetchRound() {
-		session = requestRound(session);
-		try {
-			const res = await fetchRoundApi();
-
-			if (!res.ok) {
-				if (res.status === 503) {
-					if (session.settings.roundLimit === null && session.history.length > 0) {
-						session = restartContentCycle(session);
-						await fetchRound();
-						return;
-					}
-					session = completeGameSession(session);
-					return;
-				}
-				throw new Error(`API error: ${res.status}`);
-			}
-
-			const data = (await res.json()) as ApiResponse;
-			applyRoundData(data);
-		} catch {
-			session = failGameSession(session, 'network');
-		}
-	}
-
-	function handleAnswer(index: number) {
-		const answeredSession = answerCurrentRound(session, index);
-		if (answeredSession === session) return;
-
-		session = answeredSession;
-		if (!hasReachedRoundLimit(session)) preloadRound();
-	}
-
-	async function handleNext() {
-		const nextSession = prepareNextRound(session);
-		if (nextSession === session) return;
-		session = nextSession;
-		if (session.phase === 'ended') {
-			preloadedRound = null;
-			preloadedRoundPromise = null;
-			return;
-		}
-
-		const pendingRound = preloadedRoundPromise;
-		if (!preloadedRound && pendingRound) {
-			preloadedRound = await pendingRound;
-		}
-
-		const nextRound = preloadedRound;
-		preloadedRound = null;
-		preloadedRoundPromise = null;
-
-		if (nextRound && !session.usedMovieIds.includes(nextRound.movieId)) {
-			applyRoundData(nextRound);
-			return;
-		}
-
-		await fetchRound();
-	}
-
-	function handlePlayAgain() {
-		resetState();
-	}
-
-	function handleEndGame() {
-		preloadedRound = null;
-		preloadedRoundPromise = null;
-		session = completeGameSession(session);
-	}
-
-	function handleSettingsChange(settings: GameSession['settings']) {
-		session = createGameSession(settings);
+	async function resumeGame() {
+		await goto(resolve('/play'));
 	}
 </script>
 
@@ -147,7 +45,6 @@
 		content="AI generates hilariously bad movie descriptions. Can you guess the film? A free browser party game."
 	/>
 
-	<!-- Open Graph -->
 	<meta property="og:type" content="website" />
 	<meta property="og:title" content="FilmFumble — Guess Movies from Terrible Descriptions" />
 	<meta
@@ -156,7 +53,6 @@
 	/>
 	<meta property="og:site_name" content="FilmFumble" />
 
-	<!-- Twitter Card -->
 	<meta name="twitter:card" content="summary" />
 	<meta name="twitter:title" content="FilmFumble — Guess Movies from Terrible Descriptions" />
 	<meta
@@ -165,40 +61,10 @@
 	/>
 </svelte:head>
 
-{#if session.phase === 'start'}
-	<StartScreen
-		settings={session.settings}
-		onSettingsChange={handleSettingsChange}
-		onStart={startGame}
-	/>
-{:else if session.phase === 'loading'}
-	<LoadingSkeleton />
-{:else if session.phase === 'error' && session.errorType}
-	<ErrorState errorType={session.errorType} onRetry={fetchRound} onPlayAgain={handlePlayAgain} />
-{:else if session.phase === 'playing' || session.phase === 'feedback'}
-	<GameRound
-		roundData={session.currentRound}
-		score={session.score}
-		roundNumber={session.roundNumber}
-		roundLimit={session.settings.roundLimit}
-		selectedIndex={session.selectedIndex}
-		onAnswer={handleAnswer}
-		onEndGame={handleEndGame}
-	/>
-	{#if session.phase === 'feedback'}
-		<FeedbackOverlay
-			correct={session.selectedIndex === session.currentRound.correctIndex}
-			correctTitle={session.currentRound.correctIndex !== null
-				? (session.currentRound.options[session.currentRound.correctIndex]?.title ?? '')
-				: ''}
-			isFinalRound={hasReachedRoundLimit(session)}
-			onNext={handleNext}
-		/>
-	{/if}
-{:else if session.phase === 'ended'}
-	<ScoreSummary
-		score={session.score}
-		roundNumber={session.roundNumber}
-		onPlayAgain={handlePlayAgain}
-	/>
-{/if}
+<StartScreen
+	{settings}
+	{canResume}
+	onSettingsChange={handleSettingsChange}
+	onStart={startGame}
+	onResume={resumeGame}
+/>

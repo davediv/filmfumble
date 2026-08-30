@@ -9,11 +9,19 @@
 
 	interface Props {
 		settings: GameSettings;
+		canResume?: boolean;
 		onSettingsChange: (settings: GameSettings) => void;
 		onStart: () => void;
+		onResume?: () => void;
 	}
 
-	let { settings, onSettingsChange, onStart }: Props = $props();
+	let {
+		settings,
+		canResume = false,
+		onSettingsChange,
+		onStart,
+		onResume = () => undefined
+	}: Props = $props();
 
 	const activePreset = $derived(getContentPreset(settings.contentPreset));
 	const roundLimitOptions = $derived(getRoundLimitOptions(settings.contentPreset));
@@ -116,6 +124,16 @@
 		>
 			START GAME
 		</button>
+
+		{#if canResume}
+			<button
+				class="min-h-11 px-4 font-heading text-sm tracking-[0.15em] text-muted-foreground outline-none hover:text-gold focus-visible:ring-2 focus-visible:ring-gold"
+				type="button"
+				onclick={onResume}
+			>
+				RESUME SAVED GAME
+			</button>
+		{/if}
 
 		<p class="text-xs tracking-wide text-muted-foreground/50">
 			{gameLength} · 4 choices · no account
