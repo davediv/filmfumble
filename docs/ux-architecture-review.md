@@ -36,7 +36,7 @@ The current experience is intentionally compact and has several strengths worth 
 
 - [x] **Strengthen accessibility and mobile behavior.** Active states lose the page-level heading, several low-opacity text tokens fail WCAG contrast, modal focus is incomplete, and reduced-motion handling is partial. Establish logical headings, AA color tokens, predictable focus, complete reduced-motion behavior, keyboard controls, dynamic viewport sizing, and safe-area support.
 
-- [ ] **Give results stronger closure and replay options.** Results currently provide only score, accuracy, and Play Again. Add incorrect-answer review, replay with the same settings, change settings, and accessible text sharing.
+- [x] **Give results stronger closure and replay options.** Results currently provide only score, accuracy, and Play Again. Add incorrect-answer review, replay with the same settings, change settings, and accessible text sharing.
 
 ## Top five priorities
 
