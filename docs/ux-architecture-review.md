@@ -14,7 +14,7 @@ The current experience is intentionally compact and has several strengths worth 
 
 ### High priority
 
-- [ ] **Give every game an intentional endpoint.** Results currently appear only after all 177 movies are exhausted. Introduce a short default session, optional round-count choices and Endless mode, `Round N of M` progress, and an explicit End Game action.
+- [x] **Give every game an intentional endpoint.** Results currently appear only after all 177 movies are exhausted. Introduce a short default session, optional round-count choices and Endless mode, `Round N of M` progress, and an explicit End Game action.
 
 - [ ] **Make navigation and progress recoverable.** Refresh and browser navigation currently destroy the in-memory session, while the header provides no Home, restart, or exit action. Establish Home, Play, and Results navigation, persist the active session, and confirm before abandoning progress.
 

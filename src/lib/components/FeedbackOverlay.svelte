@@ -2,10 +2,11 @@
 	interface Props {
 		correct: boolean;
 		correctTitle: string;
+		isFinalRound: boolean;
 		onNext: () => void;
 	}
 
-	let { correct, correctTitle, onNext }: Props = $props();
+	let { correct, correctTitle, isFinalRound, onNext }: Props = $props();
 
 	const CONFETTI_COLORS = ['#d4a017', '#eab308', '#f59e0b', '#fbbf24', '#b8860b'];
 </script>
@@ -53,7 +54,7 @@
 		class="mt-4 border border-gold/50 px-8 py-2.5 font-heading text-sm tracking-[0.2em] text-gold transition-colors duration-200 outline-none hover:bg-gold hover:text-background focus-visible:ring-2 focus-visible:ring-gold/50 active:scale-[0.97]"
 		onclick={onNext}
 	>
-		NEXT ROUND
+		{isFinalRound ? 'SEE RESULTS' : 'NEXT ROUND'}
 	</button>
 </div>
 

@@ -1,5 +1,10 @@
 <script lang="ts">
-	import { CONTENT_PRESETS, getContentPreset } from '$lib/config/gameOptions';
+	import {
+		CONTENT_PRESETS,
+		getContentPreset,
+		getDefaultRoundLimit,
+		getRoundLimitOptions
+	} from '$lib/config/gameOptions';
 	import type { GameSettings } from '$lib/types/index';
 
 	interface Props {
@@ -11,12 +16,33 @@
 	let { settings, onSettingsChange, onStart }: Props = $props();
 
 	const activePreset = $derived(getContentPreset(settings.contentPreset));
+	const roundLimitOptions = $derived(getRoundLimitOptions(settings.contentPreset));
+	const gameLength = $derived(
+		settings.roundLimit === null ? 'Endless play' : `${settings.roundLimit} rounds`
+	);
 
 	function handlePresetChange(event: Event) {
 		const preset = CONTENT_PRESETS.find(
 			(option) => option.id === (event.currentTarget as HTMLSelectElement).value
 		);
-		if (preset) onSettingsChange({ ...settings, contentPreset: preset.id });
+		if (!preset) return;
+
+		const validRoundLimit = getRoundLimitOptions(preset.id).some(
+			(option) => option.value === settings.roundLimit
+		);
+		onSettingsChange({
+			...settings,
+			contentPreset: preset.id,
+			roundLimit: validRoundLimit ? settings.roundLimit : getDefaultRoundLimit(preset.id)
+		});
+	}
+
+	function handleRoundLimitChange(event: Event) {
+		const value = (event.currentTarget as HTMLSelectElement).value;
+		const roundLimit = value === 'endless' ? null : Number(value);
+		if (roundLimit === null || Number.isInteger(roundLimit)) {
+			onSettingsChange({ ...settings, roundLimit });
+		}
 	}
 </script>
 
@@ -66,6 +92,20 @@
 				{/each}
 			</select>
 			<p class="text-xs leading-relaxed text-muted-foreground">{activePreset.description}</p>
+
+			<label for="round-limit" class="mt-2 text-xs text-muted-foreground">Game length</label>
+			<select
+				id="round-limit"
+				class="min-h-11 w-full border border-border bg-card px-3 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-gold"
+				value={settings.roundLimit === null ? 'endless' : String(settings.roundLimit)}
+				onchange={handleRoundLimitChange}
+			>
+				{#each roundLimitOptions as option (option.value)}
+					<option value={option.value === null ? 'endless' : String(option.value)}>
+						{option.label}
+					</option>
+				{/each}
+			</select>
 		</div>
 	</details>
 
@@ -77,6 +117,8 @@
 			START GAME
 		</button>
 
-		<p class="text-xs tracking-wide text-muted-foreground/50">No account needed — just play</p>
+		<p class="text-xs tracking-wide text-muted-foreground/50">
+			{gameLength} · 4 choices · no account
+		</p>
 	</div>
 </div>

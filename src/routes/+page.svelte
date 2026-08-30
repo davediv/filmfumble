@@ -12,8 +12,10 @@
 		completeGameSession,
 		createGameSession,
 		failGameSession,
+		hasReachedRoundLimit,
 		prepareNextRound,
 		receiveRound,
+		restartContentCycle,
 		requestRound
 	} from '$lib/domain/gameSession';
 
@@ -70,6 +72,11 @@
 
 			if (!res.ok) {
 				if (res.status === 503) {
+					if (session.settings.roundLimit === null && session.history.length > 0) {
+						session = restartContentCycle(session);
+						await fetchRound();
+						return;
+					}
 					session = completeGameSession(session);
 					return;
 				}
@@ -88,13 +95,18 @@
 		if (answeredSession === session) return;
 
 		session = answeredSession;
-		preloadRound();
+		if (!hasReachedRoundLimit(session)) preloadRound();
 	}
 
 	async function handleNext() {
 		const nextSession = prepareNextRound(session);
 		if (nextSession === session) return;
 		session = nextSession;
+		if (session.phase === 'ended') {
+			preloadedRound = null;
+			preloadedRoundPromise = null;
+			return;
+		}
 
 		const pendingRound = preloadedRoundPromise;
 		if (!preloadedRound && pendingRound) {
@@ -115,6 +127,12 @@
 
 	function handlePlayAgain() {
 		resetState();
+	}
+
+	function handleEndGame() {
+		preloadedRound = null;
+		preloadedRoundPromise = null;
+		session = completeGameSession(session);
 	}
 
 	function handleSettingsChange(settings: GameSession['settings']) {
@@ -162,8 +180,10 @@
 		roundData={session.currentRound}
 		score={session.score}
 		roundNumber={session.roundNumber}
+		roundLimit={session.settings.roundLimit}
 		selectedIndex={session.selectedIndex}
 		onAnswer={handleAnswer}
+		onEndGame={handleEndGame}
 	/>
 	{#if session.phase === 'feedback'}
 		<FeedbackOverlay
@@ -171,6 +191,7 @@
 			correctTitle={session.currentRound.correctIndex !== null
 				? (session.currentRound.options[session.currentRound.correctIndex]?.title ?? '')
 				: ''}
+			isFinalRound={hasReachedRoundLimit(session)}
 			onNext={handleNext}
 		/>
 	{/if}
