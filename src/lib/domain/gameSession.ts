@@ -16,7 +16,8 @@ const EMPTY_ROUND: RoundData = {
 };
 
 export const DEFAULT_GAME_SETTINGS: GameSettings = {
-	roundLimit: null
+	roundLimit: null,
+	contentPreset: 'all'
 };
 
 export function createGameSession(settings: GameSettings = DEFAULT_GAME_SETTINGS): GameSession {

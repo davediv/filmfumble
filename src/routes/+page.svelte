@@ -25,7 +25,10 @@
 		return fetch('/api/round', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ usedMovieIds: session.usedMovieIds })
+			body: JSON.stringify({
+				usedMovieIds: session.usedMovieIds,
+				contentPreset: session.settings.contentPreset
+			})
 		});
 	}
 
@@ -113,6 +116,10 @@
 	function handlePlayAgain() {
 		resetState();
 	}
+
+	function handleSettingsChange(settings: GameSession['settings']) {
+		session = createGameSession(settings);
+	}
 </script>
 
 <svelte:head>
@@ -141,7 +148,11 @@
 </svelte:head>
 
 {#if session.phase === 'start'}
-	<StartScreen onStart={startGame} />
+	<StartScreen
+		settings={session.settings}
+		onSettingsChange={handleSettingsChange}
+		onStart={startGame}
+	/>
 {:else if session.phase === 'loading'}
 	<LoadingSkeleton />
 {:else if session.phase === 'error' && session.errorType}

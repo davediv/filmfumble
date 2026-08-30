@@ -22,7 +22,7 @@ const round: ApiResponse = {
 };
 
 test('session transitions preserve one coherent game state', () => {
-	let session = beginGameSession({ roundLimit: null }, 'session-1');
+	let session = beginGameSession({ roundLimit: null, contentPreset: 'all' }, 'session-1');
 	assert.equal(session.phase, 'loading');
 	assert.equal(session.roundNumber, 1);
 
@@ -45,7 +45,7 @@ test('session transitions preserve one coherent game state', () => {
 });
 
 test('answer transitions reject invalid phases and option indexes', () => {
-	const loadingSession = beginGameSession({ roundLimit: null }, 'session-2');
+	const loadingSession = beginGameSession({ roundLimit: null, contentPreset: 'all' }, 'session-2');
 	assert.equal(answerCurrentRound(loadingSession, 0), loadingSession);
 
 	const playingSession = receiveRound(loadingSession, round);
