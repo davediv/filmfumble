@@ -10,7 +10,7 @@ The current experience is intentionally compact and has several strengths worth 
 
 ### Critical
 
-- [ ] **Guarantee clue-to-answer integrity.** The fallback path can attach a random clue to an unrelated movie when generation fails. Only 22 of the current 177 movie titles have a same-title fallback. A round must only be served when its clue, answer, and content ID agree; otherwise the server should select another eligible movie or return a typed content-unavailable result. Add an automated catalog-integrity check.
+- [x] **Guarantee clue-to-answer integrity.** The fallback path can attach a random clue to an unrelated movie when generation fails. Only 22 of the current 177 movie titles have a same-title fallback. A round must only be served when its clue, answer, and content ID agree; otherwise the server should select another eligible movie or return a typed content-unavailable result. Add an automated catalog-integrity check.
 
 ### High priority
 

@@ -3,12 +3,10 @@ import type { RequestHandler } from './$types';
 import { pickMovie, pickDecoys } from '$lib/services/moviePicker';
 import { generateDescription } from '$lib/services/openrouter';
 import { filterContent } from '$lib/services/contentFilter';
-import { fallbacks } from '$lib/data/fallbacks';
-import { movies } from '$lib/data/movies';
-import { shuffle, pickRandom } from '$lib/utils';
+import { pickFallbackRound } from '$lib/services/fallbackPicker';
+import { shuffle } from '$lib/utils';
 import type { Movie } from '$lib/types/index';
 
-const FALLBACK_KEYS = Object.keys(fallbacks);
 const GENERATION_BUDGET_MS = 8000;
 const DESCRIPTION_CACHE_VERSION = 'v1';
 const DESCRIPTION_CACHE_TTL_SECONDS = 60 * 60 * 24 * 7;
@@ -92,22 +90,6 @@ function getPendingDescription(movie: Movie, apiKey: string): Promise<string | n
 	return pending;
 }
 
-function getFallbackForMovie(movieTitle: string): {
-	description: string;
-	usedFallbackMovie: string;
-} {
-	const fallbackDescription = fallbacks[movieTitle];
-	if (fallbackDescription) {
-		return { description: fallbackDescription, usedFallbackMovie: movieTitle };
-	}
-
-	const randomFallbackKey = pickRandom(FALLBACK_KEYS);
-	return {
-		description: fallbacks[randomFallbackKey],
-		usedFallbackMovie: randomFallbackKey
-	};
-}
-
 export const POST: RequestHandler = async ({ request, platform }) => {
 	let body: { usedMovieIds?: string[] };
 	try {
@@ -148,19 +130,17 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 	}
 
 	if (description === null) {
-		const fallback = getFallbackForMovie(movie.title);
+		const fallback = pickFallbackRound(usedIds);
+		if (!fallback) {
+			return json(
+				{ error: 'No safe movie descriptions are currently available.' },
+				{ status: 503 }
+			);
+		}
+
+		movie = fallback.movie;
 		description = fallback.description;
 		usedFallback = true;
-
-		if (fallback.usedFallbackMovie !== movie.title) {
-			const rePickUsed = new Set([...usedIds, movie.title]);
-			const swapTarget = movies.find(
-				(m) => m.title === fallback.usedFallbackMovie && !rePickUsed.has(m.title)
-			);
-			if (swapTarget) {
-				movie = swapTarget;
-			}
-		}
 	}
 
 	const decoys = pickDecoys(movie, 3);
