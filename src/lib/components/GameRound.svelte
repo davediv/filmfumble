@@ -2,6 +2,14 @@
 	import type { RoundData } from '$lib/types/index';
 	import ScoreBar from './ScoreBar.svelte';
 	import AnswerButton from './AnswerButton.svelte';
+	import RoundFeedback from './RoundFeedback.svelte';
+
+	interface FeedbackData {
+		correct: boolean;
+		correctTitle: string;
+		isFinalRound: boolean;
+		onNext: () => void | Promise<void>;
+	}
 
 	interface Props {
 		roundData: RoundData;
@@ -11,10 +19,19 @@
 		selectedIndex: number | null;
 		onAnswer: (index: number) => void;
 		onEndGame: () => void;
+		feedback: FeedbackData | null;
 	}
 
-	let { roundData, score, roundNumber, roundLimit, selectedIndex, onAnswer, onEndGame }: Props =
-		$props();
+	let {
+		roundData,
+		score,
+		roundNumber,
+		roundLimit,
+		selectedIndex,
+		onAnswer,
+		onEndGame,
+		feedback
+	}: Props = $props();
 
 	const revealCorrect = $derived(selectedIndex !== null);
 </script>
@@ -56,4 +73,8 @@
 			/>
 		{/each}
 	</div>
+
+	{#if feedback}
+		<RoundFeedback {...feedback} />
+	{/if}
 </div>

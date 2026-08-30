@@ -18,7 +18,7 @@ The current experience is intentionally compact and has several strengths worth 
 
 - [x] **Make navigation and progress recoverable.** Refresh and browser navigation currently destroy the in-memory session, while the header provides no Home, restart, or exit action. Establish Home, Play, and Results navigation, persist the active session, and confirm before abandoning progress.
 
-- [ ] **Replace the interruptive feedback overlay.** The full-screen feedback dialog hides the highlighted answer grid and lacks complete modal focus behavior. Prefer inline feedback that keeps the clue and choices visible, moves focus predictably, and provides an obvious Next action.
+- [x] **Replace the interruptive feedback overlay.** The full-screen feedback dialog hides the highlighted answer grid and lacks complete modal focus behavior. Prefer inline feedback that keeps the clue and choices visible, moves focus predictably, and provides an obvious Next action.
 
 - [x] **Remove runtime AI generation from the critical play path.** A round can wait on a live free-model request before using a fallback. Serve pre-generated, moderated, versioned clues synchronously and replenish content outside the request path.
 

@@ -3,7 +3,6 @@
 	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import ErrorState from '$lib/components/ErrorState.svelte';
-	import FeedbackOverlay from '$lib/components/FeedbackOverlay.svelte';
 	import GameRound from '$lib/components/GameRound.svelte';
 	import LoadingSkeleton from '$lib/components/LoadingSkeleton.svelte';
 	import {
@@ -191,15 +190,16 @@
 		selectedIndex={session.selectedIndex}
 		onAnswer={handleAnswer}
 		onEndGame={handleEndGame}
+		feedback={session.phase === 'feedback'
+			? {
+					correct: session.selectedIndex === session.currentRound.correctIndex,
+					correctTitle:
+						session.currentRound.correctIndex !== null
+							? (session.currentRound.options[session.currentRound.correctIndex]?.title ?? '')
+							: '',
+					isFinalRound: hasReachedRoundLimit(session),
+					onNext: handleNext
+				}
+			: null}
 	/>
-	{#if session.phase === 'feedback'}
-		<FeedbackOverlay
-			correct={session.selectedIndex === session.currentRound.correctIndex}
-			correctTitle={session.currentRound.correctIndex !== null
-				? (session.currentRound.options[session.currentRound.correctIndex]?.title ?? '')
-				: ''}
-			isFinalRound={hasReachedRoundLimit(session)}
-			onNext={handleNext}
-		/>
-	{/if}
 {/if}
