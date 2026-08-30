@@ -14,22 +14,23 @@
 		prepareNextRound,
 		receiveRound,
 		restartContentCycle,
-		requestRound,
+		requestRound as markRoundLoading,
 		skipCurrentRound
 	} from '$lib/domain/gameSession';
+	import { readRoundResponse, type RoundFetchResult } from '$lib/services/roundClient';
 	import {
 		clearGameSession,
 		loadGameSession,
 		saveGameSession,
 		saveGameSettings
 	} from '$lib/services/sessionPersistence';
-	import type { ApiResponse, ClueReportReason, GameSession } from '$lib/types/index';
+	import type { ClueReportReason, GameSession } from '$lib/types/index';
 
 	let session = $state<GameSession>(createGameSession());
 	let ready = $state(false);
 	let allowNavigation = false;
-	let preloadedRound = $state<ApiResponse | null>(null);
-	let preloadedRoundPromise: Promise<ApiResponse | null> | null = null;
+	let preloadedRound = $state<RoundFetchResult | null>(null);
+	let preloadedRoundPromise: Promise<RoundFetchResult> | null = null;
 
 	function hasActiveProgress(): boolean {
 		return ready && !['start', 'ended'].includes(session.phase) && session.roundNumber > 0;
@@ -82,15 +83,28 @@
 		});
 	}
 
+	function networkFailure(): RoundFetchResult {
+		return {
+			ok: false,
+			errorType: typeof navigator !== 'undefined' && !navigator.onLine ? 'offline' : 'service'
+		};
+	}
+
+	async function fetchRoundResult(): Promise<RoundFetchResult> {
+		try {
+			return await readRoundResponse(await fetchRoundApi());
+		} catch {
+			return networkFailure();
+		}
+	}
+
 	function preloadRound() {
-		const request = fetchRoundApi()
-			.then(async (response) => (response.ok ? ((await response.json()) as ApiResponse) : null))
-			.catch(() => null);
+		const request = fetchRoundResult();
 
 		preloadedRound = null;
 		preloadedRoundPromise = request;
-		void request.then((data) => {
-			if (preloadedRoundPromise === request) preloadedRound = data;
+		void request.then((result) => {
+			if (preloadedRoundPromise === request) preloadedRound = result;
 		});
 	}
 
@@ -100,28 +114,34 @@
 		await goto(resolve('/results'));
 	}
 
-	async function fetchRound() {
-		setSession(requestRound(session));
-		try {
-			const response = await fetchRoundApi();
+	async function applyRoundFetchResult(result: RoundFetchResult) {
+		if (!result.ok) {
+			setSession(failGameSession(session, result.errorType));
+			return;
+		}
 
-			if (!response.ok) {
-				if (response.status === 503) {
-					if (session.settings.roundLimit === null && session.history.length > 0) {
-						setSession(restartContentCycle(session));
-						await fetchRound();
-						return;
-					}
-					await showResults(completeGameSession(session));
-					return;
-				}
-				throw new Error(`API error: ${response.status}`);
+		if (result.data.status === 'complete') {
+			if (session.settings.roundLimit === null && session.history.length > 0) {
+				setSession(restartContentCycle(session));
+				await fetchRound();
+				return;
 			}
 
-			setSession(receiveRound(session, (await response.json()) as ApiResponse));
-		} catch {
-			setSession(failGameSession(session, 'network'));
+			await showResults(completeGameSession(session));
+			return;
 		}
+
+		if (session.usedMovieIds.includes(result.data.movieId)) {
+			setSession(failGameSession(session, 'invalid-response'));
+			return;
+		}
+
+		setSession(receiveRound(session, result.data));
+	}
+
+	async function fetchRound() {
+		setSession(markRoundLoading(session));
+		await applyRoundFetchResult(await fetchRoundResult());
 	}
 
 	function handleAnswer(index: number) {
@@ -171,14 +191,12 @@
 		setSession(nextSession);
 
 		const pendingRound = preloadedRoundPromise;
-		if (!preloadedRound && pendingRound) preloadedRound = await pendingRound;
-
-		const nextRound = preloadedRound;
+		const nextRound = preloadedRound ?? (pendingRound ? await pendingRound : null);
 		preloadedRound = null;
 		preloadedRoundPromise = null;
 
-		if (nextRound && !session.usedMovieIds.includes(nextRound.movieId)) {
-			setSession(receiveRound(session, nextRound));
+		if (nextRound) {
+			await applyRoundFetchResult(nextRound);
 			return;
 		}
 

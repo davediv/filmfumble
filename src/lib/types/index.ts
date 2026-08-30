@@ -33,6 +33,7 @@ export interface OptionItem {
 }
 
 export interface ApiResponse {
+	status: 'round';
 	clueId: string;
 	description: string;
 	options: OptionItem[];
@@ -40,6 +41,19 @@ export interface ApiResponse {
 	movieId: string;
 	contentSource: Clue['source'];
 	error?: string;
+}
+
+export interface RoundCompleteResponse {
+	status: 'complete';
+}
+
+export type RoundApiResponse = ApiResponse | RoundCompleteResponse;
+
+export type RoundApiErrorCode = 'INVALID_REQUEST' | 'CONTENT_UNAVAILABLE' | 'SERVICE_UNAVAILABLE';
+
+export interface RoundApiErrorResponse {
+	code: RoundApiErrorCode;
+	error: string;
 }
 
 export interface RoundData {
@@ -80,7 +94,7 @@ export interface ClueReport {
 }
 
 export interface GameSession {
-	schemaVersion: 2;
+	schemaVersion: 3;
 	id: string;
 	phase: GamePhase;
 	settings: GameSettings;
@@ -93,4 +107,4 @@ export interface GameSession {
 	errorType: ErrorType | null;
 }
 
-export type ErrorType = 'network' | 'exhausted' | 'generic';
+export type ErrorType = 'offline' | 'service' | 'content' | 'invalid-response';

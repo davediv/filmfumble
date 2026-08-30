@@ -22,7 +22,7 @@ export const DEFAULT_GAME_SETTINGS: GameSettings = {
 
 export function createGameSession(settings: GameSettings = DEFAULT_GAME_SETTINGS): GameSession {
 	return {
-		schemaVersion: 2,
+		schemaVersion: 3,
 		id: '',
 		phase: 'start',
 		settings: { ...settings },
