@@ -1,14 +1,19 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+
 	interface Props {
 		correct: boolean;
 		correctTitle: string;
 		isFinalRound: boolean;
-		onNext: () => void;
+		onNext: () => void | Promise<void>;
 	}
 
 	let { correct, correctTitle, isFinalRound, onNext }: Props = $props();
+	let heading: HTMLHeadingElement;
 
 	const CONFETTI_COLORS = ['#d4a017', '#eab308', '#f59e0b', '#fbbf24', '#b8860b'];
+
+	onMount(() => heading.focus({ preventScroll: true }));
 </script>
 
 {#if correct}
@@ -25,38 +30,36 @@
 	</div>
 {/if}
 
-<div
-	class="fixed inset-0 z-50 flex flex-col items-center justify-center gap-6 bg-background/95 px-6 backdrop-blur-sm"
-	style="animation: fade-in 0.2s ease-out both"
-	role="dialog"
-	aria-modal="true"
-	aria-labelledby="feedback-title"
+<section
+	class="mt-4 border-y border-border/60 bg-card/70 px-4 py-4"
+	aria-labelledby="round-feedback-title"
 >
-	<div class="flex flex-col items-center gap-4 text-center">
+	<div class="mx-auto flex max-w-3xl flex-col items-center gap-3 text-center">
 		<h2
-			id="feedback-title"
-			class="font-heading text-4xl tracking-wider sm:text-5xl md:text-6xl {correct
+			bind:this={heading}
+			id="round-feedback-title"
+			tabindex="-1"
+			class="font-heading text-3xl tracking-wider outline-none sm:text-4xl {correct
 				? 'text-correct'
 				: 'text-incorrect'}"
 		>
 			{correct ? 'CORRECT' : 'WRONG'}
 		</h2>
 
-		<div class="mt-1 flex flex-col items-center gap-1">
-			<p class="text-xs tracking-[0.15em] text-muted-foreground uppercase">
-				{correct ? 'It was:' : 'The answer was:'}
-			</p>
-			<p class="text-lg font-medium text-gold sm:text-xl">{correctTitle}</p>
-		</div>
-	</div>
+		<p class="text-sm text-muted-foreground">
+			{correct ? 'It was' : 'The answer was'}
+			<span class="font-medium text-gold">{correctTitle}</span>
+		</p>
 
-	<button
-		class="mt-4 border border-gold/50 px-8 py-2.5 font-heading text-sm tracking-[0.2em] text-gold transition-colors duration-200 outline-none hover:bg-gold hover:text-background focus-visible:ring-2 focus-visible:ring-gold/50 active:scale-[0.97]"
-		onclick={onNext}
-	>
-		{isFinalRound ? 'SEE RESULTS' : 'NEXT ROUND'}
-	</button>
-</div>
+		<button
+			class="mt-1 min-h-11 border border-gold/50 px-8 py-2.5 font-heading text-sm tracking-[0.2em] text-gold transition-colors duration-200 outline-none hover:bg-gold hover:text-background focus-visible:ring-2 focus-visible:ring-gold active:scale-[0.97]"
+			type="button"
+			onclick={onNext}
+		>
+			{isFinalRound ? 'SEE RESULTS' : 'NEXT ROUND'}
+		</button>
+	</div>
+</section>
 
 <style>
 	.confetti-container {
