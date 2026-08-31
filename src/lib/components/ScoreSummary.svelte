@@ -69,7 +69,7 @@
 	<div class="flex w-full max-w-3xl flex-col items-center gap-7">
 		<div
 			class="flex flex-col items-center gap-5 text-center"
-			style="animation: reveal 0.5s ease-out both"
+			style="animation: reveal 0.25s ease-out both"
 		>
 			<div class="h-px w-12 bg-gold/30"></div>
 
