@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
+	import { goto, preloadCode } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import StartScreen from '$lib/components/StartScreen.svelte';
@@ -23,6 +23,20 @@
 		resumableSession =
 			savedSession && !['start', 'ended'].includes(savedSession.phase) ? savedSession : null;
 		canResume = Boolean(resumableSession);
+
+		const warmPlayRoute = () => {
+			void preloadCode(resolve('/play')).catch(() => {
+				// Navigation retries normally if opportunistic preloading fails.
+			});
+		};
+
+		if (typeof window.requestIdleCallback === 'function') {
+			const idleId = window.requestIdleCallback(warmPlayRoute, { timeout: 2000 });
+			return () => window.cancelIdleCallback(idleId);
+		}
+
+		const timeoutId = window.setTimeout(warmPlayRoute, 1000);
+		return () => window.clearTimeout(timeoutId);
 	});
 
 	function handleSettingsChange(nextSettings: GameSettings) {
