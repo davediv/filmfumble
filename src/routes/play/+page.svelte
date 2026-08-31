@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { beforeNavigate, goto } from '$app/navigation';
+	import { beforeNavigate, goto, preloadCode } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import ErrorState from '$lib/components/ErrorState.svelte';
@@ -99,6 +99,17 @@
 		});
 	}
 
+	function preloadResultsRoute() {
+		void preloadCode(resolve('/results')).catch(() => {
+			// Navigation retries normally if opportunistic preloading fails.
+		});
+	}
+
+	function preloadFollowingStep() {
+		if (hasReachedRoundLimit(session)) preloadResultsRoute();
+		else preloadRound();
+	}
+
 	async function showResults(nextSession: GameSession) {
 		setSession(nextSession);
 		allowNavigation = true;
@@ -140,7 +151,7 @@
 		if (answeredSession === session) return;
 
 		setSession(answeredSession);
-		if (!hasReachedRoundLimit(session)) preloadRound();
+		preloadFollowingStep();
 	}
 
 	function handleSkip() {
@@ -148,7 +159,7 @@
 		if (skippedSession === session) return;
 
 		setSession(skippedSession);
-		if (!hasReachedRoundLimit(session)) preloadRound();
+		preloadFollowingStep();
 	}
 
 	async function handleReport(reason: ClueReportReason): Promise<boolean> {
