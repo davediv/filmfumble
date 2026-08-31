@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { tick } from 'svelte';
+	import { tick, untrack } from 'svelte';
 	import { getContentPreset } from '$lib/config/gameOptions';
 	import { resultAccuracy } from '$lib/domain/results';
 	import type { ShareOutcome } from '$lib/services/resultsSharing';
@@ -18,6 +18,9 @@
 	let shareState = $state<'idle' | 'working' | ShareOutcome>('idle');
 	let showManualShare = $state(false);
 	let manualShareText = $state<HTMLTextAreaElement>();
+	let reviewOpen = $state(
+		untrack(() => session.history.filter((round) => !round.correct).length <= 3)
+	);
 
 	const roundCount = $derived(session.history.length);
 	const accuracy = $derived(resultAccuracy(session.score, roundCount));
@@ -161,33 +164,40 @@
 						: 'Nothing to review — every answer was correct.'}
 				</p>
 			{:else}
-				<details class="mt-3 border-y border-border/60" open={reviewRounds.length <= 3}>
+				<details class="mt-3 border-y border-border/60" bind:open={reviewOpen}>
 					<summary
 						class="flex min-h-11 cursor-pointer items-center justify-between gap-4 px-3 text-sm text-muted-foreground outline-none focus-visible:ring-2 focus-visible:ring-gold"
 					>
 						<span>Missed or skipped answers</span>
 						<span class="font-heading text-xl text-gold">{reviewRounds.length}</span>
 					</summary>
-					<ol class="grid gap-3 border-t border-border/60 py-3 sm:grid-cols-2">
-						{#each reviewRounds as round (round.roundNumber)}
-							<li class="flex flex-col gap-2 bg-card/60 p-4">
-								<h3 class="font-heading text-lg tracking-wide text-gold">
-									Round {round.roundNumber} · {round.skipped ? 'Skipped' : 'Incorrect'}
-								</h3>
-								<p class="text-sm leading-relaxed text-foreground">{round.description}</p>
-								<dl class="grid gap-1 text-sm">
-									<div class="flex gap-2">
-										<dt class="text-muted-foreground">Your answer:</dt>
-										<dd>{answerTitle(round, round.selectedIndex)}</dd>
-									</div>
-									<div class="flex gap-2">
-										<dt class="text-muted-foreground">Correct answer:</dt>
-										<dd class="text-correct">{answerTitle(round, round.correctIndex)}</dd>
-									</div>
-								</dl>
-							</li>
-						{/each}
-					</ol>
+					{#if reviewOpen}
+						<ol class="grid gap-3 border-t border-border/60 py-3 sm:grid-cols-2">
+							{#each reviewRounds as round (round.roundNumber)}
+								<li
+									class="flex flex-col gap-2 bg-card/60 p-4"
+									style="content-visibility: auto; contain-intrinsic-size: auto 10rem;"
+								>
+									<h3 class="font-heading text-lg tracking-wide text-gold">
+										Round {round.roundNumber} · {round.skipped ? 'Skipped' : 'Incorrect'}
+									</h3>
+									<p class="text-sm leading-relaxed text-foreground">{round.description}</p>
+									<dl class="grid gap-1 text-sm">
+										<div class="flex gap-2">
+											<dt class="text-muted-foreground">Your answer:</dt>
+											<dd>{answerTitle(round, round.selectedIndex)}</dd>
+										</div>
+										<div class="flex gap-2">
+											<dt class="text-muted-foreground">Correct answer:</dt>
+											<dd class="text-correct">
+												{answerTitle(round, round.correctIndex)}
+											</dd>
+										</div>
+									</dl>
+								</li>
+							{/each}
+						</ol>
+					{/if}
 				</details>
 			{/if}
 		</section>
