@@ -30,12 +30,19 @@
 		saveGameSettings
 	} from '$lib/services/sessionPersistence';
 	import type { ClueReportReason, GameSession } from '$lib/types/index';
+	import { posterUrl } from '$lib/utils';
+
+	interface NetworkInformation {
+		effectiveType?: string;
+		saveData?: boolean;
+	}
 
 	let session = $state<GameSession>(createGameSession());
 	let ready = $state(false);
 	let allowNavigation = false;
 	let preloadedRound = $state<RoundFetchResult | null>(null);
 	let preloadedRoundPromise: Promise<RoundFetchResult> | null = null;
+	let preloadedPosterImages: HTMLImageElement[] = [];
 
 	function hasActiveProgress(): boolean {
 		return ready && !['start', 'ended'].includes(session.phase) && session.roundNumber > 0;
@@ -95,8 +102,36 @@
 		preloadedRound = null;
 		preloadedRoundPromise = request;
 		void request.then((result) => {
-			if (preloadedRoundPromise === request) preloadedRound = result;
+			if (preloadedRoundPromise !== request) return;
+			preloadedRound = result;
+			preloadRoundPosters(result);
 		});
+	}
+
+	function preloadRoundPosters(result: RoundFetchResult) {
+		preloadedPosterImages.length = 0;
+		if (!result.ok || result.data.status !== 'round') return;
+
+		const connection = (navigator as Navigator & { connection?: NetworkInformation }).connection;
+		if (
+			connection?.saveData ||
+			connection?.effectiveType === 'slow-2g' ||
+			connection?.effectiveType === '2g'
+		) {
+			return;
+		}
+
+		for (const option of result.data.options) {
+			if (!option.posterPath) continue;
+
+			const image = new Image();
+			image.decoding = 'async';
+			image.fetchPriority = 'low';
+			image.sizes = '(min-width: 640px) 64px, 48px';
+			image.srcset = `${posterUrl(option.posterPath, 'w92')} 92w, ${posterUrl(option.posterPath, 'w154')} 154w`;
+			image.src = posterUrl(option.posterPath, 'w154');
+			preloadedPosterImages.push(image);
+		}
 	}
 
 	function preloadResultsRoute() {
