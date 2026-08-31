@@ -32,6 +32,10 @@
 	});
 
 	const showPoster = $derived(posterPath && !imgFailed);
+	const posterSrc = $derived(posterPath ? posterUrl(posterPath, 'w154') : '');
+	const posterSrcset = $derived(
+		posterPath ? `${posterUrl(posterPath, 'w92')} 92w, ${posterUrl(posterPath, 'w154')} 154w` : ''
+	);
 </script>
 
 <button
@@ -60,9 +64,14 @@
 	>
 		{#if showPoster}
 			<img
-				src={posterUrl(posterPath!, 'w154')}
+				src={posterSrc}
+				srcset={posterSrcset}
+				sizes="(min-width: 640px) 64px, 48px"
+				width="64"
+				height="96"
 				alt=""
 				loading="lazy"
+				decoding="async"
 				class="h-full w-full object-cover"
 				onerror={() => (imgFailed = true)}
 			/>

@@ -15,6 +15,8 @@
 		type="font/woff2"
 		crossorigin="anonymous"
 	/>
+	<link rel="preconnect" href="https://image.tmdb.org" />
+	<link rel="dns-prefetch" href="https://image.tmdb.org" />
 </svelte:head>
 
 <a class="skip-link" href="#main-content">Skip to main content</a>
