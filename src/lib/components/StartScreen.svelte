@@ -57,7 +57,7 @@
 <div class="flex flex-1 flex-col items-center justify-center gap-8 px-6">
 	<div
 		class="flex flex-col items-center gap-6 text-center"
-		style="animation: reveal 0.5s ease-out both"
+		style="animation: reveal 0.25s ease-out both"
 	>
 		<div class="h-px w-12 bg-gold/30"></div>
 
@@ -76,7 +76,7 @@
 
 	<details
 		class="w-full max-w-sm border-y border-border/50 py-2"
-		style="animation: reveal 0.5s ease-out 0.08s both"
+		style="animation: reveal 0.25s ease-out 0.03s both"
 	>
 		<summary
 			class="flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 px-2 text-xs tracking-[0.12em] text-muted-foreground uppercase marker:content-none"
@@ -117,7 +117,7 @@
 		</div>
 	</details>
 
-	<div class="flex flex-col items-center gap-5" style="animation: reveal 0.5s ease-out 0.12s both">
+	<div class="flex flex-col items-center gap-5" style="animation: reveal 0.25s ease-out 0.06s both">
 		<button
 			class="min-h-11 border border-gold/50 px-10 py-3 font-heading text-lg tracking-[0.2em] text-gold transition-colors duration-200 outline-none hover:bg-gold hover:text-background focus-visible:ring-2 focus-visible:ring-gold active:scale-[0.97]"
 			onclick={onStart}
