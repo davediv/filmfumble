@@ -23,7 +23,7 @@
 
 <div class="app-shell flex flex-col bg-background text-foreground">
 	<header
-		class="site-header sticky top-0 z-10 flex items-center justify-center border-b border-gold/15 bg-background/80 px-4 py-3 backdrop-blur-md"
+		class="site-header sticky top-0 z-10 flex items-center justify-center border-b border-gold/15 bg-background px-4 py-3"
 	>
 		<a
 			href={resolve('/')}
