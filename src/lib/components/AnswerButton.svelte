@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { cn, posterUrl } from '$lib/utils';
+	import { posterUrl } from '$lib/utils';
 
 	type ButtonState = 'default' | 'correct' | 'incorrect' | 'disabled';
 
@@ -35,27 +35,22 @@
 </script>
 
 <button
-	class={cn(
-		'flex w-full items-center gap-3 border px-4 py-3.5 text-left transition-colors duration-150 outline-none focus-visible:ring-2 focus-visible:ring-gold disabled:pointer-events-none sm:py-4',
-		buttonState === 'correct'
-			? 'border-correct/60 bg-correct/10'
-			: buttonState === 'incorrect'
-				? 'animate-shake border-incorrect/60 bg-incorrect/10'
-				: 'border-border/60 bg-card/40 hover:border-gold/30 hover:bg-card/70'
-	)}
+	class="flex w-full items-center gap-3 border px-4 py-3.5 text-left transition-colors duration-150 outline-none focus-visible:ring-2 focus-visible:ring-gold disabled:pointer-events-none sm:py-4 {buttonState ===
+	'correct'
+		? 'border-correct/60 bg-correct/10'
+		: buttonState === 'incorrect'
+			? 'animate-shake border-incorrect/60 bg-incorrect/10'
+			: 'border-border/60 bg-card/40 hover:border-gold/30 hover:bg-card/70'}"
 	disabled={isDisabled}
 	aria-keyshortcuts={`${label} ${index + 1}`}
 	{onclick}
 >
 	<span
-		class={cn(
-			'font-heading text-lg transition-colors duration-150 sm:text-xl',
-			buttonState === 'correct'
-				? 'text-correct'
-				: buttonState === 'incorrect'
-					? 'text-incorrect'
-					: 'text-gold'
-		)}
+		class="font-heading text-lg transition-colors duration-150 sm:text-xl {buttonState === 'correct'
+			? 'text-correct'
+			: buttonState === 'incorrect'
+				? 'text-incorrect'
+				: 'text-gold'}"
 	>
 		{label}
 	</span>
