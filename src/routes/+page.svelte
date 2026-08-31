@@ -4,21 +4,25 @@
 	import { onMount } from 'svelte';
 	import StartScreen from '$lib/components/StartScreen.svelte';
 	import { beginGameSession, DEFAULT_GAME_SETTINGS } from '$lib/domain/gameSession';
+	import { prefetchRound } from '$lib/services/roundClient';
 	import {
 		loadGameSession,
 		loadGameSettings,
 		saveGameSession,
 		saveGameSettings
 	} from '$lib/services/sessionPersistence';
-	import type { GameSettings } from '$lib/types/index';
+	import type { GameSession, GameSettings } from '$lib/types/index';
 
 	let settings = $state<GameSettings>({ ...DEFAULT_GAME_SETTINGS });
 	let canResume = $state(false);
+	let resumableSession: GameSession | null = null;
 
 	onMount(() => {
 		settings = loadGameSettings(window.sessionStorage) ?? { ...DEFAULT_GAME_SETTINGS };
 		const savedSession = loadGameSession(window.sessionStorage);
-		canResume = Boolean(savedSession && !['start', 'ended'].includes(savedSession.phase));
+		resumableSession =
+			savedSession && !['start', 'ended'].includes(savedSession.phase) ? savedSession : null;
+		canResume = Boolean(resumableSession);
 	});
 
 	function handleSettingsChange(nextSettings: GameSettings) {
@@ -30,10 +34,20 @@
 		const session = beginGameSession(settings);
 		saveGameSettings(window.sessionStorage, settings);
 		saveGameSession(window.sessionStorage, session);
+		void prefetchRound({
+			usedMovieIds: session.usedMovieIds,
+			contentPreset: session.settings.contentPreset
+		});
 		await goto(resolve('/play'));
 	}
 
 	async function resumeGame() {
+		if (resumableSession?.phase === 'loading') {
+			void prefetchRound({
+				usedMovieIds: resumableSession.usedMovieIds,
+				contentPreset: resumableSession.settings.contentPreset
+			});
+		}
 		await goto(resolve('/play'));
 	}
 </script>

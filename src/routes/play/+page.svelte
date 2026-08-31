@@ -17,7 +17,12 @@
 		requestRound as markRoundLoading,
 		skipCurrentRound
 	} from '$lib/domain/gameSession';
-	import { readRoundResponse, type RoundFetchResult } from '$lib/services/roundClient';
+	import {
+		requestRound,
+		takePrefetchedRound,
+		type RoundFetchResult,
+		type RoundRequestInput
+	} from '$lib/services/roundClient';
 	import {
 		clearGameSession,
 		loadGameSession,
@@ -72,30 +77,16 @@
 		return () => window.removeEventListener('beforeunload', protectUnload);
 	});
 
-	function fetchRoundApi(): Promise<Response> {
-		return fetch('/api/round', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({
-				usedMovieIds: session.usedMovieIds,
-				contentPreset: session.settings.contentPreset
-			})
-		});
-	}
-
-	function networkFailure(): RoundFetchResult {
+	function roundRequestInput(): RoundRequestInput {
 		return {
-			ok: false,
-			errorType: typeof navigator !== 'undefined' && !navigator.onLine ? 'offline' : 'service'
+			usedMovieIds: session.usedMovieIds,
+			contentPreset: session.settings.contentPreset
 		};
 	}
 
-	async function fetchRoundResult(): Promise<RoundFetchResult> {
-		try {
-			return await readRoundResponse(await fetchRoundApi());
-		} catch {
-			return networkFailure();
-		}
+	function fetchRoundResult(): Promise<RoundFetchResult> {
+		const input = roundRequestInput();
+		return takePrefetchedRound(input) ?? requestRound(input);
 	}
 
 	function preloadRound() {

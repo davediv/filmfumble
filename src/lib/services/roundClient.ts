@@ -1,5 +1,6 @@
 import type {
 	ApiResponse,
+	ContentPresetId,
 	ErrorType,
 	RoundApiErrorCode,
 	RoundApiResponse
@@ -8,6 +9,18 @@ import type {
 export type RoundFetchResult =
 	| { ok: true; data: RoundApiResponse }
 	| { ok: false; errorType: ErrorType };
+
+export interface RoundRequestInput {
+	usedMovieIds: readonly string[];
+	contentPreset: ContentPresetId;
+}
+
+interface PrefetchedRound {
+	key: string;
+	request: Promise<RoundFetchResult>;
+}
+
+let prefetchedRound: PrefetchedRound | null = null;
 
 function isRecord(value: unknown): value is Record<string, unknown> {
 	return typeof value === 'object' && value !== null;
@@ -67,4 +80,49 @@ export async function readRoundResponse(response: Response): Promise<RoundFetchR
 	return isRoundApiResponse(payload)
 		? { ok: true, data: payload }
 		: { ok: false, errorType: 'invalid-response' };
+}
+
+function roundRequestKey(input: RoundRequestInput): string {
+	return JSON.stringify([input.contentPreset, input.usedMovieIds]);
+}
+
+function networkFailure(): RoundFetchResult {
+	return {
+		ok: false,
+		errorType:
+			typeof navigator !== 'undefined' && navigator.onLine === false ? 'offline' : 'service'
+	};
+}
+
+export async function requestRound(
+	input: RoundRequestInput,
+	fetcher: typeof fetch = fetch
+): Promise<RoundFetchResult> {
+	try {
+		const response = await fetcher('/api/round', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(input)
+		});
+		return await readRoundResponse(response);
+	} catch {
+		return networkFailure();
+	}
+}
+
+export function prefetchRound(
+	input: RoundRequestInput,
+	fetcher: typeof fetch = fetch
+): Promise<RoundFetchResult> {
+	const request = requestRound(input, fetcher);
+	prefetchedRound = { key: roundRequestKey(input), request };
+	return request;
+}
+
+export function takePrefetchedRound(input: RoundRequestInput): Promise<RoundFetchResult> | null {
+	if (!prefetchedRound || prefetchedRound.key !== roundRequestKey(input)) return null;
+
+	const { request } = prefetchedRound;
+	prefetchedRound = null;
+	return request;
 }
